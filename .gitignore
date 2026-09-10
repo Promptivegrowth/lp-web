@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vercel/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+
+# Fotografías originales (~148 MB). Se conservan fuera del repositorio;
+# lo versionado es public/img/ ya optimizado. Ver README.
+fotos/

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Página no encontrada | Laboratorios Pacheco</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#8ebf45" />
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="module" src="/src/js/main.js"></script>
+  </head>
+
+  <body class="pagina-interna">
+    <a class="salto-contenido" href="#contenido">Saltar al contenido</a>
+    <!--@include partials/header.html-->
+
+    <main id="contenido">
+      <section class="cabecera-pagina" style="min-height: 78svh; display: grid; align-items: center">
+        <div class="contenedor texto-centro">
+          <p class="etiqueta" style="justify-content: center; display: inline-flex">Error 404</p>
+          <h1 style="margin-inline: auto; font-size: var(--t-4xl)">Lote no encontrado</h1>
+          <p style="margin-inline: auto">
+            La página que busca no existe o fue movida. Puede volver al inicio o revisar nuestros servicios.
+          </p>
+          <p style="margin-top: 2.5rem; display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap">
+            <a class="btn btn--grande" href="index.html">
+              Volver al inicio
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+            <a class="btn btn--claro btn--grande" href="servicios.html">Ver servicios</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!--@include partials/footer.html-->
+  </body>
+</html>

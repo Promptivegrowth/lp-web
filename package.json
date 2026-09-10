@@ -1,0 +1,17 @@
+{
+  "name": "laboratorios-pacheco-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio web corporativo de Laboratorios Pacheco S.A.C.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "images": "node tools/images.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5",
+    "vite": "^5.4.11"
+  }
+}
