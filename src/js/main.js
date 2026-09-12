@@ -97,12 +97,15 @@ function header() {
 
   const actualizar = () => {
     const y = window.scrollY;
-    const umbral = esInterna ? 20 : Math.min(window.innerHeight * 0.75, 560);
+    // La cabecera se vuelve sólida con un desplazamiento mínimo y recupera la
+    // transparencia al volver arriba del todo.
+    const umbral = esInterna ? 20 : 48;
 
     el.classList.toggle('esta-fija', y > umbral);
 
-    // Se oculta al bajar, reaparece al subir (solo pasado el hero).
-    const abajo = y > anterior && y > umbral + 160;
+    // Se oculta al bajar, reaparece al subir. El margen es mayor que el umbral
+    // de solidez para que ambos cambios no ocurran a la vez.
+    const abajo = y > anterior && y > 520;
     el.classList.toggle('esta-oculta', abajo && !document.body.classList.contains('menu-abierto'));
     anterior = y;
 
@@ -478,7 +481,156 @@ function formulario() {
 }
 
 /* ------------------------------------------------------------
-   11. Ancla inicial
+   11. Vídeo institucional
+   Arranca al entrar en la sección y se pausa al salir, de modo que
+   al volver continúa donde se quedó. Los navegadores sólo permiten
+   la reproducción automática sin sonido, así que se ofrece un botón
+   para activarlo.
+   ------------------------------------------------------------ */
+let apiYouTube;
+
+/** Carga el script de la API de YouTube una sola vez. */
+function cargarApiYouTube() {
+  if (apiYouTube) return apiYouTube;
+
+  apiYouTube = new Promise((resolver, rechazar) => {
+    if (window.YT && window.YT.Player) {
+      resolver(window.YT);
+      return;
+    }
+    const anterior = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof anterior === 'function') anterior();
+      resolver(window.YT);
+    };
+    const etiqueta = document.createElement('script');
+    etiqueta.src = 'https://www.youtube.com/iframe_api';
+    etiqueta.async = true;
+    etiqueta.onerror = () => rechazar(new Error('No se pudo cargar la API de YouTube'));
+    document.head.appendChild(etiqueta);
+  });
+
+  return apiYouTube;
+}
+
+function video() {
+  const caja = $('.video__caja');
+  if (!caja) return;
+
+  const hueco = $('.video__marco > div[id]', caja);
+  const idVideo = caja.dataset.video;
+  if (!hueco || !idVideo) return;
+
+  const boton = $('.video__sonido', caja);
+  const estado = $('.video__estado', caja);
+  const etiquetaBoton = boton ? $('span', boton) : null;
+
+  let reproductor = null;
+  let listo = false;
+  let enPantalla = false;
+
+  const decir = (texto) => {
+    if (estado) estado.textContent = texto;
+  };
+
+  const sincronizar = () => {
+    if (!listo || !reproductor) return;
+    // Con «reducir movimiento» no se reproduce sola: el visitante decide.
+    if (enPantalla && !document.hidden && !menosMovimiento) reproductor.playVideo();
+    else reproductor.pauseVideo();
+  };
+
+  const crear = async () => {
+    let YT;
+    try {
+      YT = await cargarApiYouTube();
+    } catch {
+      decir('No se pudo cargar el vídeo. Compruebe su conexión.');
+      caja.classList.add('tiene-error');
+      return;
+    }
+
+    reproductor = new YT.Player(hueco, {
+      videoId: idVideo,
+      host: 'https://www.youtube-nocookie.com',
+      playerVars: {
+        autoplay: 0,
+        mute: 1,
+        controls: 1,
+        rel: 0,
+        modestbranding: 1,
+        playsinline: 1,
+        iv_load_policy: 3,
+      },
+      events: {
+        onReady: () => {
+          listo = true;
+          caja.classList.add('esta-listo');
+          decir(menosMovimiento ? 'Pulse para reproducir' : 'Listo');
+          sincronizar();
+        },
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.PLAYING) decir('Reproduciendo');
+          else if (e.data === YT.PlayerState.PAUSED) decir('En pausa · continúa al volver');
+          else if (e.data === YT.PlayerState.ENDED) decir('Finalizado');
+          else if (e.data === YT.PlayerState.BUFFERING) decir('Cargando…');
+        },
+        onError: () => {
+          decir('El vídeo no está disponible.');
+          caja.classList.add('tiene-error');
+        },
+      },
+    });
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    crear();
+    return;
+  }
+
+  // El script de YouTube sólo se trae cuando la sección se acerca: así no
+  // lastra la carga inicial de quien nunca llega hasta aquí.
+  const precarga = new IntersectionObserver(
+    (entradas, obs) => {
+      if (!entradas.some((e) => e.isIntersecting)) return;
+      obs.disconnect();
+      crear();
+    },
+    { rootMargin: '500px 0px' }
+  );
+  precarga.observe(caja);
+
+  // Entrada y salida de la sección.
+  const vigia = new IntersectionObserver(
+    (entradas) => {
+      enPantalla = entradas[0].isIntersecting;
+      caja.classList.toggle('esta-en-pantalla', enPantalla);
+      sincronizar();
+    },
+    { threshold: 0.45 }
+  );
+  vigia.observe(caja);
+
+  // Si la pestaña deja de verse, también se pausa.
+  document.addEventListener('visibilitychange', sincronizar);
+
+  boton?.addEventListener('click', () => {
+    if (!listo) return;
+    const silenciado = reproductor.isMuted();
+    if (silenciado) {
+      reproductor.unMute();
+      reproductor.setVolume(70);
+    } else {
+      reproductor.mute();
+    }
+    caja.classList.toggle('tiene-sonido', silenciado);
+    boton.setAttribute('aria-pressed', String(silenciado));
+    if (etiquetaBoton) etiquetaBoton.textContent = silenciado ? 'Silenciar' : 'Activar sonido';
+  });
+}
+
+/* ------------------------------------------------------------
+   12. Ancla inicial
    Al abrir una URL con #seccion, las imágenes que todavía se están
    descargando desplazan la maquetación y el navegador deja el destino
    fuera de sitio. Se recoloca hasta que el visitante toque el scroll.
@@ -519,14 +671,14 @@ function anclaInicial() {
 }
 
 /* ------------------------------------------------------------
-   12. Año actual en el pie
+   13. Año actual en el pie
    ------------------------------------------------------------ */
 function anio() {
   $$('[data-anio]').forEach((el) => (el.textContent = new Date().getFullYear()));
 }
 
 /* ------------------------------------------------------------
-   13. Arranque
+   14. Arranque
    ------------------------------------------------------------ */
 const iniciar = () => {
   preloader();
@@ -539,6 +691,7 @@ const iniciar = () => {
   marquesina();
   indiceServicios();
   formulario();
+  video();
   anclaInicial();
   anio();
 };

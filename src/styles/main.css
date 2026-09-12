@@ -533,6 +533,63 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__logo img {
   filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.85));
 }
 
+/* Al volverse sólida la cabecera, el logotipo se asienta y un haz verde lo
+   recorre una vez: el mismo gesto de escáner que usan el preloader y el
+   megamenú. Al regresar arriba del todo la animación se repite al revés. */
+.header__logo {
+  position: relative;
+  display: block;
+}
+
+.header.esta-fija .header__logo img {
+  animation: logoAsienta 0.62s var(--ease);
+}
+
+@keyframes logoAsienta {
+  0% {
+    transform: translateY(-5px) scale(1.06);
+  }
+  55% {
+    transform: translateY(1px) scale(0.99);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+.header__logo::after {
+  content: '';
+  position: absolute;
+  inset: -4px -8px;
+  pointer-events: none;
+  background: linear-gradient(104deg, transparent 40%, rgba(142, 191, 69, 0.75) 50%, transparent 60%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  opacity: 0;
+}
+
+.header.esta-fija .header__logo::after {
+  animation: hazLogo 0.72s var(--ease-io) 0.06s;
+}
+
+@keyframes hazLogo {
+  0% {
+    background-position: 100% 0;
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 0% 0;
+    opacity: 0;
+  }
+}
+
 .header.esta-fija {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: saturate(1.6) blur(14px);
@@ -1474,8 +1531,10 @@ body.menu-abierto .menu-movil__lista > li {
   transform: scale(1.07);
 }
 
+/* El tinte verde al señalar es un matiz, no un velo: la fotografía debe
+   seguir leyéndose igual de bien. */
 .pilar:hover::after {
-  background: linear-gradient(180deg, rgba(10, 13, 8, 0.2) 0%, rgba(76, 107, 35, 0.72) 58%, rgba(10, 13, 8, 0.96) 100%);
+  background: linear-gradient(180deg, rgba(10, 13, 8, 0.16) 0%, rgba(52, 74, 25, 0.5) 58%, rgba(10, 13, 8, 0.95) 100%);
 }
 
 .pilar__num {
@@ -1520,7 +1579,7 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 .pilar--ancho:hover::after {
-  background: linear-gradient(180deg, rgba(10, 13, 8, 0.26) 0%, rgba(76, 107, 35, 0.6) 52%, rgba(10, 13, 8, 0.95) 100%);
+  background: linear-gradient(180deg, rgba(10, 13, 8, 0.22) 0%, rgba(52, 74, 25, 0.44) 52%, rgba(10, 13, 8, 0.94) 100%);
 }
 
 @media (min-width: 760px) {
@@ -2678,6 +2737,318 @@ body.menu-abierto .menu-movil__lista > li {
   font-size: var(--t-xs);
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   17 bis. VÍDEO INSTITUCIONAL
+   El marco se descubre como una ventana de inspección: un haz lo
+   recorre, las esquinas del visor se dibujan y el reproductor
+   aparece detrás.
+   ============================================================ */
+.video__caja {
+  position: relative;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.video__marco {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: #050704;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+/* El reproductor de YouTube sustituye al div interior por un iframe. */
+.video__marco iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Trama de código de barras mientras el reproductor no ha cargado. */
+.video__marco::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: repeating-linear-gradient(90deg, rgba(155, 191, 99, 0.14) 0 2px, transparent 2px 10px);
+  opacity: 1;
+  transition: opacity 0.7s var(--ease);
+  pointer-events: none;
+}
+
+.video__caja.esta-listo .video__marco::before {
+  opacity: 0;
+}
+
+/* ---------- Esquinas del visor ---------- */
+.video__esquinas {
+  position: absolute;
+  inset: 14px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.video__esquinas i {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--verde);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease);
+}
+
+.video__esquinas i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 8px 0 0 0;
+  transition-delay: 0.62s;
+}
+
+.video__esquinas i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 0 8px 0 0;
+  transition-delay: 0.72s;
+}
+
+.video__esquinas i:nth-child(3) {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+  border-radius: 0 0 8px 0;
+  transition-delay: 0.82s;
+}
+
+.video__esquinas i:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-radius: 0 0 0 8px;
+  transition-delay: 0.92s;
+}
+
+.video__marco.es-visible .video__esquinas i {
+  opacity: 0.85;
+  transform: none;
+}
+
+/* Las esquinas se apartan cuando el vídeo está en marcha, para no
+   estorbar a los controles del reproductor. */
+.video__caja.esta-en-pantalla.esta-listo .video__esquinas i {
+  opacity: 0.35;
+}
+
+/* ---------- Haz que recorre el marco al descubrirlo ---------- */
+.video__haz {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  z-index: 4;
+  background: linear-gradient(90deg, transparent, var(--verde-claro) 15%, #fff 50%, var(--verde-claro) 85%, transparent);
+  box-shadow: 0 0 22px 5px rgba(142, 191, 69, 0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video__marco.es-visible .video__haz {
+  animation: hazVideo 1.1s var(--ease-io) 0.15s;
+}
+
+@keyframes hazVideo {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  86% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* ---------- Barra inferior ---------- */
+.video__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+}
+
+.video__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.video__estado::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gris-500);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video__caja.esta-en-pantalla.esta-listo .video__estado::before {
+  background: var(--verde);
+  box-shadow: 0 0 10px 2px rgba(142, 191, 69, 0.6);
+  animation: latido 1.8s ease-in-out infinite;
+}
+
+@keyframes latido {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Los navegadores sólo permiten la reproducción automática sin sonido, así que
+   este botón es el único camino para oírlo: mientras está silenciado se muestra
+   en verde y con un anillo que late, para que no pase desapercibido. */
+.video__sonido {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.5rem;
+  font-family: var(--f-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--negro);
+  background: var(--verde);
+  border-radius: 100px;
+  box-shadow: 0 8px 22px rgba(142, 191, 69, 0.3);
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s var(--ease);
+}
+
+.video__sonido::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 100px;
+  border: 2px solid var(--verde);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video__caja.esta-listo:not(.tiene-sonido) .video__sonido::after {
+  animation: pulsoSonido 2.4s ease-out infinite;
+}
+
+@keyframes pulsoSonido {
+  0% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  70%,
+  100% {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+}
+
+/* Una vez con sonido ya no necesita reclamar atención. */
+.video__caja.tiene-sonido .video__sonido {
+  padding: 0.62rem 1.2rem;
+  font-size: var(--t-xs);
+  color: var(--blanco);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+/* Hasta que el reproductor no está listo, pulsarlo no haría nada. */
+.video__caja:not(.esta-listo) .video__sonido {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video__sonido svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+}
+
+/* Silenciado: se muestra el aspa. Con sonido: las ondas. */
+.video__sonido .video__onda {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.video__caja.tiene-sonido .video__sonido .video__onda {
+  opacity: 1;
+}
+
+.video__caja.tiene-sonido .video__sonido .video__aspa {
+  opacity: 0;
+}
+
+.video__sonido:hover {
+  color: var(--negro);
+  background: var(--verde-claro);
+  box-shadow: 0 10px 26px rgba(142, 191, 69, 0.42);
+  transform: translateY(-2px);
+}
+
+.video__caja.tiene-error .video__sonido {
+  display: none;
+}
+
+/* ---------- Aparición del marco ---------- */
+.revelar--escaner {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 100% 0 round var(--r-lg));
+  transition: clip-path 1.05s var(--ease);
+}
+
+.revelar--escaner.es-visible {
+  clip-path: inset(0 0 0 0 round var(--r-lg));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revelar--escaner {
+    clip-path: none !important;
+  }
+
+  .video__esquinas i {
+    opacity: 0.6 !important;
+    transform: none !important;
+  }
+
+  .video__haz {
+    display: none;
+  }
 }
 
 /* ============================================================
