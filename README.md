@@ -123,6 +123,29 @@ durante un instante el documento medía 57.000px y todas las imágenes se dibuja
 a tamaño natural. Enlazada es render-blocking y eso no ocurre ni en desarrollo ni
 en producción.
 
+### Cabeceras de página
+
+Todas las páginas internas comparten `.cabecera-pagina`. Dos modificadores:
+
+- `--alta` sube la banda a ~660px (Nosotros y Equipo).
+- `--panoramica` hace que la banda siga la proporción de la fotografía,
+  acotada por el alto de la ventana, de modo que apenas haya que recortarla
+  (Certificación y Contacto: del 34–81% visible se pasó al 87–97%). Va después
+  de `--alta` y con doble clase, porque con la misma especificidad la altura de
+  aquélla la pisaría.
+
+En vertical una fotografía panorámica no cabe, así que esas dos páginas sirven
+además un recorte cuadrado mediante `<source media="(max-width: 700px)">`.
+
+Todas llevan un zoom cinematográfico lento y alternante.
+
+### Página Contacto
+
+El formulario y los datos son dos piezas enmarcadas —blanca y oscura— y el mapa
+va debajo con su propio marco de inspección y una chapa con la dirección. El
+botón «Cotizar servicio» de la cabecera apunta a `contacto.html#cotizar`, que es
+el ancla de esa sección.
+
 ### Página Equipo
 
 - La cabecera usa una versión apaisada propia y la variante alta, igual que
@@ -259,6 +282,38 @@ función serverless de Vercel…). El formulario incluye un campo trampa
 (`empresa_web`) oculto para descartar envíos automatizados.
 
 ---
+
+## Responsive
+
+Verificado en trece anchos, de 320px a 2560px: sin desbordamiento horizontal,
+sin elementos que se salgan de la pantalla y sin textos que rebosen su caja en
+ninguno.
+
+Dos ajustes que salieron de esa revisión:
+
+- En móvil el contenido del hero no cabía en una pantalla (994px sobre 844) y la
+  barra con las cifras y los puntos del carrusel quedaban por debajo del
+  pliegue. Se aprieta el ritmo vertical en dos escalones —720px y 380px— y desde
+  320×720 entra todo.
+- Las áreas táctiles pequeñas se ampliaron: enlaces de listas, migas y enlaces
+  de flecha reciben relleno vertical, y los puntos del carrusel pasan de 3px a
+  29px de alto mediante relleno propio (un pseudoelemento no servía, porque el
+  `overflow: hidden` del botón lo recortaba).
+
+## Comprobaciones
+
+En `scratchpad` (fuera del repositorio) viven dos guiones de verificación que se
+usaron durante el desarrollo y conviene repetir tras cada cambio grande:
+
+- Una batería que recorre las siete páginas en escritorio y móvil buscando
+  errores de consola, recursos rotos, desbordamiento horizontal, elementos sin
+  revelar y regresiones de estilo, más las interacciones (megamenú, carrusel,
+  lightbox, flujograma, vídeo, formulario, cabecera y menú móvil).
+- Una auditoría responsive sobre trece anchos, de 320px a 2560px.
+
+Los iframes de Google Maps y de YouTube generan ruido propio en consola —
+peticiones internas bloqueadas por CORS, permisos que el navegador deniega— que
+se descarta explícitamente para que no tape fallos del sitio.
 
 ## Notas de implementación
 

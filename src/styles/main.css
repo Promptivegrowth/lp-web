@@ -176,17 +176,9 @@ button {
   padding-inline: var(--pad-x);
 }
 
-.contenedor--ancho {
-  max-width: 1560px;
-}
-
 .seccion {
   padding-block: var(--sec-y);
   position: relative;
-}
-
-.seccion--alt {
-  background: var(--bg-alt);
 }
 
 .seccion--oscura {
@@ -1334,19 +1326,23 @@ body.menu-abierto .menu-movil__lista > li {
   align-items: center;
 }
 
+/* La barra visible mide 3px, pero el botón ocupa 29px de alto: el relleno
+   crea una zona de pulsación cómoda sin cambiar el aspecto. */
 .hero__punto {
   position: relative;
   width: 40px;
-  height: 3px;
+  height: 29px;
+  padding-block: 13px;
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.25);
-  overflow: hidden;
+  background-clip: content-box;
 }
 
 .hero__punto::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 13px 0;
+  border-radius: 99px;
   background: var(--verde);
   transform: scaleX(0);
   transform-origin: left;
@@ -1375,6 +1371,74 @@ body.menu-abierto .menu-movil__lista > li {
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.65);
+  }
+}
+
+/* En móvil el contenido del hero no cabía en una pantalla: la barra con las
+   cifras y los puntos del carrusel quedaban por debajo del pliegue. Se aprieta
+   el ritmo vertical para que todo entre. */
+@media (max-width: 720px) {
+  .hero__contenido {
+    padding-top: calc(var(--header-h) + 1.25rem);
+    padding-bottom: 1.35rem;
+  }
+
+  .hero__sello {
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.1rem, 10.2vw, 2.9rem);
+  }
+
+  .hero__bajada {
+    font-size: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .hero__acciones {
+    margin-bottom: 1.5rem;
+    gap: 0.65rem;
+  }
+
+  .hero__barra {
+    padding-top: 1.1rem;
+    gap: 1rem;
+  }
+
+  .hero__cifra strong {
+    font-size: 1.4rem;
+  }
+}
+
+/* Pantallas muy estrechas (tipo iPhone SE): un punto más de ajuste. */
+@media (max-width: 380px) {
+  .hero__contenido {
+    padding-top: calc(var(--header-h) + 0.7rem);
+    padding-bottom: 1rem;
+  }
+
+  .hero__sello {
+    margin-bottom: 0.7rem;
+    padding: 0.4rem 0.85rem 0.4rem 0.4rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.9rem, 9.6vw, 2.4rem);
+  }
+
+  .hero__bajada {
+    font-size: 0.94rem;
+    margin-bottom: 1.05rem;
+  }
+
+  .hero__acciones {
+    margin-bottom: 1.1rem;
+  }
+
+  .hero__barra {
+    padding-top: 0.9rem;
+    gap: 0.8rem;
   }
 }
 
@@ -1459,6 +1523,21 @@ body.menu-abierto .menu-movil__lista > li {
 
 .cabecera-pagina--alta .cabecera-pagina__fondo {
   opacity: 0.45;
+}
+
+/* Variante panorámica: la banda sigue la proporción de la fotografía —acotada
+   por el alto de la ventana— para que apenas haya que recortarla. Va después
+   de --alta y con doble clase, porque si no la altura de aquélla la pisaría. */
+.cabecera-pagina--alta.cabecera-pagina--panoramica {
+  min-height: clamp(440px, 54vw, 86vh);
+}
+
+/* En vertical la fotografía panorámica no cabe: se sirve un recorte cuadrado
+   (ver el <source media> del marcado) y la banda se ajusta a él. */
+@media (max-width: 700px) {
+  .cabecera-pagina--alta.cabecera-pagina--panoramica {
+    min-height: clamp(420px, 96vw, 560px);
+  }
 }
 
 /* Con más fotografía visible hace falta más velo para que el texto se lea. */
@@ -2855,40 +2934,6 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 /* ============================================================
-   15. Cifras
-   ============================================================ */
-.cifras {
-  display: grid;
-  gap: 1.5rem 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(190px, 45%), 1fr));
-  text-align: center;
-}
-
-.cifra strong {
-  display: block;
-  font-family: var(--f-display);
-  font-size: clamp(2.2rem, 6vw, 3.6rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  background: linear-gradient(160deg, var(--verde-claro), var(--verde-prof));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.cifra span {
-  display: block;
-  margin-top: 0.6rem;
-  font-size: var(--t-sm);
-  color: var(--texto-suave);
-}
-
-.seccion--oscura .cifra span {
-  color: var(--gris-300);
-}
-
-/* ============================================================
    16. LIDERAZGO
    Jerarquía explícita: Gerencia General abre en una tarjeta ancha
    y las tres jefaturas siguen en fila. El texto va debajo de la
@@ -4042,12 +4087,6 @@ body.menu-abierto .menu-movil__lista > li {
   border-color: #d1453b;
 }
 
-.campo__error {
-  font-size: var(--t-xs);
-  color: #d1453b;
-  min-height: 1em;
-}
-
 /* Formulario sobre fondo oscuro */
 .cta .campo label {
   color: rgba(255, 255, 255, 0.6);
@@ -4090,76 +4129,451 @@ body.menu-abierto .menu-movil__lista > li {
   color: #ffb4ae;
 }
 
-/* Tarjetas de contacto */
-.rejilla-contacto {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+/* ============================================================
+   20. CONTACTO
+   Formulario y datos como dos piezas enmarcadas, y el mapa
+   debajo con su propio marco de inspección y una chapa con la
+   dirección.
+   ============================================================ */
+.contacto {
+  background: var(--gris-50);
 }
 
-.dato-contacto {
+.contacto__reja {
   display: grid;
-  gap: 0.5rem;
-  padding: 1.6rem 1.5rem;
+  gap: clamp(1.15rem, 2.4vw, 1.9rem);
+  align-items: start;
+}
+
+@media (min-width: 1020px) {
+  .contacto__reja {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  }
+}
+
+/* ---------- Formulario ---------- */
+.contacto__forma {
+  padding: clamp(1.5rem, 3.2vw, 2.75rem);
   background: var(--blanco);
   border: 1px solid var(--borde);
-  border-radius: var(--r-md);
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+  border-radius: var(--r-lg);
+  --radio-cortina: var(--r-lg);
+  box-shadow: var(--sh-1);
 }
 
-.dato-contacto:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--sh-2);
-  border-color: var(--verde-claro);
+.contacto__cabeza {
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
 }
 
-.dato-contacto__icono {
+.contacto__cabeza h2 {
+  font-size: var(--t-xl);
+  margin-bottom: 0.5rem;
+}
+
+.contacto__intro {
+  margin: 0;
+  font-size: 0.97rem;
+  color: var(--texto-suave);
+  max-width: 52ch;
+}
+
+.contacto__envio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+}
+
+.contacto__nota {
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--gris-500);
+}
+
+/* ---------- Panel de datos ---------- */
+.contacto__panel {
+  display: grid;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.15rem);
+  background: var(--negro);
+  color: var(--gris-300);
+  border-radius: var(--r-lg);
+  --radio-cortina: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Trama de marca al pie del panel. */
+.contacto__panel::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 48%;
+  z-index: -1;
+  background-image: repeating-linear-gradient(90deg, rgba(155, 191, 99, 0.11) 0 2px, transparent 2px 11px);
+  mask-image: linear-gradient(180deg, transparent, #000);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000);
+  pointer-events: none;
+}
+
+.contacto__panel-titulo {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--verde-claro);
+}
+
+.contacto__lista {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.contacto__lista li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.contacto__ico {
   display: grid;
   place-items: center;
   width: 42px;
   height: 42px;
-  border-radius: var(--r-sm);
-  background: var(--gris-100);
-  color: var(--verde-prof);
-  margin-bottom: 0.4rem;
+  border-radius: 13px;
+  color: var(--verde-claro);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.13);
+  transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
-.dato-contacto h3 {
-  font-size: 0.94rem;
-  letter-spacing: 0.06em;
+.contacto__ico svg {
+  width: 20px;
+  height: 20px;
+}
+
+.contacto__lista li:hover .contacto__ico {
+  color: var(--negro);
+  background: var(--verde);
+  box-shadow: inset 0 0 0 1px var(--verde);
+}
+
+.contacto__rotulo {
+  margin: 0 0 0.25rem;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gris-500);
-  margin-bottom: 0.2rem;
 }
 
-.dato-contacto a,
-.dato-contacto p {
-  font-size: 1rem;
-  color: var(--texto);
-  margin: 0;
+.contacto__lista a {
+  display: block;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--gris-300);
   word-break: break-word;
+  transition: color 0.25s ease;
 }
 
-.dato-contacto a:hover {
-  color: var(--verde-prof);
+.contacto__lista a:hover {
+  color: var(--verde-claro);
 }
 
-.mapa {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  min-height: 320px;
-  border: 0;
-  border-radius: var(--r-lg);
-  filter: grayscale(0.35) contrast(1.05);
-  transition: filter 0.5s ease;
+/* ---------- WhatsApp destacado ---------- */
+.contacto__wsp {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.95rem 1.15rem;
+  border-radius: var(--r-md);
+  background: rgba(37, 211, 102, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(37, 211, 102, 0.38);
+  transition: background 0.3s ease, transform 0.35s var(--ease), box-shadow 0.3s ease;
 }
 
-.mapa:hover {
-  filter: none;
+.contacto__wsp:hover {
+  background: rgba(37, 211, 102, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(37, 211, 102, 0.7);
+  transform: translateY(-2px);
+}
+
+.contacto__wsp svg {
+  width: 26px;
+  height: 26px;
+  color: #25d366;
+}
+
+.contacto__wsp strong {
+  display: block;
+  font-family: var(--f-display);
+  font-size: 0.92rem;
+  color: var(--blanco);
+}
+
+.contacto__wsp small {
+  display: block;
+  font-size: var(--t-xs);
+  color: var(--gris-300);
+}
+
+/* ---------- Redes y sello ---------- */
+.contacto__redes .redes {
+  margin-top: 0.85rem;
+}
+
+/* Versión grande de los iconos de redes, con el color de cada marca al
+   señalarlos: en la página de contacto tienen que verse de inmediato. */
+.redes.redes--grandes a {
+  width: 50px;
+  height: 50px;
+}
+
+.redes.redes--grandes svg {
+  width: 21px;
+  height: 21px;
+}
+
+.redes.redes--grandes a:hover {
+  color: var(--blanco);
+  background: var(--marca, var(--verde));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.redes.redes--grandes a[aria-label='LinkedIn'] {
+  --marca: #0a66c2;
+}
+.redes.redes--grandes a[aria-label='Facebook'] {
+  --marca: #1877f2;
+}
+.redes.redes--grandes a[aria-label='Instagram'] {
+  --marca: #d62976;
+}
+.redes.redes--grandes a[aria-label='YouTube'] {
+  --marca: #ff0000;
+}
+.redes.redes--grandes a[aria-label='TikTok'] {
+  --marca: #111;
+}
+
+/* --- Áreas táctiles cómodas ---
+   Los enlaces de lista y los de flecha quedaban por debajo de lo que se puede
+   pulsar con comodidad. Se amplían tanto en pantallas pequeñas como en
+   cualquier dispositivo cuyo puntero sea el dedo. */
+@media (max-width: 900px), (hover: none) {
+  .footer__lista a,
+  .contacto__lista a,
+  .menu-movil__pie a,
+  .miga a {
+    padding-block: 0.32rem;
+  }
+
+  .lista-check a {
+    display: inline-block;
+    padding-block: 0.32rem;
+  }
+
+  .enlace-flecha,
+  .mega__cta {
+    padding-block: 0.4rem;
+  }
+}
+
+/* Los puntos del carrusel medían 3px de alto: se les da una zona de
+   pulsación cómoda sin cambiar su aspecto. */
+.hero__punto::before {
+  content: '';
+  position: absolute;
+  inset: -14px -4px;
+}
+
+.contacto__sello {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.contacto__sello .sello-luz {
+  width: 58px;
+  flex: none;
+}
+
+.contacto__sello p {
+  margin: 0;
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gris-300);
 }
 
 /* ============================================================
-   20. Footer
+   20 bis. MAPA
+   ============================================================ */
+.mapa-marco {
+  position: relative;
+  margin: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  --radio-cortina: var(--r-lg);
+  box-shadow: var(--sh-3);
+}
+
+.mapa {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 340px;
+  border: 0;
+  filter: grayscale(0.3) contrast(1.04);
+  transition: filter 0.5s ease;
+}
+
+.mapa-marco:hover .mapa {
+  filter: none;
+}
+
+.mapa-marco__esquinas {
+  position: absolute;
+  inset: 16px;
+  pointer-events: none;
+}
+
+.mapa-marco__esquinas i {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--verde);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease);
+}
+
+.mapa-marco__esquinas i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 9px 0 0 0;
+  transition-delay: 0.7s;
+}
+
+.mapa-marco__esquinas i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 0 9px 0 0;
+  transition-delay: 0.8s;
+}
+
+.mapa-marco__esquinas i:nth-child(3) {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+  border-radius: 0 0 9px 0;
+  transition-delay: 0.9s;
+}
+
+.mapa-marco__esquinas i:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-radius: 0 0 0 9px;
+  transition-delay: 1s;
+}
+
+.mapa-marco.es-visible .mapa-marco__esquinas i {
+  opacity: 0.85;
+  transform: none;
+}
+
+/* Chapa con la dirección sobre el mapa. */
+.mapa-marco__chapa {
+  position: absolute;
+  left: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  right: clamp(1rem, 3vw, 2rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  padding: 1rem 1.25rem;
+  background: rgba(10, 13, 8, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+@media (min-width: 720px) {
+  .mapa-marco__chapa {
+    right: auto;
+    max-width: min(30rem, calc(100% - 4rem));
+  }
+}
+
+.mapa-marco__punto {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--verde);
+}
+
+.mapa-marco__punto::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid var(--verde);
+  animation: pulso 2.2s ease-out infinite;
+}
+
+.mapa-marco__chapa > span {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.mapa-marco__chapa strong {
+  font-family: var(--f-display);
+  font-size: 0.95rem;
+  color: var(--blanco);
+}
+
+.mapa-marco__chapa small {
+  font-size: var(--t-xs);
+  color: var(--gris-300);
+}
+
+.mapa-marco__chapa .btn {
+  padding: 0.7rem 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa-marco__esquinas i {
+    opacity: 0.7 !important;
+    transform: none !important;
+  }
+
+  .mapa-marco__punto::after {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   20 bis. Pie de página
    ============================================================ */
 .footer {
   position: relative;
@@ -4391,10 +4805,6 @@ body.menu-abierto .menu-movil__lista > li {
   transform: translateX(36px);
 }
 
-.revelar--zoom {
-  transform: scale(0.94);
-}
-
 /* --- Aparición en cortina ---
    La tarjeta se descubre de abajo hacia arriba mientras la fotografía hace
    un contra-zoom, como el telón de una toma. Se usa la propiedad `scale`
@@ -4493,10 +4903,6 @@ body.menu-abierto .menu-movil__lista > li {
   text-align: center;
 }
 
-.mt-0 {
-  margin-top: 0;
-}
-
 .plomo {
   font-size: var(--t-lg);
   color: var(--texto-suave);
@@ -4504,13 +4910,6 @@ body.menu-abierto .menu-movil__lista > li {
 
 .seccion--oscura .plomo {
   color: var(--gris-300);
-}
-
-.dividir {
-  height: 1px;
-  background: var(--borde);
-  border: 0;
-  margin: 0;
 }
 
 /* ============================================================

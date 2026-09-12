@@ -34,6 +34,14 @@ const JOBS = [
   { src: [PRO, 'PROCESO 1', f(4)], out: 'secciones/quienes-somos', widths: [900, 620], ar: 3 / 4 },
   { src: [PRO, 'PROCESO 6', f(5)], out: 'secciones/certificacion', widths: [1600, 1000], ar: 16 / 9 },
   { src: [GER, 'COMERCIAL', f(1)], out: 'secciones/contacto', widths: [1280, 800], ar: 4 / 3 },
+  // Cabeceras panorámicas a 2:1. Los originales son 16:9; a 2:1 se pierde poco
+  // de la fotografía y, sobre una banda ancha, casi no hace falta recortarla
+  // otra vez al mostrarla.
+  { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/certificacion-hero', widths: [1920, 1280, 800], ar: 2 },
+  { src: [GER, 'COMERCIAL', f(1)], out: 'secciones/contacto-hero', widths: [1920, 1280, 800], ar: 2 },
+  // En vertical la panorámica no cabe: se sirve un recorte cuadrado centrado.
+  { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/certificacion-hero-movil', widths: [760, 540], ar: 1 },
+  { src: [GER, 'COMERCIAL', f(1)], out: 'secciones/contacto-hero-movil', widths: [760, 540], ar: 1 },
   { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/calidad', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 2', f(2)], out: 'secciones/tecnologia', widths: [900, 600], ar: 3 / 2 },
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(4)], out: 'secciones/personal', widths: [900, 600], ar: 3 / 2 },
