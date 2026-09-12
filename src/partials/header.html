@@ -11,24 +11,120 @@
       <a class="nav__enlace" href="nosotros.html" data-p="nosotros">Nosotros</a>
 
       <div class="nav__item">
-        <a class="nav__enlace" href="servicios.html" data-p="servicios">
+        <a class="nav__enlace nav__enlace--mega" href="servicios.html" data-p="servicios" aria-haspopup="true">
           Servicios
-          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          <svg class="nav__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
-        <div class="nav__panel">
-          <a href="servicios.html#acondicionado"><span>01</span>Acondicionado de productos</a>
-          <a href="servicios.html#reacondicionado"><span>02</span>Reacondicionado de productos</a>
-          <a href="servicios.html#rotulado-inkjet"><span>03</span>Rotulado inkjet de productos</a>
-          <a href="servicios.html#etiquetado"><span>04</span>Etiquetado de productos</a>
-          <a href="servicios.html#cambio-envase"><span>05</span>Cambio de envase o presentación</a>
-          <a href="servicios.html#actualizacion-informacion"><span>06</span>Corrección o actualización de información</a>
-          <a href="servicios.html#rotulado-exportacion"><span>07</span>Rotulado para exportación</a>
-          <a href="servicios.html#colocacion-etiquetas"><span>08</span>Colocación de etiquetas y registro sanitario</a>
-          <a href="servicios.html#fraccionamiento"><span>09</span>Fraccionamiento de productos terminados</a>
-          <a href="servicios.html#termosellado"><span>10</span>Termosellado de estuches</a>
-          <a href="servicios.html#packs-kits"><span>11</span>Armado de packs y kits</a>
+
+        <!-- ===== Megamenú ===== -->
+        <div class="mega" role="region" aria-label="Servicios">
+          <div class="mega__panel">
+            <span class="mega__haz" aria-hidden="true"></span>
+
+            <div class="mega__cuerpo">
+              <div class="mega__columna">
+                <p class="mega__titulo">Acondicionado</p>
+                <a class="mega__item" href="servicios.html#acondicionado" style="--i: 0">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-acondicionado" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Acondicionado de productos</strong>
+                    <small>Cambio de envases, insertos y adecuación de empaques</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#reacondicionado" style="--i: 1">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-reacondicionado" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Reacondicionado de productos</strong>
+                    <small>Ajustes sobre producto ya acondicionado</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#cambio-envase" style="--i: 2">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-cambio-envase" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Cambio de envase o presentación</strong>
+                    <small>Sin manipular el contenido del producto</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#fraccionamiento" style="--i: 3">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-fraccionamiento" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Fraccionamiento</strong>
+                    <small>División en presentaciones autorizadas</small>
+                  </span>
+                </a>
+              </div>
+
+              <div class="mega__columna">
+                <p class="mega__titulo">Rotulado y etiquetado</p>
+                <a class="mega__item" href="servicios.html#rotulado-inkjet" style="--i: 1">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-rotulado-inkjet" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Rotulado inkjet</strong>
+                    <small>Impresión legible e indeleble sobre el empaque</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#etiquetado" style="--i: 2">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-etiquetado" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Etiquetado de productos</strong>
+                    <small>Etiquetas adhesivas con información autorizada</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#colocacion-etiquetas" style="--i: 3">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-colocacion-etiquetas" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Etiquetas y registro sanitario</strong>
+                    <small>Consignación del número de registro</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#actualizacion-informacion" style="--i: 4">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-actualizacion" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Corrección de información</strong>
+                    <small>Lote, vencimiento, titular y registro</small>
+                  </span>
+                </a>
+              </div>
+
+              <div class="mega__columna">
+                <p class="mega__titulo">Terminado y despacho</p>
+                <a class="mega__item" href="servicios.html#termosellado" style="--i: 2">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-termosellado" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Termosellado de estuches</strong>
+                    <small>Integridad e inviolabilidad del producto</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#packs-kits" style="--i: 3">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-packs-kits" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Armado de packs y kits</strong>
+                    <small>Presentaciones conjuntas para el mercado</small>
+                  </span>
+                </a>
+                <a class="mega__item" href="servicios.html#rotulado-exportacion" style="--i: 4">
+                  <span class="mega__ico"><svg viewBox="0 0 24 24"><use href="#ico-rotulado-exportacion" /></svg></span>
+                  <span class="mega__texto">
+                    <strong>Rotulado para exportación</strong>
+                    <small>Cumplimiento nacional e internacional</small>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <div class="mega__pie">
+              <p class="mega__nota">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sello" /></svg>
+                Todos los servicios se ejecutan bajo certificación BPM otorgada por DIGEMID.
+              </p>
+              <a class="mega__cta" href="servicios.html">
+                Ver los 11 servicios
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-flecha" /></svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -61,17 +157,26 @@
     <li><a href="contacto.html" data-p="contacto"><i>06</i>Contacto</a></li>
   </ul>
 
+  <div class="menu-movil__servicios">
+    <p class="menu-movil__titulo">Servicios</p>
+    <div class="menu-movil__chips">
+      <a href="servicios.html#acondicionado"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-acondicionado" /></svg>Acondicionado</a>
+      <a href="servicios.html#reacondicionado"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-reacondicionado" /></svg>Reacondicionado</a>
+      <a href="servicios.html#rotulado-inkjet"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-rotulado-inkjet" /></svg>Rotulado inkjet</a>
+      <a href="servicios.html#etiquetado"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-etiquetado" /></svg>Etiquetado</a>
+      <a href="servicios.html#fraccionamiento"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-fraccionamiento" /></svg>Fraccionamiento</a>
+      <a href="servicios.html#termosellado"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-termosellado" /></svg>Termosellado</a>
+      <a href="servicios.html#packs-kits"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-packs-kits" /></svg>Packs y kits</a>
+    </div>
+  </div>
+
   <div class="menu-movil__pie">
     <div>
-      <p style="margin-bottom: 0.35rem; color: #9bbf63; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase">
-        Planta y oficinas
-      </p>
+      <p class="menu-movil__titulo">Planta y oficinas</p>
       <p style="margin: 0">Calle Gamma 274, Parque Internacional de Industria y Comercio, Callao</p>
     </div>
     <div>
-      <p style="margin-bottom: 0.35rem; color: #9bbf63; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase">
-        Contacto
-      </p>
+      <p class="menu-movil__titulo">Contacto</p>
       <p style="margin: 0">
         <a href="tel:+51942319378">942 319 378</a> · <a href="tel:+51989088149">989 088 149</a> ·
         <a href="tel:+51987984071">987 984 071</a>

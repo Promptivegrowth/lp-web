@@ -68,6 +68,8 @@ function preloader() {
     raiz.classList.add('esta-saliendo');
     document.body.classList.remove('is-loading');
     document.body.classList.add('ya-cargo');
+    // Hasta aquí el scroll del documento estaba bloqueado.
+    document.dispatchEvent(new CustomEvent('preloader:fin'));
     setTimeout(() => {
       raiz.classList.add('ya-termino');
       raiz.setAttribute('aria-hidden', 'true');
@@ -476,14 +478,55 @@ function formulario() {
 }
 
 /* ------------------------------------------------------------
-   11. Año actual en el pie
+   11. Ancla inicial
+   Al abrir una URL con #seccion, las imágenes que todavía se están
+   descargando desplazan la maquetación y el navegador deja el destino
+   fuera de sitio. Se recoloca hasta que el visitante toque el scroll.
+   ------------------------------------------------------------ */
+function anclaInicial() {
+  const hash = window.location.hash;
+  if (!hash || hash === '#') return;
+
+  let destino;
+  try {
+    destino = document.querySelector(hash);
+  } catch {
+    return; // hash que no es un selector válido
+  }
+  if (!destino) return;
+
+  let intervenido = false;
+  const marcar = () => {
+    intervenido = true;
+  };
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach((ev) =>
+    window.addEventListener(ev, marcar, { once: true, passive: true })
+  );
+
+  const recolocar = () => {
+    if (intervenido) return;
+    // 'instant' evita encadenar desplazamientos suaves en cada reintento.
+    destino.scrollIntoView({ block: 'start', behavior: 'instant' });
+  };
+
+  // El preloader mantiene el scroll bloqueado: se espera a que lo libere.
+  document.addEventListener('preloader:fin', () => {
+    recolocar();
+    setTimeout(recolocar, 400);
+  });
+  window.addEventListener('load', () => setTimeout(recolocar, 500));
+  recolocar();
+}
+
+/* ------------------------------------------------------------
+   12. Año actual en el pie
    ------------------------------------------------------------ */
 function anio() {
   $$('[data-anio]').forEach((el) => (el.textContent = new Date().getFullYear()));
 }
 
 /* ------------------------------------------------------------
-   12. Arranque
+   13. Arranque
    ------------------------------------------------------------ */
 const iniciar = () => {
   preloader();
@@ -496,6 +539,7 @@ const iniciar = () => {
   marquesina();
   indiceServicios();
   formulario();
+  anclaInicial();
   anio();
 };
 

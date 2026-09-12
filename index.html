@@ -34,6 +34,23 @@
     />
     <link rel="preload" as="image" href="/img/hero/hero-1-1920.webp" fetchpriority="high" />
 
+    <!-- Crítico: pinta el telón del preloader antes de que llegue la hoja de
+         estilos, para que no se vea un destello de la página sin estilar. -->
+    <style>
+      .preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #0a0d08;
+      }
+      .sprite-iconos {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+      }
+    </style>
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -65,6 +82,7 @@
 
   <body>
     <!--@include partials/preloader.html-->
+    <!--@include partials/iconos.html-->
     <a class="salto-contenido" href="#contenido">Saltar al contenido</a>
     <!--@include partials/header.html-->
 
@@ -586,66 +604,6 @@
         </div>
       </section>
 
-      <!-- ==================== GALERÍA ==================== -->
-      <section class="seccion">
-        <div class="contenedor">
-          <div class="sec-cabecera sec-cabecera--split">
-            <div>
-              <p class="etiqueta">Nuestras instalaciones</p>
-              <h2 class="revelar">La planta, por dentro</h2>
-            </div>
-            <p class="revelar" style="--d: 0.1s">
-              Salas de acondicionado, líneas de rotulado, termosellado y control de calidad. Toque cualquier imagen para
-              verla en detalle.
-            </p>
-          </div>
-
-          <div class="galeria" data-escalonar="0.05">
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g01-full.webp" data-pie="Acondicionado en línea de productos">
-              <img src="/img/galeria/g01.webp" alt="Acondicionado en línea de productos" width="640" height="480" loading="lazy" />
-              <figcaption>Acondicionado en línea</figcaption>
-            </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g02-full.webp" data-pie="Rotulado inkjet sobre empaque secundario">
-              <img src="/img/galeria/g02.webp" alt="Rotulado inkjet sobre empaque secundario" width="640" height="480" loading="lazy" />
-              <figcaption>Rotulado inkjet</figcaption>
-            </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g03-full.webp" data-pie="Termosellado de estuches">
-              <img src="/img/galeria/g03.webp" alt="Termosellado de estuches" width="640" height="480" loading="lazy" />
-              <figcaption>Termosellado</figcaption>
-            </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g04-full.webp" data-pie="Control de producto terminado">
-              <img src="/img/galeria/g04.webp" alt="Control de producto terminado" width="640" height="480" loading="lazy" />
-              <figcaption>Control de producto terminado</figcaption>
-            </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g05-full.webp" data-pie="Etiquetado de viales y frascos">
-              <img src="/img/galeria/g05.webp" alt="Etiquetado de viales y frascos" width="640" height="480" loading="lazy" />
-              <figcaption>Etiquetado de viales</figcaption>
-            </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g06-full.webp" data-pie="Faja transportadora de acondicionado">
-              <img src="/img/galeria/g06.webp" alt="Faja transportadora de acondicionado" width="640" height="480" loading="lazy" />
-              <figcaption>Faja transportadora</figcaption>
-            </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g07-full.webp" data-pie="Colocación de etiquetas">
-              <img src="/img/galeria/g07.webp" alt="Colocación de etiquetas" width="640" height="480" loading="lazy" />
-              <figcaption>Colocación de etiquetas</figcaption>
-            </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g08-full.webp" data-pie="Embalaje para distribución">
-              <img src="/img/galeria/g08.webp" alt="Embalaje para distribución" width="640" height="480" loading="lazy" />
-              <figcaption>Embalaje para distribución</figcaption>
-            </figure>
-          </div>
-
-          <p class="texto-centro" style="margin-top: 2.5rem">
-            <a class="btn btn--fantasma" href="nosotros.html#galeria">
-              Ver la galería completa
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </a>
-          </p>
-        </div>
-      </section>
-
       <!-- ==================== CIFRAS ==================== -->
       <section class="seccion seccion--alt" style="padding-block: clamp(3rem, 6vw, 4.5rem)">
         <div class="contenedor">
@@ -793,6 +751,5 @@
     </main>
 
     <!--@include partials/footer.html-->
-    <!--@include partials/lightbox.html-->
   </body>
 </html>

@@ -413,24 +413,6 @@ button {
   transition: opacity 0.3s ease;
 }
 
-.preloader__logo {
-  width: min(220px, 62vw);
-  height: auto;
-  opacity: 0;
-  animation: entraLogo 0.7s var(--ease) 0.1s forwards;
-}
-
-@keyframes entraLogo {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* --- Código de barras --- */
 .preloader__codigo {
   position: relative;
@@ -526,6 +508,7 @@ button {
 }
 
 .header__interior {
+  position: relative; /* ancla del megamenú */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -654,61 +637,253 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__cta.btn--fantasma {
   box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.4);
 }
 
-/* --- Menú desplegable de servicios --- */
+/* ============================================================
+   MEGAMENÚ DE SERVICIOS
+   El panel se despliega desde la línea inferior de la cabecera
+   (recorte progresivo), un haz verde lo recorre una vez —guiño al
+   escáner de la marca— y las tarjetas entran escalonadas.
+   ============================================================ */
 .nav__item {
-  position: relative;
+  position: static; /* el panel se ancla a .header__interior */
 }
 
-.nav__panel {
+.nav__chevron {
+  transition: transform 0.4s var(--ease);
+}
+
+.nav__item:hover .nav__chevron,
+.nav__item:focus-within .nav__chevron {
+  transform: rotate(180deg);
+}
+
+.mega {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 50%;
-  transform: translate(-50%, 10px);
-  width: min(720px, 88vw);
-  padding: 1.1rem;
+  width: min(1040px, calc(100vw - 2 * var(--pad-x)));
+  transform: translateX(-50%);
+  padding-top: 10px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease) 0.12s, visibility 0.2s 0.12s;
+}
+
+.nav__item:hover .mega,
+.nav__item:focus-within .mega {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.mega__panel {
+  position: relative;
+  overflow: hidden;
   background: var(--blanco);
   border: 1px solid var(--borde);
   border-radius: var(--r-lg);
   box-shadow: var(--sh-3);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.2rem;
+  /* Recorte cerrado: el panel «se despliega» hacia abajo al abrirse. */
+  clip-path: inset(0 0 100% 0 round var(--r-lg));
+  transition: clip-path 0.52s var(--ease);
+}
+
+.nav__item:hover .mega__panel,
+.nav__item:focus-within .mega__panel {
+  clip-path: inset(0 0 0 0 round var(--r-lg));
+}
+
+/* Haz del escáner: recorre el panel una sola vez al abrirlo. */
+.mega__haz {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--verde) 18%, var(--verde-claro) 50%, var(--verde) 82%, transparent);
   opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.28s var(--ease), transform 0.28s var(--ease), visibility 0.28s;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.nav__item:hover .nav__panel,
-.nav__item:focus-within .nav__panel {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, 0);
+.nav__item:hover .mega__haz,
+.nav__item:focus-within .mega__haz {
+  animation: megaHaz 0.72s var(--ease-io) 0.06s;
 }
 
-.nav__panel a {
+@keyframes megaHaz {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.mega__cuerpo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem 1.4rem;
+  padding: 1.5rem 1.5rem 1.25rem;
+}
+
+.mega__columna {
+  display: grid;
+  align-content: start;
+  gap: 0.15rem;
+}
+
+.mega__titulo {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.6rem 0.8rem;
-  font-size: 0.875rem;
-  line-height: 1.35;
-  color: var(--gris-900);
-  border-radius: var(--r-sm);
-  transition: background 0.22s ease, color 0.22s ease;
+  gap: 0.55rem;
+  margin: 0 0 0.65rem 0.75rem;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gris-500);
 }
 
-.nav__panel a:hover {
+/* Acento de código de barras junto al título de cada columna */
+.mega__titulo::after {
+  content: '';
+  flex: 1;
+  height: 10px;
+  background-image: repeating-linear-gradient(90deg, var(--gris-200) 0 1.5px, transparent 1.5px 5px);
+  mask-image: linear-gradient(90deg, #000, transparent);
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+}
+
+.mega__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.72rem 0.8rem;
+  border-radius: var(--r-md);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.42s var(--ease), transform 0.42s var(--ease), background 0.25s ease;
+}
+
+.nav__item:hover .mega__item,
+.nav__item:focus-within .mega__item {
+  opacity: 1;
+  transform: none;
+  /* Escalonado en diagonal: --i lo fija el marcado de cada tarjeta. */
+  transition-delay: calc(0.1s + var(--i, 0) * 0.045s);
+}
+
+.mega__item:hover {
   background: var(--gris-100);
+}
+
+.mega__ico {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  color: var(--verde-prof);
+  background: var(--gris-100);
+  box-shadow: inset 0 0 0 1px var(--borde);
+  transition: background 0.32s var(--ease), color 0.32s var(--ease), box-shadow 0.32s var(--ease), transform 0.42s var(--ease);
+}
+
+.mega__ico svg {
+  width: 21px;
+  height: 21px;
+}
+
+.mega__item:hover .mega__ico {
+  color: var(--negro);
+  background: var(--verde);
+  box-shadow: inset 0 0 0 1px var(--verde), 0 6px 16px rgba(142, 191, 69, 0.35);
+  transform: translateY(-2px) rotate(-4deg);
+}
+
+.mega__texto {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.mega__texto strong {
+  font-family: var(--f-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--negro);
+  transition: color 0.25s ease;
+}
+
+.mega__item:hover .mega__texto strong {
   color: var(--verde-prof);
 }
 
-.nav__panel a span {
-  font-family: var(--f-display);
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--verde);
+.mega__texto small {
+  font-size: 0.775rem;
+  line-height: 1.4;
+  color: var(--gris-500);
+}
+
+.mega__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.6rem;
+  background: var(--gris-50);
+  border-top: 1px solid var(--borde);
+}
+
+.mega__nota {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--gris-700);
+}
+
+.mega__nota svg {
+  width: 19px;
+  height: 19px;
   flex: none;
-  width: 1.6rem;
+  color: var(--verde-prof);
+}
+
+.mega__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-display);
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--verde-prof);
+}
+
+.mega__cta svg {
+  width: 17px;
+  height: 17px;
+  transition: transform 0.35s var(--ease);
+}
+
+.mega__cta:hover svg {
+  transform: translateX(5px);
 }
 
 /* --- Botón hamburguesa --- */
@@ -846,6 +1021,59 @@ body.menu-abierto .menu-movil__lista > li {
   letter-spacing: 0.1em;
   color: var(--verde);
   opacity: 0.7;
+}
+
+.menu-movil__titulo {
+  margin: 0 0 0.6rem;
+  font-family: var(--f-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--verde-claro);
+}
+
+.menu-movil__servicios {
+  margin-top: 2rem;
+}
+
+.menu-movil__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.menu-movil__chips a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.82rem;
+  color: var(--gris-300);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 100px;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.menu-movil__chips a svg {
+  width: 17px;
+  height: 17px;
+  color: var(--verde-claro);
+  flex: none;
+  transition: color 0.25s ease;
+}
+
+.menu-movil__chips a:hover,
+.menu-movil__chips a:focus-visible {
+  color: var(--negro);
+  background: var(--verde);
+  border-color: var(--verde);
+}
+
+.menu-movil__chips a:hover svg,
+.menu-movil__chips a:focus-visible svg {
+  color: var(--negro);
 }
 
 .menu-movil__pie {
@@ -1370,57 +1598,6 @@ body.menu-abierto .menu-movil__lista > li {
   color: var(--verde-claro);
 }
 
-/* Misión / Visión */
-.mv {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-  margin-top: 1.5rem;
-}
-
-.mv__caja {
-  position: relative;
-  padding: 1.9rem 1.6rem 1.6rem;
-  background: var(--blanco);
-  border: 1px solid var(--borde);
-  border-radius: var(--r-md);
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
-}
-
-.mv__caja::before {
-  content: '';
-  position: absolute;
-  left: 1.6rem;
-  top: -1px;
-  width: 46px;
-  height: 3px;
-  background: var(--verde);
-  border-radius: 0 0 3px 3px;
-}
-
-.mv__caja:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--sh-2);
-  border-color: var(--verde-claro);
-}
-
-.mv__caja h3 {
-  font-size: var(--t-lg);
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.mv__caja h3 svg {
-  color: var(--verde);
-}
-
-.mv__caja p {
-  font-size: 0.95rem;
-  color: var(--texto-suave);
-  margin: 0;
-}
-
 /* ============================================================
    12. Servicios
    ============================================================ */
@@ -1515,7 +1692,8 @@ body.menu-abierto .menu-movil__lista > li {
   align-items: center;
   padding-block: clamp(2.5rem, 6vw, 4.25rem);
   border-top: 1px solid var(--borde);
-  scroll-margin-top: calc(var(--header-h) + 20px);
+  /* El desplazamiento bajo la cabecera ya lo aporta el scroll-padding-top de
+     :root. Declararlo también aquí lo sumaba y el destino quedaba hundido. */
 }
 
 @media (min-width: 940px) {
@@ -2593,6 +2771,13 @@ body.menu-abierto .menu-movil__lista > li {
 /* ============================================================
    23. Utilidades
    ============================================================ */
+.sprite-iconos {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 .solo-lectores {
   position: absolute;
   width: 1px;

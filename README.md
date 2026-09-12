@@ -28,7 +28,7 @@ npm run images     # regenera public/img/ a partir de las fotos originales
 ```
 .
 ├── index.html            Portada
-├── nosotros.html         Quiénes somos, misión, visión, galería
+├── nosotros.html         Quiénes somos, compromisos y galería de planta
 ├── servicios.html        Los 11 servicios con detalle (anclas por servicio)
 ├── equipo.html           Equipo y organigrama
 ├── certificacion.html    Certificación BPM
@@ -36,7 +36,7 @@ npm run images     # regenera public/img/ a partir de las fotos originales
 ├── 404.html
 │
 ├── src/
-│   ├── partials/         Cabecera, pie, preloader y lightbox compartidos
+│   ├── partials/         Cabecera, pie, preloader, lightbox e iconos
 │   ├── styles/main.css   Sistema de diseño completo
 │   └── js/main.js        Interacciones (sin dependencias)
 │
@@ -68,6 +68,24 @@ nombre del archivo, de modo que el estado activo del menú no necesita JavaScrip
 
 Las páginas internas llevan `class="pagina-interna"` en el `<body>`: eso hace que
 la cabecera sea sólida desde el inicio en lugar de transparente sobre el hero.
+
+### Iconos
+
+`src/partials/iconos.html` es un sprite SVG con los once iconos de servicio más
+dos auxiliares, definidos como `<symbol>` sobre una rejilla de 24 con trazo de
+1,6. Se incluye una vez por página y cada icono se referencia con `<use>`, de
+modo que el marcado repetido pesa unos pocos bytes y el color se hereda del
+contexto con `currentColor`.
+
+### Megamenú
+
+El desplegable de Servicios agrupa los once servicios en tres columnas
+temáticas. Al abrirse, el panel se despliega hacia abajo mediante un recorte
+progresivo (`clip-path`), un haz verde lo recorre una sola vez —el mismo guiño
+al escáner que usa el preloader— y las tarjetas entran escalonadas en diagonal
+según la variable `--i` que fija cada una en el marcado. Funciona sin
+JavaScript: todo se resuelve con `:hover` y `:focus-within`, así que también
+responde a la navegación por teclado.
 
 ---
 
@@ -164,6 +182,16 @@ función serverless de Vercel…). El formulario incluye un campo trampa
   el haz de un escáner. Tiene un límite de seguridad de 6 s para no bloquear
   nunca la página, y se salta por completo si el visitante tiene activado
   «reducir movimiento».
+  Aparece **sólo en la portada**: navegar entre secciones internas no vuelve a
+  mostrarlo. La portada lleva además unas pocas reglas críticas en línea en el
+  `<head>` que pintan el telón negro antes de que llegue la hoja de estilos, de
+  forma que no se vea un destello del contenido sin estilar.
+- **Anclas profundas:** el desplazamiento bajo la cabecera lo aporta el
+  `scroll-padding-top` de `:root`. No debe declararse además `scroll-margin-top`
+  en las secciones destino, porque ambos valores se suman y el destino queda
+  hundido. Como las imágenes que aún se descargan pueden desplazar la
+  maquetación después del salto inicial, `anclaInicial()` recoloca el destino
+  hasta que el visitante toca el scroll.
 - **Revelado al hacer scroll:** se usa un barrido propio sincronizado con
   `requestAnimationFrame` en lugar de `IntersectionObserver`. Con un scroll muy
   rápido el observador puede no llegar a notificar elementos que atraviesan la
