@@ -114,6 +114,28 @@ dos pistas que avanzan en sentidos opuestos y a distinta velocidad. Al señalar
 una tarjeta el carrusel se detiene, el logotipo recupera todo su color y una
 línea verde se abre bajo él.
 
+### La hoja de estilos va enlazada, no importada
+
+`main.css` se enlaza con `<link rel="stylesheet">` desde el `<head>` de cada
+página en lugar de importarse desde `main.js`. Importándola, en desarrollo Vite
+la inyecta por JavaScript y el navegador llegaba a pintar la página sin estilar:
+durante un instante el documento medía 57.000px y todas las imágenes se dibujaban
+a tamaño natural. Enlazada es render-blocking y eso no ocurre ni en desarrollo ni
+en producción.
+
+### Página Equipo
+
+- La cabecera usa una versión apaisada propia y la variante alta, igual que
+  Nosotros.
+- **Liderazgo** ordena por jerarquía: Gerencia General abre en una tarjeta ancha
+  con la fotografía al lado del texto, y las tres jefaturas siguen en fila. Los
+  retratos se recortan a 3:4 —el encuadre que menos pierde de estos originales
+  verticales— y el texto va debajo de la imagen, nunca encima: no hay velos
+  oscuros sobre las caras. Al señalar aparecen las esquinas del visor.
+- Se retiraron los bloques de «Dirección y gestión regulatoria», «Operaciones y
+  logística» y «Áreas estratégicas», que repetían el organigrama sin aportar al
+  visitante.
+
 ### Página Nosotros
 
 Tres bloques propios de esta página:

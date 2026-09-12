@@ -4,8 +4,6 @@
    si su marcado no existe en la página, no hace nada.
    ============================================================ */
 
-import '../styles/main.css';
-
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

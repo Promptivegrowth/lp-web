@@ -25,6 +25,8 @@
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="/src/styles/main.css" />
+
     <script type="module" src="/src/js/main.js"></script>
   </head>
 
@@ -34,11 +36,19 @@
     <!--@include partials/header.html-->
 
     <main id="contenido">
-      <section class="cabecera-pagina">
+      <section class="cabecera-pagina cabecera-pagina--alta">
         <div class="cabecera-pagina__fondo" aria-hidden="true">
           <picture>
-            <source type="image/webp" srcset="/img/secciones/personal-600.webp 600w, /img/secciones/personal-900.webp 900w" sizes="100vw" />
-            <img src="/img/secciones/personal-900.jpg" alt="" width="900" height="600" />
+            <source
+              type="image/webp"
+              srcset="
+                /img/secciones/equipo-hero-800.webp   800w,
+                /img/secciones/equipo-hero-1280.webp 1280w,
+                /img/secciones/equipo-hero-1920.webp 1920w
+              "
+              sizes="100vw"
+            />
+            <img src="/img/secciones/equipo-hero-1920.jpg" alt="" width="1920" height="1080" fetchpriority="high" />
           </picture>
         </div>
         <div class="contenedor">
@@ -54,251 +64,129 @@
         </div>
       </section>
 
-      <!-- ==================== RETRATOS ==================== -->
+      <!-- ==================== LIDERAZGO ==================== -->
       <section class="seccion">
         <div class="contenedor">
           <div class="sec-cabecera sec-cabecera--split">
             <div>
               <p class="etiqueta">Liderazgo</p>
-              <h2 class="revelar">Quiénes dirigen cada área</h2>
+              <h2 class="revelar">Quiénes responden por cada lote</h2>
             </div>
             <p class="revelar" style="--d: 0.1s">
-              Nuestro compromiso es ofrecer productos y servicios con seguridad, eficacia y excelencia en cada etapa del
-              proceso.
+              Un equipo multidisciplinario de profesionales calificados y colegiados. Cada área tiene un responsable
+              identificado y una firma detrás de cada decisión.
             </p>
           </div>
 
-          <div class="rejilla-equipo" data-escalonar="0.1">
-            <article class="persona revelar revelar--zoom">
-              <picture>
-                <source type="image/webp" srcset="/img/equipo/gerente-general-500.webp 500w, /img/equipo/gerente-general-800.webp 800w" sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" />
-                <img src="/img/equipo/gerente-general-800.jpg" alt="Gerente General de Laboratorios Pacheco" width="800" height="1000" loading="lazy" />
-              </picture>
-              <div class="persona__info">
-                <h3>Gerencia General</h3>
-                <p>Gerente General</p>
+          <div class="lideres">
+            <article class="lider lider--principal revelar revelar--cortina" style="--i: 0">
+              <div class="lider__marco">
+                <picture>
+                  <source type="image/webp" srcset="/img/equipo/gerente-general-560.webp 560w, /img/equipo/gerente-general-860.webp 860w" sizes="(min-width: 1080px) 320px, 90vw" />
+                  <img src="/img/equipo/gerente-general-860.jpg" alt="Gerente General de Laboratorios Pacheco" width="860" height="1147" loading="lazy" decoding="async" />
+                </picture>
+              <span class="lider__esquinas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="lider__pie">
+                <p class="lider__area">Gerencia General</p>
+                <h3>Gerente General</h3>
+                <span class="lider__regla" aria-hidden="true"></span>
+                <p class="lider__texto">Máxima autoridad ejecutiva de la empresa. Dirige la estrategia global, coordina las distintas áreas y toma las decisiones clave para el crecimiento y la sostenibilidad del negocio.</p>
               </div>
             </article>
 
-            <article class="persona revelar revelar--zoom">
-              <picture>
-                <source type="image/webp" srcset="/img/equipo/director-tecnico-500.webp 500w, /img/equipo/director-tecnico-800.webp 800w" sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" />
-                <img src="/img/equipo/director-tecnico-800.jpg" alt="Director Técnico de Laboratorios Pacheco" width="800" height="1000" loading="lazy" />
-              </picture>
-              <div class="persona__info">
-                <h3>Dirección Técnica</h3>
-                <p>Director Técnico</p>
+            <article class="lider revelar revelar--cortina" style="--i: 1">
+              <div class="lider__marco">
+                <picture>
+                  <source type="image/webp" srcset="/img/equipo/director-tecnico-560.webp 560w, /img/equipo/director-tecnico-860.webp 860w" sizes="(min-width: 1080px) 30vw, (min-width: 700px) 45vw, 90vw" />
+                  <img src="/img/equipo/director-tecnico-860.jpg" alt="Director Técnico de Laboratorios Pacheco" width="860" height="1147" loading="lazy" decoding="async" />
+                </picture>
+              <span class="lider__esquinas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="lider__pie">
+                <p class="lider__area">Dirección Técnica</p>
+                <h3>Director Técnico</h3>
+                <span class="lider__regla" aria-hidden="true"></span>
+                <p class="lider__texto">Farmacéutico colegiado. Máxima autoridad técnica y regulatoria: garantiza el cumplimiento de las Buenas Prácticas de Manufactura y de la normativa sanitaria vigente.</p>
               </div>
             </article>
 
-            <article class="persona revelar revelar--zoom">
-              <picture>
-                <source type="image/webp" srcset="/img/equipo/comercial-500.webp 500w, /img/equipo/comercial-800.webp 800w" sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" />
-                <img src="/img/equipo/comercial-800.jpg" alt="Área comercial y marketing de Laboratorios Pacheco" width="800" height="1000" loading="lazy" />
-              </picture>
-              <div class="persona__info">
-                <h3>Comercial y Marketing</h3>
-                <p>Gestión comercial</p>
+            <article class="lider revelar revelar--cortina" style="--i: 2">
+              <div class="lider__marco">
+                <picture>
+                  <source type="image/webp" srcset="/img/equipo/comercial-560.webp 560w, /img/equipo/comercial-860.webp 860w" sizes="(min-width: 1080px) 30vw, (min-width: 700px) 45vw, 90vw" />
+                  <img src="/img/equipo/comercial-860.jpg" alt="Gestión Comercial de Laboratorios Pacheco" width="860" height="1147" loading="lazy" decoding="async" />
+                </picture>
+              <span class="lider__esquinas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="lider__pie">
+                <p class="lider__area">Comercial y Marketing</p>
+                <h3>Gestión Comercial</h3>
+                <span class="lider__regla" aria-hidden="true"></span>
+                <p class="lider__texto">Lidera la relación con laboratorios y droguerías, y el desarrollo de nuevas oportunidades de negocio.</p>
               </div>
             </article>
 
-            <article class="persona revelar revelar--zoom">
-              <picture>
-                <source type="image/webp" srcset="/img/equipo/almacen-500.webp 500w, /img/equipo/almacen-800.webp 800w" sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" />
-                <img src="/img/equipo/almacen-800.jpg" alt="Jefatura de almacén de Laboratorios Pacheco" width="800" height="1000" loading="lazy" />
-              </picture>
-              <div class="persona__info">
-                <h3>Almacén</h3>
-                <p>Jefe de Almacén</p>
+            <article class="lider revelar revelar--cortina" style="--i: 3">
+              <div class="lider__marco">
+                <picture>
+                  <source type="image/webp" srcset="/img/equipo/almacen-560.webp 560w, /img/equipo/almacen-860.webp 860w" sizes="(min-width: 1080px) 30vw, (min-width: 700px) 45vw, 90vw" />
+                  <img src="/img/equipo/almacen-860.jpg" alt="Jefe de Almacén de Laboratorios Pacheco" width="860" height="1147" loading="lazy" decoding="async" />
+                </picture>
+              <span class="lider__esquinas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="lider__pie">
+                <p class="lider__area">Almacén y Logística</p>
+                <h3>Jefe de Almacén</h3>
+                <span class="lider__regla" aria-hidden="true"></span>
+                <p class="lider__texto">Responsable de la recepción, el almacenamiento y el inventario. Garantiza trazabilidad y condiciones óptimas de conservación.</p>
               </div>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- ==================== ROLES ==================== -->
-      <section class="seccion seccion--alt">
-        <div class="contenedor">
-          <div class="sec-cabecera">
-            <p class="etiqueta">Dirección y gestión regulatoria</p>
-            <h2 class="revelar">La autoridad técnica del laboratorio</h2>
-          </div>
-
-          <div class="rejilla-roles" data-escalonar="0.1">
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="M12 3 4 6v5.5c0 4.4 3.2 8.3 8 9.5 4.8-1.2 8-5.1 8-9.5V6z" /><path d="m9 12 2 2 4-4" />
-                </svg>
-              </div>
-              <span class="rol__area">Dirección</span>
-              <h3>Director Técnico</h3>
-              <p>
-                Farmacéutico colegiado. Máxima autoridad técnica y regulatoria. Responsable de garantizar el cumplimiento de
-                las Buenas Prácticas de Manufactura (BPM) y de la normativa sanitaria vigente. Su liderazgo asegura la
-                confiabilidad de nuestros procesos.
-              </p>
-            </article>
-
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="M9 3h6v4l4 12H5L9 7z" /><path d="M8 14h8" />
-                </svg>
-              </div>
-              <span class="rol__area">Calidad</span>
-              <h3>Jefe de Calidad</h3>
-              <p>
-                Farmacéutico colegiado. Diseña, implementa y supervisa el Sistema de Gestión de Calidad (SGC). Asegura que
-                todos los procesos y productos cumplan con estándares internos y regulatorios, brindando confianza a
-                nuestros clientes.
-              </p>
-            </article>
-
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9h18M8 4v5M16 4v5" />
-                </svg>
-              </div>
-              <span class="rol__area">Aseguramiento de calidad</span>
-              <h3>Jefe de Aseguramiento de Calidad</h3>
-              <p>
-                Farmacéutico colegiado. Responsable de diseñar, implementar y supervisar el SGC, asegurar la validación de
-                procesos críticos, realizar auditorías internas y externas, y liberar productos solo cuando cumplen con los
-                más altos estándares de calidad y normativas sanitarias.
-              </p>
-            </article>
-          </div>
-
-          <div class="sec-cabecera" style="margin-top: clamp(3rem, 6vw, 4.5rem)">
-            <p class="etiqueta">Operaciones y logística</p>
-            <h2 class="revelar">Quienes hacen posible cada lote</h2>
-          </div>
-
-          <div class="rejilla-roles" data-escalonar="0.1">
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="M3 7h18v13H3z" /><path d="M3 12h18M8 7V4h8v3" />
-                </svg>
-              </div>
-              <span class="rol__area">Producción</span>
-              <h3>Jefe de Producción</h3>
-              <p>
-                Farmacéutico colegiado. Encargado de dirigir las operaciones de acondicionado, reacondicionado y
-                fraccionamiento, optimizando recursos y asegurando eficiencia y seguridad en cada proceso.
-              </p>
-            </article>
-
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="m3 9 9-5 9 5v10l-9 5-9-5z" /><path d="M12 4v16M3 9l9 5 9-5" />
-                </svg>
-              </div>
-              <span class="rol__area">Logística</span>
-              <h3>Jefe de Almacén</h3>
-              <p>
-                Responsable de la recepción, almacenamiento e inventario de materias primas y productos terminados.
-                Garantiza trazabilidad y condiciones óptimas de conservación.
-              </p>
-            </article>
-
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
-              <span class="rol__area">Gerencia</span>
-              <h3>Gerente General</h3>
-              <p>
-                Máxima autoridad ejecutiva de la empresa. Responsable de dirigir la estrategia global, coordinar las
-                distintas áreas y tomar decisiones clave para el crecimiento y sostenibilidad del negocio. Su liderazgo
-                impulsa la innovación, la eficiencia y el compromiso con la calidad.
-              </p>
-            </article>
-          </div>
-
-          <div class="sec-cabecera" style="margin-top: clamp(3rem, 6vw, 4.5rem)">
-            <p class="etiqueta">Áreas estratégicas</p>
-            <h2 class="revelar">Relación con el cliente y talento</h2>
-          </div>
-
-          <div class="rejilla-roles" data-escalonar="0.1">
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-              </div>
-              <span class="rol__area">Comercial</span>
-              <h3>Área Comercial y Marketing</h3>
-              <p>
-                Lidera la gestión de clientes y el desarrollo de nuevas oportunidades de negocio. Su misión es fortalecer la
-                relación con clientes y posicionar la marca en el mercado.
-              </p>
-            </article>
-
-            <article class="rol revelar">
-              <div class="rol__icono">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9.5" cy="7" r="3.5" /><path d="M21 21v-2a4 4 0 0 0-3-3.87M16.5 3.6a4 4 0 0 1 0 7" />
-                </svg>
-              </div>
-              <span class="rol__area">Talento</span>
-              <h3>Área de Recursos Humanos</h3>
-              <p>
-                Responsable de la gestión del talento humano, capacitación especializada y un ambiente laboral de compromiso
-                y alto desempeño.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== EQUIPO EN PLANTA ==================== -->
+      <!-- ==================== EN PLANTA ==================== -->
       <section class="seccion seccion--oscura">
         <div class="contenedor">
-          <div class="duo">
-            <div class="duo__medios revelar revelar--izq">
-              <figure class="duo__figura">
-                <picture>
-                  <source type="image/webp" srcset="/img/hero/hero-3-800.webp 800w, /img/hero/hero-3-1280.webp 1280w" sizes="(min-width: 940px) 50vw, 100vw" />
-                  <img src="/img/hero/hero-3-1280.jpg" alt="Equipo de producción de Laboratorios Pacheco" width="1280" height="720" loading="lazy" style="aspect-ratio: 16 / 9" />
-                </picture>
-              </figure>
-            </div>
-            <div class="revelar revelar--der">
+          <div class="sec-cabecera sec-cabecera--split">
+            <div>
               <p class="etiqueta">En planta</p>
-              <h2>Personal calificado en cada sala</h2>
-              <p class="plomo">
-                Detrás de cada lote hay operarios capacitados, supervisión farmacéutica y un sistema de calidad que verifica
-                el trabajo antes de liberarlo.
-              </p>
-              <ul class="lista-check" style="margin-top: 2rem">
-                <li>
-                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                  Capacitación continua en Buenas Prácticas de Manufactura.
-                </li>
-                <li>
-                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                  Uso de indumentaria y controles de ingreso por área.
-                </li>
-                <li>
-                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                  Supervisión farmacéutica en las etapas críticas del proceso.
-                </li>
-              </ul>
-              <a class="btn btn--claro" href="nosotros.html#galeria">
-                Ver la galería
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </a>
+              <h2 class="revelar">Personal calificado en cada sala</h2>
             </div>
+            <p class="revelar" style="--d: 0.1s">
+              Detrás de cada lote hay operarios capacitados, supervisión farmacéutica y un sistema de calidad que
+              verifica el trabajo antes de liberarlo.
+            </p>
           </div>
+
+          <figure class="planta revelar revelar--cortina">
+            <picture>
+              <source
+                type="image/webp"
+                srcset="/img/secciones/en-planta-760.webp 760w, /img/secciones/en-planta-1100.webp 1100w, /img/secciones/en-planta-1600.webp 1600w"
+                sizes="(min-width: 1360px) 1232px, 92vw"
+              />
+              <img src="/img/secciones/en-planta-1600.jpg" alt="Equipo de producción de Laboratorios Pacheco en la sala de acondicionado" width="1600" height="900" loading="lazy" decoding="async" />
+            </picture>
+            <span class="planta__esquinas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="planta__haz" aria-hidden="true"></span>
+          </figure>
+
+          <ul class="planta__notas" data-escalonar="0.1">
+            <li class="revelar">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              Capacitación continua en Buenas Prácticas de Manufactura.
+            </li>
+            <li class="revelar">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              Indumentaria y control de ingreso por área.
+            </li>
+            <li class="revelar">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              Supervisión farmacéutica en las etapas críticas.
+            </li>
+          </ul>
         </div>
       </section>
 

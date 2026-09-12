@@ -2889,107 +2889,338 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 /* ============================================================
-   16. Equipo
+   16. LIDERAZGO
+   Jerarquía explícita: Gerencia General abre en una tarjeta ancha
+   y las tres jefaturas siguen en fila. El texto va debajo de la
+   fotografía, nunca encima, para no velar los retratos.
    ============================================================ */
-.rejilla-equipo {
+.lideres {
   display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: 1fr;
 }
 
-.persona {
-  position: relative;
-  border-radius: var(--r-md);
+@media (min-width: 700px) {
+  .lideres {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .lideres {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.lider {
+  display: grid;
+  align-content: start;
+  margin: 0;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-lg);
   overflow: hidden;
-  isolation: isolate;
-  background: var(--negro-3);
+  --radio-cortina: var(--r-lg);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
 }
 
-.persona img {
+.lider:hover {
+  transform: translateY(-6px);
+  border-color: var(--verde-claro);
+  box-shadow: var(--sh-3);
+}
+
+/* ---------- Marco de la fotografía ---------- */
+.lider__marco {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--gris-100);
+}
+
+.lider__marco img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 100%;
   object-fit: cover;
-  transition: transform 0.8s var(--ease), filter 0.6s var(--ease);
+  transition: transform 0.9s var(--ease);
 }
 
-.persona:hover img {
+.lider:hover .lider__marco img {
   transform: scale(1.05);
 }
 
-.persona__info {
+/* Esquinas de visor: aparecen al señalar, sin velar la fotografía. */
+.lider__esquinas {
   position: absolute;
-  inset: auto 0 0 0;
-  padding: 3.5rem 1.3rem 1.3rem;
-  background: linear-gradient(180deg, transparent, rgba(10, 13, 8, 0.9) 46%);
-  color: var(--blanco);
+  inset: 13px;
+  pointer-events: none;
 }
 
-.persona__info h3 {
-  font-size: 1.05rem;
-  color: var(--blanco);
-  margin-bottom: 0.25rem;
+.lider__esquinas i {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--verde);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.35s var(--ease), transform 0.4s var(--ease);
 }
 
-.persona__info p {
-  font-size: 0.82rem;
-  color: var(--verde-claro);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin: 0;
+.lider__esquinas i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 7px 0 0 0;
 }
 
-/* Organigrama en texto */
-.rejilla-roles {
+.lider__esquinas i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 0 7px 0 0;
+  transition-delay: 0.06s;
+}
+
+.lider__esquinas i:nth-child(3) {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+  border-radius: 0 0 7px 0;
+  transition-delay: 0.12s;
+}
+
+.lider__esquinas i:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-radius: 0 0 0 7px;
+  transition-delay: 0.18s;
+}
+
+.lider:hover .lider__esquinas i {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Pie de la tarjeta ---------- */
+.lider__pie {
   display: grid;
-  gap: 1.15rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 0.45rem;
+  padding: clamp(1.15rem, 2vw, 1.5rem);
 }
 
-.rol {
-  position: relative;
-  padding: 1.7rem 1.5rem;
-  background: var(--blanco);
-  border: 1px solid var(--borde);
-  border-radius: var(--r-md);
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
-}
-
-.rol:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--sh-2);
-  border-color: var(--verde-claro);
-}
-
-.rol__icono {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  margin-bottom: 1.1rem;
-  border-radius: var(--r-sm);
-  background: linear-gradient(150deg, var(--verde-claro), var(--verde));
-  color: var(--negro);
-}
-
-.rol h3 {
-  font-size: 1.05rem;
-  margin-bottom: 0.4rem;
-}
-
-.rol p {
-  font-size: 0.92rem;
-  color: var(--texto-suave);
+.lider__area {
   margin: 0;
-}
-
-.rol__area {
-  display: inline-block;
-  margin-bottom: 0.75rem;
+  font-family: var(--f-display);
   font-size: var(--t-xs);
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--verde-prof);
+}
+
+.lider__pie h3 {
+  margin: 0;
+  font-size: var(--t-lg);
+}
+
+.lider__regla {
+  display: block;
+  width: 44px;
+  height: 2px;
+  background: var(--verde);
+  transform-origin: left;
+  transition: width 0.45s var(--ease);
+}
+
+.lider:hover .lider__regla {
+  width: 82px;
+}
+
+.lider__texto {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--texto-suave);
+}
+
+/* ---------- Tarjeta principal: Gerencia General ---------- */
+@media (min-width: 700px) {
+  .lider--principal {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .lider--principal .lider__marco {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 300px;
+  }
+
+  .lider--principal .lider__pie {
+    align-content: center;
+    gap: 0.6rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .lider--principal .lider__pie h3 {
+    font-size: var(--t-xl);
+  }
+
+  .lider--principal .lider__texto {
+    font-size: 1rem;
+    max-width: 58ch;
+  }
+}
+
+@media (min-width: 1080px) {
+  .lider--principal {
+    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  }
+}
+
+/* ============================================================
+   16 bis. EN PLANTA
+   Una sola fotografía grande con marco de inspección.
+   ============================================================ */
+.planta {
+  position: relative;
+  margin: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  --radio-cortina: var(--r-lg);
+  box-shadow: 0 26px 64px rgba(0, 0, 0, 0.42);
+}
+
+.planta img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  transition: transform 1s var(--ease);
+}
+
+.planta:hover img {
+  transform: scale(1.03);
+}
+
+.planta__esquinas {
+  position: absolute;
+  inset: 16px;
+  pointer-events: none;
+}
+
+.planta__esquinas i {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--verde);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease);
+}
+
+.planta__esquinas i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 9px 0 0 0;
+  transition-delay: 0.75s;
+}
+
+.planta__esquinas i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 0 9px 0 0;
+  transition-delay: 0.85s;
+}
+
+.planta__esquinas i:nth-child(3) {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+  border-radius: 0 0 9px 0;
+  transition-delay: 0.95s;
+}
+
+.planta__esquinas i:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-radius: 0 0 0 9px;
+  transition-delay: 1.05s;
+}
+
+.planta.es-visible .planta__esquinas i {
+  opacity: 0.9;
+  transform: none;
+}
+
+/* Haz que recorre la fotografía al descubrirla. */
+.planta__haz {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--verde-claro) 15%, #fff 50%, var(--verde-claro) 85%, transparent);
+  box-shadow: 0 0 22px 5px rgba(142, 191, 69, 0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.planta.es-visible .planta__haz {
+  animation: hazVideo 1.15s var(--ease-io) 0.2s;
+}
+
+.planta__notas {
+  display: grid;
+  gap: 1rem clamp(1.5rem, 4vw, 3rem);
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 820px) {
+  .planta__notas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.planta__notas li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  font-size: 0.95rem;
+  color: var(--gris-300);
+}
+
+.planta__notas svg {
+  margin-top: 0.25em;
+  color: var(--verde-claro);
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lider__esquinas i,
+  .planta__esquinas i {
+    opacity: 0.7 !important;
+    transform: none !important;
+  }
+
+  .planta__haz {
+    display: none;
+  }
 }
 
 /* ============================================================

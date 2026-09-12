@@ -55,11 +55,16 @@ const JOBS = [
   { src: [PRO, 'PROCESO 3', f(2)], out: 'servicios/termosellado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 7', f(2)], out: 'servicios/packs-kits', widths: [900, 600], ar: 3 / 2 },
 
-  // ---------- EQUIPO (retratos 4:5) ----------
-  { src: [CEO, f(3)], out: 'equipo/gerente-general', widths: [800, 500], ar: 4 / 5, pos: 'attention' },
-  { src: [GER, 'DIRECTOR', f(2)], out: 'equipo/director-tecnico', widths: [800, 500], ar: 4 / 5, pos: 'attention' },
-  { src: [GER, 'COMERCIAL', f(5)], out: 'equipo/comercial', widths: [800, 500], ar: 4 / 5, pos: 'attention' },
-  { src: [GER, 'ALMACEN', f(4)], out: 'equipo/almacen', widths: [800, 500], ar: 4 / 5, pos: 'attention' },
+  // ---------- EQUIPO ----------
+  // Cabecera apaisada: la anterior era 3:2 y se recortaba sobre la banda.
+  { src: [GRU, 'GRUPAL PRODUCCIÓN', f(2)], out: 'secciones/equipo-hero', widths: [1920, 1280, 800], ar: 16 / 9 },
+  // Retratos a 3:4, el encuadre que menos recorta estos originales verticales.
+  { src: [CEO, f(4)], out: 'equipo/gerente-general', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
+  { src: [GER, 'DIRECTOR', f(3)], out: 'equipo/director-tecnico', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
+  { src: [GER, 'COMERCIAL', f(5)], out: 'equipo/comercial', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
+  { src: [GER, 'ALMACEN', f(5)], out: 'equipo/almacen', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
+  // «En planta»: versión grande y apaisada para el marco destacado.
+  { src: [GRU, 'GRUPAL PRODUCCIÓN', f(1)], out: 'secciones/en-planta', widths: [1600, 1100, 760], ar: 16 / 9 },
 ];
 
 // ---------- GALERIA ----------
