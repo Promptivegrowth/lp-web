@@ -31,6 +31,8 @@ const JOBS = [
   { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/calidad', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 2', f(2)], out: 'secciones/tecnologia', widths: [900, 600], ar: 3 / 2 },
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(4)], out: 'secciones/personal', widths: [900, 600], ar: 3 / 2 },
+  // Banner apaisado para el tercer pilar de la portada.
+  { src: [GRU, 'GRUPAL PRODUCCIÓN', f(3)], out: 'secciones/personal-ancho', widths: [1600, 1100, 760], ar: 21 / 9 },
   { src: [PRO, 'PROCESO 8', f(1)], out: 'secciones/proceso', widths: [1280, 800], ar: 4 / 3 },
   { src: [PRO, 'PROCESO 9', f(1)], out: 'secciones/instalaciones', widths: [1280, 800], ar: 4 / 3 },
 

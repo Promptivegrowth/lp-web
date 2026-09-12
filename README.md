@@ -77,6 +77,18 @@ dos auxiliares, definidos como `<symbol>` sobre una rejilla de 24 con trazo de
 modo que el marcado repetido pesa unos pocos bytes y el color se hereda del
 contexto con `currentColor`.
 
+### Aparición en cortina
+
+Las tarjetas de «Por qué elegirnos» usan `revelar--cortina`: se descubren de
+abajo hacia arriba con un `clip-path` animado mientras la fotografía hace un
+contra-zoom y el texto sube un instante después. El contra-zoom se aplica con la
+propiedad `scale` —independiente de `transform`— para no pisar el zoom del
+`:hover`, que sigue usando `transform`.
+
+Las dos primeras tarjetas van en una fila y la tercera ocupa todo el ancho: su
+fotografía es apaisada y como banner se aprovecha mucho mejor que recortada en
+vertical.
+
 ### Megamenú
 
 El desplegable de Servicios agrupa los once servicios en tres columnas
@@ -86,6 +98,14 @@ al escáner que usa el preloader— y las tarjetas entran escalonadas en diagona
 según la variable `--i` que fija cada una en el marcado. Funciona sin
 JavaScript: todo se resuelve con `:hover` y `:focus-within`, así que también
 responde a la navegación por teclado.
+
+Detalle importante: el panel **no** usa `pointer-events` para activarse. Esa
+propiedad no admite transición, así que en cuanto el cursor salía del enlace el
+panel dejaba de ser alcanzable y el menú se cerraba antes de que la mano llegara
+a él. Se apoya en `visibility`, que sí acepta retardo: durante el margen de
+gracia el panel sigue siendo «hoverable» y el recorrido en diagonal funciona.
+El `.nav__item` además ocupa toda la altura de la cabecera para que no quede una
+franja muerta entre el enlace y el panel.
 
 ---
 
@@ -197,6 +217,11 @@ función serverless de Vercel…). El formulario incluye un campo trampa
   rápido el observador puede no llegar a notificar elementos que atraviesan la
   pantalla entre dos fotogramas, y esos elementos quedaban invisibles de forma
   permanente.
+- **Barrido de luz del sello BPM:** el destello vive en un `::after` del
+  contenedor `.sello-luz`, que recorta en círculo (`border-radius: 50%` más
+  `overflow: hidden`). Así el brillo sigue la forma del sello y no la caja
+  rectangular que lo envuelve. El `isolation: isolate` mantiene el
+  `mix-blend-mode: screen` dentro del contenedor.
 - **Logotipo:** se usa siempre la versión a color, también sobre fondos oscuros.
   La «L» y la «P» van caladas en blanco sobre el verde, así que una versión
   monocroma blanca haría desaparecer esas dos letras.

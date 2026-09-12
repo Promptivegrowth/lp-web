@@ -645,6 +645,12 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__cta.btn--fantasma {
    ============================================================ */
 .nav__item {
   position: static; /* el panel se ancla a .header__interior */
+  /* Ocupa toda la altura de la cabecera: si sólo midiera lo que el enlace,
+     quedaría una franja sin :hover entre el enlace y el panel y el menú se
+     cerraría al bajar el cursor hacia él. */
+  align-self: stretch;
+  display: flex;
+  align-items: center;
 }
 
 .nav__chevron {
@@ -662,18 +668,20 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__cta.btn--fantasma {
   left: 50%;
   width: min(1040px, calc(100vw - 2 * var(--pad-x)));
   transform: translateX(-50%);
-  padding-top: 10px;
+  /* Puente invisible a todo el ancho entre la cabecera y el panel. */
+  padding-top: 14px;
   opacity: 0;
+  /* `visibility` ya impide el hover cuando está cerrado y, a diferencia de
+     `pointer-events`, admite retardo: durante el margen de gracia el panel
+     sigue siendo alcanzable y el menú no se cierra a medio camino. */
   visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.2s var(--ease) 0.12s, visibility 0.2s 0.12s;
+  transition: opacity 0.22s var(--ease) 0.3s, visibility 0.22s 0.3s;
 }
 
 .nav__item:hover .mega,
 .nav__item:focus-within .mega {
   opacity: 1;
   visibility: visible;
-  pointer-events: auto;
   transition-delay: 0s;
 }
 
@@ -686,12 +694,13 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__cta.btn--fantasma {
   box-shadow: var(--sh-3);
   /* Recorte cerrado: el panel «se despliega» hacia abajo al abrirse. */
   clip-path: inset(0 0 100% 0 round var(--r-lg));
-  transition: clip-path 0.52s var(--ease);
+  transition: clip-path 0.52s var(--ease) 0.3s;
 }
 
 .nav__item:hover .mega__panel,
 .nav__item:focus-within .mega__panel {
   clip-path: inset(0 0 0 0 round var(--r-lg));
+  transition-delay: 0s;
 }
 
 /* Haz del escáner: recorre el panel una sola vez al abrirlo. */
@@ -775,7 +784,10 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__cta.btn--fantasma {
   border-radius: var(--r-md);
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity 0.42s var(--ease), transform 0.42s var(--ease), background 0.25s ease;
+  transition-property: opacity, transform, background;
+  transition-duration: 0.42s, 0.42s, 0.25s;
+  transition-timing-function: var(--ease), var(--ease), ease;
+  transition-delay: 0.3s, 0.3s, 0s;
 }
 
 .nav__item:hover .mega__item,
@@ -783,7 +795,7 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__cta.btn--fantasma {
   opacity: 1;
   transform: none;
   /* Escalonado en diagonal: --i lo fija el marcado de cada tarjeta. */
-  transition-delay: calc(0.1s + var(--i, 0) * 0.045s);
+  transition-delay: calc(0.1s + var(--i, 0) * 0.045s), calc(0.1s + var(--i, 0) * 0.045s), 0s;
 }
 
 .mega__item:hover {
@@ -1412,11 +1424,19 @@ body.menu-abierto .menu-movil__lista > li {
 
 /* ============================================================
    10. Tarjetas de pilares
+   Dos tarjetas en la primera fila y la tercera a todo el ancho:
+   su fotografía es apaisada y se aprovecha mejor como banner.
    ============================================================ */
 .pilares {
   display: grid;
   gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 880px) {
+  .pilares {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .pilar {
@@ -1480,6 +1500,47 @@ body.menu-abierto .menu-movil__lista > li {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.8);
   margin: 0;
+}
+
+/* --- Tercer pilar: banner a todo el ancho --- */
+.pilar--ancho {
+  grid-column: 1 / -1;
+  /* En una sola columna el texto necesita más alto que el que daría el
+     ancho del banner en escritorio. */
+  min-height: clamp(300px, 27vw, 360px);
+  padding: 2rem 1.75rem;
+}
+
+.pilar--ancho img {
+  object-position: center 42%;
+}
+
+.pilar--ancho::after {
+  background: linear-gradient(180deg, rgba(10, 13, 8, 0.2) 0%, rgba(10, 13, 8, 0.68) 46%, rgba(10, 13, 8, 0.94) 100%);
+}
+
+.pilar--ancho:hover::after {
+  background: linear-gradient(180deg, rgba(10, 13, 8, 0.26) 0%, rgba(76, 107, 35, 0.6) 52%, rgba(10, 13, 8, 0.95) 100%);
+}
+
+@media (min-width: 760px) {
+  .pilar--ancho .pilar__contenido {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 0.5rem 3rem;
+    align-items: end;
+  }
+
+  .pilar--ancho h3 {
+    margin-bottom: 0;
+    font-size: var(--t-2xl);
+  }
+
+  .pilar--ancho p {
+    font-size: 1rem;
+    max-width: 52ch;
+    padding-bottom: 0.35rem;
+  }
 }
 
 /* ============================================================
@@ -1548,25 +1609,6 @@ body.menu-abierto .menu-movil__lista > li {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.duo__sello {
-  position: absolute;
-  left: 0.75rem;
-  top: -1rem;
-  width: clamp(78px, 12vw, 106px);
-  padding: 0.5rem;
-  background: var(--blanco);
-  border-radius: 50%;
-  box-shadow: var(--sh-2);
-}
-
-/* Con espacio de sobra, el sello se desborda hacia fuera de la figura. */
-@media (min-width: 940px) {
-  .duo__sello {
-    left: -1.5rem;
-    top: -1.5rem;
-  }
 }
 
 .duo h2 {
@@ -1907,9 +1949,62 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 .sello-bpm {
+  display: block;
   width: clamp(130px, 20vw, 190px);
   filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.45));
   animation: flotar 6s ease-in-out infinite;
+}
+
+/* --- Barrido de luz sobre el sello ---
+   El recorte circular hace que el destello siga la forma del sello y no la
+   caja rectangular que lo contiene. */
+.sello-luz {
+  position: relative;
+  display: block;
+  border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
+  line-height: 0;
+}
+
+.sello-luz > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sello-luz::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    102deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.25) 45%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.25) 55%,
+    transparent 62%
+  );
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  mix-blend-mode: screen;
+  animation: barridoSello 5s var(--ease-io) 1.2s infinite;
+}
+
+/* El destello cruza al principio del ciclo y el resto es pausa, para que
+   aparezca como un brillo ocasional y no como un parpadeo continuo. */
+@keyframes barridoSello {
+  0% {
+    background-position: 100% 0;
+  }
+  26% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
 }
 
 @keyframes flotar {
@@ -2741,6 +2836,51 @@ body.menu-abierto .menu-movil__lista > li {
   transform: scale(0.94);
 }
 
+/* --- Aparición en cortina ---
+   La tarjeta se descubre de abajo hacia arriba mientras la fotografía hace
+   un contra-zoom, como el telón de una toma. Se usa la propiedad `scale`
+   (independiente de `transform`) para no pisar el zoom del hover. */
+.revelar--cortina {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(100% 0 0 0 round var(--r-lg));
+  transition: clip-path 1.05s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+
+.revelar--cortina.es-visible {
+  clip-path: inset(0 0 0 0 round var(--r-lg));
+}
+
+.revelar--cortina img {
+  scale: 1.3;
+  transition: scale 1.45s var(--ease), transform 0.9s var(--ease);
+  transition-delay: var(--d, 0s), 0s;
+}
+
+.revelar--cortina.es-visible img {
+  scale: 1;
+}
+
+/* El contenido sube un instante después de que la cortina lo descubra. */
+.revelar--cortina .pilar__contenido,
+.revelar--cortina .pilar__num {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s var(--ease), transform 0.8s var(--ease);
+  transition-delay: calc(var(--d, 0s) + 0.34s);
+}
+
+.revelar--cortina.es-visible .pilar__contenido,
+.revelar--cortina.es-visible .pilar__num {
+  opacity: 1;
+  transform: none;
+}
+
+.revelar--cortina .pilar__num {
+  transition-delay: calc(var(--d, 0s) + 0.22s);
+}
+
 /* Al apilarse las columnas, el desplazamiento lateral no aporta y además
    desborda el ancho del documento antes de revelarse. */
 @media (max-width: 940px) {
@@ -2829,9 +2969,19 @@ body.menu-abierto .menu-movil__lista > li {
     transition-duration: 0.001ms !important;
   }
   .revelar,
-  .revelar-titulo span > i {
+  .revelar-titulo span > i,
+  .revelar--cortina .pilar__contenido,
+  .revelar--cortina .pilar__num {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .revelar--cortina {
+    clip-path: none !important;
+  }
+
+  .revelar--cortina img {
+    scale: 1 !important;
   }
   .hero__slide.esta-activa img {
     animation: none;
