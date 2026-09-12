@@ -2681,26 +2681,94 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 /* ============================================================
-   18. Clientes (marquesina)
+   18. CLIENTES
+   Dos pistas que avanzan en sentidos opuestos. Cada logotipo va
+   en tarjeta blanca para que las marcas —todas sobre fondo
+   blanco— se lean como una pared de logos y no floten sueltas.
    ============================================================ */
+.clientes {
+  position: relative;
+  padding-block: clamp(3.25rem, 6vw, 5rem);
+  background: var(--gris-50);
+  overflow: hidden;
+}
+
+/* Guiño al código de barras de la marca, arriba y abajo de la banda. */
+.clientes::before,
+.clientes::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background-image: repeating-linear-gradient(90deg, var(--gris-200) 0 2px, transparent 2px 8px);
+  mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+  pointer-events: none;
+}
+
+.clientes::before {
+  top: 0;
+}
+
+.clientes::after {
+  bottom: 0;
+}
+
+.clientes__cabecera {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  text-align: center;
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.clientes__cabecera .etiqueta {
+  margin-bottom: 0;
+}
+
+.clientes__cabecera .etiqueta::before {
+  display: none;
+}
+
+.clientes__nota {
+  max-width: 46ch;
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--texto-suave);
+}
+
+.clientes__banda {
+  display: grid;
+  gap: clamp(0.75rem, 1.6vw, 1.1rem);
+}
+
+/* ---------- Pistas ---------- */
 .marquesina {
   display: flex;
   overflow: hidden;
-  gap: 0;
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
 }
 
 .marquesina__pista {
   display: flex;
   align-items: center;
-  gap: clamp(2rem, 5vw, 4rem);
-  padding-right: clamp(2rem, 5vw, 4rem);
+  gap: clamp(0.75rem, 1.6vw, 1.1rem);
+  padding-right: clamp(0.75rem, 1.6vw, 1.1rem);
   flex: none;
-  animation: desplazar 42s linear infinite;
+  animation: desplazar 46s linear infinite;
 }
 
-.marquesina:hover .marquesina__pista {
+/* La segunda pista avanza en sentido contrario y algo más lenta: el
+   conjunto se lee vivo sin marcar un ritmo repetitivo. */
+.marquesina--inversa .marquesina__pista {
+  animation-duration: 58s;
+  animation-direction: reverse;
+}
+
+.clientes__banda:hover .marquesina__pista,
+.marquesina:focus-within .marquesina__pista {
   animation-play-state: paused;
 }
 
@@ -2710,19 +2778,62 @@ body.menu-abierto .menu-movil__lista > li {
   }
 }
 
-.marquesina img {
-  height: clamp(38px, 6vw, 54px);
-  width: auto;
-  object-fit: contain;
-  filter: grayscale(1);
-  opacity: 0.55;
-  transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s var(--ease);
+/* ---------- Tarjeta de logotipo ---------- */
+.cliente {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: clamp(158px, 19vw, 212px);
+  height: clamp(80px, 9.5vw, 100px);
+  margin: 0;
+  padding: 0.9rem 1.1rem;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
 }
 
-.marquesina img:hover {
+.cliente img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+  /* Apagados lo justo para que convivan entre sí, no tanto como para
+     que no se distingan. */
+  filter: grayscale(0.35);
+  opacity: 0.9;
+  transition: filter 0.45s var(--ease), opacity 0.45s var(--ease), transform 0.5s var(--ease);
+}
+
+/* Línea de escaneo que se abre desde el centro al señalar la tarjeta. */
+.cliente::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--verde-osc), var(--verde-claro));
+  transform: scaleX(0);
+  transition: transform 0.45s var(--ease);
+}
+
+.cliente:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sh-2);
+  border-color: var(--verde-claro);
+}
+
+.cliente:hover img {
   filter: none;
   opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1.05);
+}
+
+.cliente:hover::after {
+  transform: scaleX(1);
 }
 
 /* ============================================================

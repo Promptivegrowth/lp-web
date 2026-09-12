@@ -103,6 +103,17 @@ medirla. Al señalar una etapa el icono se vuelve a trazar.
 En pantallas de menos de 1040 px el flujo pasa a vertical: los conectores giran
 de `scaleX` a `scaleY` y el recorrido se lee de arriba abajo.
 
+### Carrusel de clientes
+
+Los logotipos originales son cuadrados de 300×300 con mucho margen blanco
+alrededor: al escalarlos, la marca quedaba diminuta y apenas se distinguía. El
+pipeline los recorta con `trim()` y los vuelve a encajar en un lienzo común, de
+modo que todos pesan lo mismo visualmente. En pantalla van en tarjeta blanca —
+comparten fondo con la imagen, así que se leen como una pared de logos— sobre
+dos pistas que avanzan en sentidos opuestos y a distinta velocidad. Al señalar
+una tarjeta el carrusel se detiene, el logotipo recupera todo su color y una
+línea verde se abre bajo él.
+
 ### Megamenú
 
 El desplegable de Servicios agrupa los once servicios en tres columnas

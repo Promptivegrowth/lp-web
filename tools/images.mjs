@@ -140,9 +140,19 @@ async function run() {
   for (const nombre of clientes) {
     const origen = path.join(ROOT, 'fuentes', 'clientes', nombre);
     const salida = path.join(OUT, 'clientes', `c${String(parseInt(nombre, 10)).padStart(2, '0')}`);
-    const base = () => sharp(origen).resize({ width: 300, withoutEnlargement: true });
-    const w = await base().webp({ quality: 82 }).toFile(`${salida}.webp`);
-    const j = await base().jpeg({ quality: 80, mozjpeg: true }).toFile(`${salida}.jpg`);
+
+    // Los originales son cuadrados de 300x300 con muchísimo margen blanco:
+    // al escalarlos la marca quedaba diminuta. Se recorta ese margen y se
+    // vuelven a encajar todos en un lienzo común, para que pesen lo mismo
+    // visualmente dentro del carrusel.
+    const base = () =>
+      sharp(origen)
+        .trim({ background: '#ffffff', threshold: 18 })
+        .resize({ width: 300, height: 132, fit: 'contain', background: '#ffffff' })
+        .extend({ top: 16, bottom: 16, left: 22, right: 22, background: '#ffffff' });
+
+    const w = await base().webp({ quality: 86 }).toFile(`${salida}.webp`);
+    const j = await base().jpeg({ quality: 86, mozjpeg: true }).toFile(`${salida}.jpg`);
     totalOut += w.size + j.size;
     count += 2;
   }
