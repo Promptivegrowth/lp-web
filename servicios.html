@@ -405,28 +405,86 @@
             </p>
           </div>
 
-          <div class="proceso" data-escalonar="0.09">
-            <article class="paso revelar">
+        <ol class="flujo revelar">
+            <li class="flujo__paso" style="--i: 0">
+              <span class="flujo__conector" aria-hidden="true"><i></i></span>
+              <div class="flujo__nodo">
+                <svg class="flujo__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path pathLength="1" d="M12 2.2v3.6m0 0 1.7-1.7M12 5.8 10.3 4.1" />
+                  <path pathLength="1" d="M6 9.6h12V18H6z" />
+                  <path pathLength="1" d="m6 9.6 1.7-2.9h8.6L18 9.6" />
+                  <path pathLength="1" d="M3.2 21h17.6" />
+                </svg>
+              </div>
+              <p class="flujo__etapa">Etapa 01</p>
               <h3>Recepción y cuarentena</h3>
-              <p>Ingreso del lote, verificación documental y almacenamiento en condiciones controladas.</p>
-            </article>
-            <article class="paso revelar">
+              <p class="flujo__txt">Ingreso del lote, verificación documental y almacenamiento en condiciones controladas.</p>
+            </li>
+
+            <li class="flujo__paso" style="--i: 1">
+              <span class="flujo__conector" aria-hidden="true"><i></i></span>
+              <div class="flujo__nodo">
+                <svg class="flujo__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path pathLength="1" d="M9.5 2.6h5v6.6h-5z" />
+                  <path pathLength="1" d="M11.1 4.9h1.8M11.1 6.7h1.8" />
+                  <path pathLength="1" d="M4.8 11.8h14.4v8.8H4.8z" />
+                  <path pathLength="1" d="m4.8 11.8 2.3-2.5M19.2 11.8l-2.3-2.5" />
+                </svg>
+              </div>
+              <p class="flujo__etapa">Etapa 02</p>
               <h3>Acondicionado</h3>
-              <p>Adecuación de empaques, inclusión de insertos y cambio de presentación según el registro sanitario.</p>
-            </article>
-            <article class="paso revelar">
+              <p class="flujo__txt">Adecuación de empaques, inclusión de insertos y cambio de presentación según el registro sanitario.</p>
+            </li>
+
+            <li class="flujo__paso" style="--i: 2">
+              <span class="flujo__conector" aria-hidden="true"><i></i></span>
+              <div class="flujo__nodo">
+                <svg class="flujo__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path pathLength="1" d="M4.8 3.2h14.4v5.1H4.8z" />
+                  <path pathLength="1" d="M12 8.3v2.5" />
+                  <path pathLength="1" d="M6.4 13.1h11.2v7.5H6.4z" />
+                  <path pathLength="1" d="M9 16.1h6M9 18.2h3.6" />
+                </svg>
+              </div>
+              <p class="flujo__etapa">Etapa 03</p>
               <h3>Rotulado y etiquetado</h3>
-              <p>Impresión inkjet y colocación de etiquetas con información autorizada, clara e indeleble.</p>
-            </article>
-            <article class="paso revelar">
+              <p class="flujo__txt">Impresión inkjet y colocación de etiquetas con información autorizada, clara e indeleble.</p>
+            </li>
+
+            <li class="flujo__paso" style="--i: 3">
+              <span class="flujo__conector" aria-hidden="true"><i></i></span>
+              <div class="flujo__nodo">
+                <svg class="flujo__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path pathLength="1" d="M10.6 3.6a7 7 0 1 0 0 14 7 7 0 0 0 0-14Z" />
+                  <path pathLength="1" d="m15.8 15.8 4.4 4.4" />
+                  <path pathLength="1" d="m7.6 10.5 2.2 2.2 4-4.4" />
+                </svg>
+              </div>
+              <p class="flujo__etapa">Etapa 04</p>
               <h3>Control de calidad</h3>
-              <p>Inspección por atributos, verificación de codificado y conformidad con el expediente del lote.</p>
-            </article>
-            <article class="paso revelar">
+              <p class="flujo__txt">Inspección por atributos, verificación de codificado y conformidad con el expediente del lote.</p>
+            </li>
+
+            <li class="flujo__paso" style="--i: 4">
+              <div class="flujo__nodo">
+                <svg class="flujo__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path pathLength="1" d="M3.6 10h11.2v10.4H3.6z" />
+                  <path pathLength="1" d="m3.6 10 1.9-4h7.4l1.9 4" />
+                  <path pathLength="1" d="M9.2 6v4" />
+                  <path pathLength="1" d="m6.4 14.6 1.9 1.9 3.5-3.9" />
+                  <path pathLength="1" d="M17.6 12.4h3.9m0 0-1.8-1.8m1.8 1.8-1.8 1.8" />
+                </svg>
+              </div>
+              <p class="flujo__etapa">Etapa 05</p>
               <h3>Liberación y despacho</h3>
-              <p>Liberación por Dirección Técnica, embalaje final y entrega con la documentación completa.</p>
-            </article>
-          </div>
+              <p class="flujo__txt">Liberación por Dirección Técnica, embalaje final y entrega con la documentación completa.</p>
+            </li>
+          </ol>
         </div>
       </section>
 

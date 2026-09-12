@@ -1920,6 +1920,333 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 /* ============================================================
+   13 bis. FLUJOGRAMA DEL PROCESO
+   Las cinco etapas se encadenan y se van encendiendo una tras
+   otra: el conector se rellena, el nodo se activa, el icono se
+   traza y el texto sube. Cada paso hereda su turno de --i.
+   ============================================================ */
+.flujo {
+  --nodo: 60px;
+  --turno: 0.46s;
+  --sep: 1.6rem;
+  display: grid;
+  gap: var(--sep);
+  counter-reset: etapa;
+}
+
+/* Se apoya en .revelar sólo para recibir la clase .es-visible: el
+   escalonado lo resuelven los turnos internos, no el fundido genérico. */
+.flujo.revelar {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.flujo__paso {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+  padding-left: calc(var(--nodo) + 1.1rem);
+  min-height: var(--nodo);
+}
+
+/* ---------- Conector entre etapas ---------- */
+.flujo__conector {
+  position: absolute;
+  left: calc(var(--nodo) / 2 - 1px);
+  top: var(--nodo);
+  bottom: calc(-1 * var(--sep));
+  width: 2px;
+  background-image: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0 4px, transparent 4px 9px);
+}
+
+.flujo__conector i {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--verde-osc), var(--verde-claro));
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.5s var(--ease-io);
+  transition-delay: calc(var(--i) * var(--turno) + 0.42s);
+}
+
+.flujo.es-visible .flujo__conector i {
+  transform: scaleY(1);
+}
+
+/* Destello que viaja por el conector cuando le llega el turno. */
+.flujo__conector::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--verde-claro);
+  box-shadow: 0 0 12px 3px rgba(142, 191, 69, 0.75);
+  opacity: 0;
+}
+
+.flujo.es-visible .flujo__conector::after {
+  animation: destelloFlujoV 0.55s var(--ease-io) forwards;
+  animation-delay: calc(var(--i) * var(--turno) + 0.42s);
+}
+
+@keyframes destelloFlujoV {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* ---------- Nodo ---------- */
+.flujo__nodo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: var(--nodo);
+  height: var(--nodo);
+  border-radius: 18px;
+  color: var(--gris-500);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.4s var(--ease), transform 0.55s var(--ease), color 0.45s var(--ease),
+    background 0.45s var(--ease), box-shadow 0.45s var(--ease);
+  transition-delay: calc(var(--i) * var(--turno));
+}
+
+.flujo.es-visible .flujo__nodo {
+  opacity: 1;
+  transform: none;
+  color: var(--verde-claro);
+  background: rgba(142, 191, 69, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(142, 191, 69, 0.45);
+}
+
+.flujo__ico {
+  width: 34px;
+  height: 34px;
+}
+
+/* Trazado progresivo: pathLength="1" normaliza todos los trazos. */
+.flujo__ico path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.65s var(--ease);
+}
+
+.flujo.es-visible .flujo__ico path {
+  stroke-dashoffset: 0;
+}
+
+.flujo__ico path:nth-child(1) {
+  transition-delay: calc(var(--i) * var(--turno) + 0.14s);
+}
+.flujo__ico path:nth-child(2) {
+  transition-delay: calc(var(--i) * var(--turno) + 0.24s);
+}
+.flujo__ico path:nth-child(3) {
+  transition-delay: calc(var(--i) * var(--turno) + 0.34s);
+}
+.flujo__ico path:nth-child(4) {
+  transition-delay: calc(var(--i) * var(--turno) + 0.44s);
+}
+.flujo__ico path:nth-child(5) {
+  transition-delay: calc(var(--i) * var(--turno) + 0.54s);
+}
+
+/* ---------- Texto ---------- */
+.flujo__etapa {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--verde-claro);
+}
+
+.flujo__paso h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--blanco);
+  transition: color 0.3s ease;
+}
+
+.flujo__txt {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--gris-300);
+}
+
+.flujo__etapa,
+.flujo__paso h3,
+.flujo__txt {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.55s var(--ease), transform 0.6s var(--ease), color 0.3s ease;
+}
+
+.flujo.es-visible .flujo__etapa {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i) * var(--turno) + 0.12s);
+}
+
+.flujo.es-visible .flujo__paso h3 {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i) * var(--turno) + 0.2s);
+}
+
+.flujo.es-visible .flujo__txt {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i) * var(--turno) + 0.28s);
+}
+
+/* ---------- Interacción ---------- */
+.flujo__paso:hover .flujo__nodo,
+.flujo__paso:focus-within .flujo__nodo {
+  color: var(--negro);
+  background: var(--verde);
+  box-shadow: inset 0 0 0 1px var(--verde), 0 10px 26px rgba(142, 191, 69, 0.38);
+  transform: translateY(-3px) scale(1.06);
+  transition-delay: 0s;
+}
+
+.flujo__paso:hover h3 {
+  color: var(--verde-claro);
+}
+
+/* Al señalar una etapa el icono se vuelve a trazar. */
+.flujo.es-visible .flujo__paso:hover .flujo__ico path {
+  animation: trazarIcono 0.75s var(--ease) backwards;
+}
+
+.flujo.es-visible .flujo__paso:hover .flujo__ico path:nth-child(2) {
+  animation-delay: 0.09s;
+}
+.flujo.es-visible .flujo__paso:hover .flujo__ico path:nth-child(3) {
+  animation-delay: 0.18s;
+}
+.flujo.es-visible .flujo__paso:hover .flujo__ico path:nth-child(4) {
+  animation-delay: 0.27s;
+}
+.flujo.es-visible .flujo__paso:hover .flujo__ico path:nth-child(5) {
+  animation-delay: 0.36s;
+}
+
+@keyframes trazarIcono {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- Horizontal en pantallas anchas ---------- */
+@media (min-width: 1040px) {
+  .flujo {
+    --nodo: 66px;
+    --sep: 1.5rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .flujo__paso {
+    padding-left: 0;
+    padding-top: calc(var(--nodo) + 1.35rem);
+  }
+
+  .flujo__conector {
+    left: var(--nodo);
+    right: calc(-1 * var(--sep));
+    top: calc(var(--nodo) / 2 - 1px);
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 4px, transparent 4px 9px);
+  }
+
+  .flujo__conector i {
+    background: linear-gradient(90deg, var(--verde-osc), var(--verde-claro));
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  .flujo.es-visible .flujo__conector i {
+    transform: scaleX(1);
+  }
+
+  .flujo__conector::after {
+    left: 0;
+    top: 50%;
+  }
+
+  .flujo.es-visible .flujo__conector::after {
+    animation-name: destelloFlujoH;
+  }
+
+  @keyframes destelloFlujoH {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+}
+
+/* Sin movimiento: todo queda en su estado final, sin recorrido. */
+@media (prefers-reduced-motion: reduce) {
+  .flujo__nodo,
+  .flujo__etapa,
+  .flujo__paso h3,
+  .flujo__txt {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .flujo__ico path {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .flujo__conector i {
+    transform: none !important;
+  }
+
+  .flujo__conector::after {
+    display: none;
+  }
+}
+
+/* ============================================================
    14. Certificación
    ============================================================ */
 .certificacion {

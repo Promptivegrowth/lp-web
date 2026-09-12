@@ -89,6 +89,20 @@ Las dos primeras tarjetas van en una fila y la tercera ocupa todo el ancho: su
 fotografía es apaisada y como banner se aprovecha mucho mejor que recortada en
 vertical.
 
+### Flujograma del proceso
+
+La sección «Cómo trabajamos» es un flujograma que se enciende etapa por etapa
+cuando entra en pantalla: el conector se rellena, un destello lo recorre, el
+nodo se activa, el icono se traza y el texto sube. Cada etapa hereda su turno de
+la variable `--i` que lleva en el marcado, de modo que la secuencia es pura CSS.
+
+Los iconos se dibujan con `stroke-dasharray`/`stroke-dashoffset` y llevan
+`pathLength="1"`, lo que normaliza la longitud de cada trazo y evita tener que
+medirla. Al señalar una etapa el icono se vuelve a trazar.
+
+En pantallas de menos de 1040 px el flujo pasa a vertical: los conectores giran
+de `scaleX` a `scaleY` y el recorrido se lee de arriba abajo.
+
 ### Megamenú
 
 El desplegable de Servicios agrupa los once servicios en tres columnas
