@@ -1433,6 +1433,46 @@ body.menu-abierto .menu-movil__lista > li {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Zoom cinematográfico: un vaivén muy lento que da vida a la fotografía
+     sin llegar a distraer de la lectura. */
+  animation: zoomCine 26s ease-in-out infinite alternate;
+  transform-origin: center 42%;
+}
+
+@keyframes zoomCine {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.14);
+  }
+}
+
+/* Variante alta: la banda deja respirar a la fotografía en lugar de
+   recortarla a una franja. */
+.cabecera-pagina--alta {
+  min-height: clamp(460px, 68vh, 660px);
+  display: grid;
+  align-items: end;
+  padding-bottom: clamp(3.25rem, 6vw, 4.5rem);
+}
+
+.cabecera-pagina--alta .cabecera-pagina__fondo {
+  opacity: 0.45;
+}
+
+/* Con más fotografía visible hace falta más velo para que el texto se lea. */
+.cabecera-pagina--alta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(10, 13, 8, 0.82) 0%, rgba(10, 13, 8, 0.45) 42%, rgba(10, 13, 8, 0.88) 100%);
+}
+
+.cabecera-pagina--alta h1 {
+  font-size: var(--t-4xl);
+  max-width: 16ch;
 }
 
 .cabecera-pagina h1 {
@@ -2560,82 +2600,168 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 /* ============================================================
-   17. Galería
+   17. GALERÍA
+   Mosaico deliberado sobre doce columnas: un ciclo fijo de ocho
+   piezas que se repite, en lugar del relleno automático anterior
+   —que dejaba huecos y tamaños al azar—.
    ============================================================ */
 .galeria {
+  --alto-fila: clamp(132px, 15.5vw, 212px);
   display: grid;
-  gap: 0.85rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
-  grid-auto-rows: 200px;
+  gap: clamp(0.6rem, 1vw, 0.9rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: var(--alto-fila);
 }
 
 .galeria__item {
   position: relative;
+  margin: 0;
   overflow: hidden;
   border-radius: var(--r-md);
   background: var(--gris-100);
   cursor: zoom-in;
-}
-
-.galeria__item:nth-child(6n + 1) {
-  grid-row: span 2;
-}
-
-.galeria__item:nth-child(6n + 4) {
-  grid-column: span 2;
-}
-
-@media (max-width: 640px) {
-  .galeria {
-    grid-auto-rows: 150px;
-  }
-  .galeria__item:nth-child(6n + 4) {
-    grid-column: span 1;
-  }
+  --radio-cortina: var(--r-md);
 }
 
 .galeria__item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s var(--ease);
+  transition: transform 0.9s var(--ease);
 }
 
-.galeria__item:hover img {
-  transform: scale(1.08);
+.galeria__item picture {
+  display: block;
+  height: 100%;
 }
 
+/* En dos columnas el ciclo se cierra así: una pieza grande al inicio, tres
+   parejas y una franja ancha al final. Sin esa última, el octavo elemento
+   quedaría suelto y dejaría un hueco. */
+.galeria__item:nth-child(8n + 1) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.galeria__item:nth-child(8n) {
+  grid-column: span 2;
+}
+
+/* ---------- Tableta: seis columnas ---------- */
+@media (min-width: 720px) {
+  .galeria {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .galeria__item {
+    grid-column: span 3;
+  }
+
+  .galeria__item:nth-child(8n + 1) {
+    grid-column: span 6;
+    grid-row: span 2;
+  }
+
+  .galeria__item:nth-child(8n + 6),
+  .galeria__item:nth-child(8n + 7),
+  .galeria__item:nth-child(8n) {
+    grid-column: span 2;
+  }
+}
+
+/* ---------- Escritorio: doce columnas, ciclo de ocho ---------- */
+@media (min-width: 1100px) {
+  .galeria {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  /* 1 · pieza principal, media rejilla y doble alto */
+  .galeria__item:nth-child(8n + 1) {
+    grid-column: span 6;
+    grid-row: span 2;
+  }
+
+  /* 2 a 5 · cuatro piezas que completan la otra mitad */
+  .galeria__item:nth-child(8n + 2),
+  .galeria__item:nth-child(8n + 3),
+  .galeria__item:nth-child(8n + 4),
+  .galeria__item:nth-child(8n + 5) {
+    grid-column: span 3;
+    grid-row: span 1;
+  }
+
+  /* 6 a 8 · franja de tres a lo ancho */
+  .galeria__item:nth-child(8n + 6),
+  .galeria__item:nth-child(8n + 7),
+  .galeria__item:nth-child(8n) {
+    grid-column: span 4;
+    grid-row: span 1;
+  }
+}
+
+/* ---------- Pie y realce ---------- */
 .galeria__item figcaption {
   position: absolute;
   inset: auto 0 0 0;
-  padding: 2.5rem 1rem 0.95rem;
-  font-size: 0.82rem;
+  padding: 2.75rem 1rem 0.95rem;
+  font-size: 0.84rem;
   font-weight: 500;
+  line-height: 1.35;
   color: var(--blanco);
-  background: linear-gradient(180deg, transparent, rgba(10, 13, 8, 0.88));
+  background: linear-gradient(180deg, transparent, rgba(10, 13, 8, 0.9));
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(10px);
   transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
 }
 
 .galeria__item:hover figcaption,
-.galeria__item:focus-within figcaption {
+.galeria__item:focus-visible figcaption {
   opacity: 1;
   transform: none;
 }
 
+.galeria__item:hover img {
+  transform: scale(1.07);
+}
+
+/* Marco de inspección al señalar: el mismo gesto que el visor del vídeo. */
 .galeria__item::after {
   content: '';
   position: absolute;
   inset: 0;
-  box-shadow: inset 0 0 0 0 var(--verde);
   border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 0 var(--verde);
   transition: box-shadow 0.35s var(--ease);
   pointer-events: none;
 }
 
-.galeria__item:hover::after {
+.galeria__item:hover::after,
+.galeria__item:focus-visible::after {
   box-shadow: inset 0 0 0 3px var(--verde);
+}
+
+/* Lupa que aparece al señalar, para que se entienda que amplía. */
+.galeria__item::before {
+  content: '';
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(10, 13, 8, 0.6) center / 17px 17px no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m15.5 15.5 4 4M10.5 8v5M8 10.5h5'/%3E%3C/svg%3E");
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.35s var(--ease), transform 0.4s var(--ease);
+}
+
+.galeria__item:hover::before,
+.galeria__item:focus-visible::before {
+  opacity: 1;
+  transform: none;
 }
 
 /* --- Lightbox --- */
@@ -3652,13 +3778,13 @@ body.menu-abierto .menu-movil__lista > li {
 .revelar--cortina {
   opacity: 1;
   transform: none;
-  clip-path: inset(100% 0 0 0 round var(--r-lg));
+  clip-path: inset(100% 0 0 0 round var(--radio-cortina, var(--r-lg)));
   transition: clip-path 1.05s var(--ease);
   transition-delay: var(--d, 0s);
 }
 
 .revelar--cortina.es-visible {
-  clip-path: inset(0 0 0 0 round var(--r-lg));
+  clip-path: inset(0 0 0 0 round var(--radio-cortina, var(--r-lg)));
 }
 
 .revelar--cortina img {

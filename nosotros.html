@@ -35,11 +35,19 @@
 
     <main id="contenido">
       <!-- ==================== CABECERA ==================== -->
-      <section class="cabecera-pagina">
+      <section class="cabecera-pagina cabecera-pagina--alta">
         <div class="cabecera-pagina__fondo" aria-hidden="true">
           <picture>
-            <source type="image/webp" srcset="/img/secciones/instalaciones-800.webp 800w, /img/secciones/instalaciones-1280.webp 1280w" sizes="100vw" />
-            <img src="/img/secciones/instalaciones-1280.jpg" alt="" width="1280" height="960" />
+            <source
+              type="image/webp"
+              srcset="
+                /img/secciones/nosotros-hero-800.webp   800w,
+                /img/secciones/nosotros-hero-1280.webp 1280w,
+                /img/secciones/nosotros-hero-1920.webp 1920w
+              "
+              sizes="100vw"
+            />
+            <img src="/img/secciones/nosotros-hero-1920.jpg" alt="" width="1920" height="1080" fetchpriority="high" />
           </picture>
         </div>
         <div class="contenedor">
@@ -139,69 +147,117 @@
             </p>
           </div>
 
-          <div class="galeria" data-escalonar="0.04">
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g01-full.webp" data-pie="Acondicionado en línea de productos">
-              <img src="/img/galeria/g01.webp" alt="Acondicionado en línea de productos" width="640" height="480" loading="lazy" />
+          <div class="galeria" data-escalonar="0.07">
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g01-full.webp" data-pie="Acondicionado en línea de productos">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g01-560.webp 560w, /img/galeria/g01-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g01-1000.jpg" alt="Acondicionado en línea de productos" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Acondicionado en línea de productos</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g02-full.webp" data-pie="Rotulado inkjet sobre empaque secundario">
-              <img src="/img/galeria/g02.webp" alt="Rotulado inkjet sobre empaque secundario" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g02-full.webp" data-pie="Rotulado inkjet sobre empaque secundario">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g02-560.webp 560w, /img/galeria/g02-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g02-1000.jpg" alt="Rotulado inkjet sobre empaque secundario" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Rotulado inkjet sobre empaque secundario</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g03-full.webp" data-pie="Termosellado de estuches">
-              <img src="/img/galeria/g03.webp" alt="Termosellado de estuches" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g03-full.webp" data-pie="Termosellado de estuches">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g03-560.webp 560w, /img/galeria/g03-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g03-1000.jpg" alt="Termosellado de estuches" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Termosellado de estuches</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g04-full.webp" data-pie="Control de producto terminado">
-              <img src="/img/galeria/g04.webp" alt="Control de producto terminado" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g04-full.webp" data-pie="Control de producto terminado">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g04-560.webp 560w, /img/galeria/g04-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g04-1000.jpg" alt="Control de producto terminado" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Control de producto terminado</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g05-full.webp" data-pie="Etiquetado de viales y frascos">
-              <img src="/img/galeria/g05.webp" alt="Etiquetado de viales y frascos" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g05-full.webp" data-pie="Etiquetado de viales y frascos">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g05-560.webp 560w, /img/galeria/g05-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g05-1000.jpg" alt="Etiquetado de viales y frascos" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Etiquetado de viales y frascos</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g06-full.webp" data-pie="Faja transportadora de acondicionado">
-              <img src="/img/galeria/g06.webp" alt="Faja transportadora de acondicionado" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g06-full.webp" data-pie="Faja transportadora de acondicionado">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g06-560.webp 560w, /img/galeria/g06-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g06-1000.jpg" alt="Faja transportadora de acondicionado" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Faja transportadora de acondicionado</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g07-full.webp" data-pie="Colocación de etiquetas">
-              <img src="/img/galeria/g07.webp" alt="Colocación de etiquetas" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g07-full.webp" data-pie="Colocación de etiquetas">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g07-560.webp 560w, /img/galeria/g07-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g07-1000.jpg" alt="Colocación de etiquetas" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Colocación de etiquetas</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g08-full.webp" data-pie="Embalaje para distribución">
-              <img src="/img/galeria/g08.webp" alt="Embalaje para distribución" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g08-full.webp" data-pie="Embalaje para distribución">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g08-560.webp 560w, /img/galeria/g08-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g08-1000.jpg" alt="Embalaje para distribución" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Embalaje para distribución</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g09-full.webp" data-pie="Equipo de acondicionado en sala">
-              <img src="/img/galeria/g09.webp" alt="Equipo de acondicionado en sala" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g09-full.webp" data-pie="Equipo de acondicionado en sala">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g09-560.webp 560w, /img/galeria/g09-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g09-1000.jpg" alt="Equipo de acondicionado en sala" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Equipo de acondicionado en sala</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g10-full.webp" data-pie="Aseguramiento de calidad">
-              <img src="/img/galeria/g10.webp" alt="Aseguramiento de calidad" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g10-full.webp" data-pie="Aseguramiento de calidad">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g10-560.webp 560w, /img/galeria/g10-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g10-1000.jpg" alt="Aseguramiento de calidad" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Aseguramiento de calidad</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g11-full.webp" data-pie="Inclusión de insertos">
-              <img src="/img/galeria/g11.webp" alt="Inclusión de insertos" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g11-full.webp" data-pie="Inclusión de insertos">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g11-560.webp 560w, /img/galeria/g11-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g11-1000.jpg" alt="Inclusión de insertos" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Inclusión de insertos</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g12-full.webp" data-pie="Área de fraccionamiento">
-              <img src="/img/galeria/g12.webp" alt="Área de fraccionamiento" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g12-full.webp" data-pie="Área de fraccionamiento">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g12-560.webp 560w, /img/galeria/g12-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g12-1000.jpg" alt="Área de fraccionamiento" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Área de fraccionamiento</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g13-full.webp" data-pie="Equipo de producción">
-              <img src="/img/galeria/g13.webp" alt="Equipo de producción" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g13-full.webp" data-pie="Equipo de producción">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g13-560.webp 560w, /img/galeria/g13-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g13-1000.jpg" alt="Equipo de producción" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Equipo de producción</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g14-full.webp" data-pie="Equipo administrativo">
-              <img src="/img/galeria/g14.webp" alt="Equipo administrativo" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g14-full.webp" data-pie="Equipo administrativo">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g14-560.webp 560w, /img/galeria/g14-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g14-1000.jpg" alt="Equipo administrativo" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Equipo administrativo</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g15-full.webp" data-pie="Verificación de lote">
-              <img src="/img/galeria/g15.webp" alt="Verificación de lote" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g15-full.webp" data-pie="Verificación de lote">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g15-560.webp 560w, /img/galeria/g15-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g15-1000.jpg" alt="Verificación de lote" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Verificación de lote</figcaption>
             </figure>
-            <figure class="galeria__item revelar revelar--zoom" data-full="img/galeria/g16-full.webp" data-pie="Supervisión de proceso">
-              <img src="/img/galeria/g16.webp" alt="Supervisión de proceso" width="640" height="480" loading="lazy" />
+            <figure class="galeria__item revelar revelar--cortina" data-full="img/galeria/g16-full.webp" data-pie="Supervisión de proceso">
+              <picture>
+                <source type="image/webp" srcset="/img/galeria/g16-560.webp 560w, /img/galeria/g16-1000.webp 1000w" sizes="(min-width: 1100px) 42vw, (min-width: 700px) 50vw, 100vw" />
+                <img src="/img/galeria/g16-1000.jpg" alt="Supervisión de proceso" width="1000" height="750" loading="lazy" decoding="async" />
+              </picture>
               <figcaption>Supervisión de proceso</figcaption>
             </figure>
           </div>

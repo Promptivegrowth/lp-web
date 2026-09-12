@@ -25,6 +25,9 @@ const JOBS = [
 
   // ---------- SECCIONES ----------
   { src: [GRU, 'GRUPAL ADMINISTRATIVO', f(1)], out: 'secciones/nosotros', widths: [1280, 800], ar: 4 / 3 },
+  // Cabecera apaisada de la página Nosotros: al ser 4:3 la anterior se
+  // recortaba en exceso sobre una banda ancha.
+  { src: [GRU, 'GRUPAL ADMINISTRATIVO', f(2)], out: 'secciones/nosotros-hero', widths: [1920, 1280, 800], ar: 16 / 9 },
   { src: [CEO, f(9)], out: 'secciones/nosotros-2', widths: [1280, 800], ar: 4 / 3 },
   { src: [PRO, 'PROCESO 6', f(5)], out: 'secciones/certificacion', widths: [1600, 1000], ar: 16 / 9 },
   { src: [GER, 'COMERCIAL', f(1)], out: 'secciones/contacto', widths: [1280, 800], ar: 4 / 3 },
@@ -78,7 +81,7 @@ export const GALERIA = [
 
 GALERIA.forEach(([src], i) => {
   const n = String(i + 1).padStart(2, '0');
-  JOBS.push({ src, out: `galeria/g${n}`, widths: [640], ar: 4 / 3 });
+  JOBS.push({ src, out: `galeria/g${n}`, widths: [1000, 560], ar: 4 / 3 });
   JOBS.push({ src, out: `galeria/g${n}-full`, widths: [1500], ar: null });
 });
 
