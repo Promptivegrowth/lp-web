@@ -29,6 +29,9 @@ const JOBS = [
   // recortaba en exceso sobre una banda ancha.
   { src: [GRU, 'GRUPAL ADMINISTRATIVO', f(2)], out: 'secciones/nosotros-hero', widths: [1920, 1280, 800], ar: 16 / 9 },
   { src: [CEO, f(9)], out: 'secciones/nosotros-2', widths: [1280, 800], ar: 4 / 3 },
+  // «Quiénes somos»: el original es 3:4, así que en un marco vertical no se
+  // recorta nada. La anterior era apaisada y perdía a media plantilla.
+  { src: [PRO, 'PROCESO 1', f(4)], out: 'secciones/quienes-somos', widths: [900, 620], ar: 3 / 4 },
   { src: [PRO, 'PROCESO 6', f(5)], out: 'secciones/certificacion', widths: [1600, 1000], ar: 16 / 9 },
   { src: [GER, 'COMERCIAL', f(1)], out: 'secciones/contacto', widths: [1280, 800], ar: 4 / 3 },
   { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/calidad', widths: [900, 600], ar: 3 / 2 },

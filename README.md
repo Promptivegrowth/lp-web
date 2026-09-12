@@ -114,6 +114,24 @@ dos pistas que avanzan en sentidos opuestos y a distinta velocidad. Al señalar
 una tarjeta el carrusel se detiene, el logotipo recupera todo su color y una
 línea verde se abre bajo él.
 
+### Página Nosotros
+
+Tres bloques propios de esta página:
+
+- **Quiénes somos** usa una fotografía vertical (`secciones/quienes-somos`,
+  recortada de un original 3:4), de modo que el marco no corta nada. La
+  anterior era apaisada y perdía a media plantilla.
+- **Misión y visión** son dos paneles unidos por un eje punteado, cada uno con
+  su icono marcado al agua, un trazado que se dibuja y una tira de código de
+  barras que se rellena. Sólo existe aquí; la prueba lo verifica en las demás
+  páginas.
+- **Lo que nos define** son tres filas editoriales —índice grande, icono que se
+  traza y una barra verde que crece al señalar— en lugar de tres cajas iguales.
+
+Los iconos de estos dos últimos bloques van **en línea** y no en el sprite: el
+`<use>` del sprite crea un shadow DOM cuyos trazos no se pueden animar desde
+CSS, y aquí hacía falta dibujarlos uno a uno.
+
 ### Megamenú
 
 El desplegable de Servicios agrupa los once servicios en tres columnas
