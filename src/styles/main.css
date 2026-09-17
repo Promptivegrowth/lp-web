@@ -2933,6 +2933,101 @@ body.menu-abierto .menu-movil__lista > li {
   color: var(--verde-claro);
 }
 
+/* ---------- Ficha del registro DIGEMID ---------- */
+.registro {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-lg);
+  background: #fff;
+  box-shadow: var(--sh-2);
+}
+
+/* Seis datos: la rejilla se fija en 3 / 2 / 1 columnas para que nunca
+   quede una celda suelta dejando ver el fondo de las juntas. */
+.registro__datos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  margin: 0;
+  background: var(--borde);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.registro__dato {
+  padding: 1.15rem 1.35rem;
+  background: #fff;
+}
+
+.registro__dato dt {
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gris-500);
+}
+
+.registro__dato dd {
+  margin: 0.4rem 0 0;
+  font-family: var(--f-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--negro);
+}
+
+/* Situación activa: el verde de marca hace de indicador. */
+.registro__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--verde-prof);
+}
+
+.registro__estado::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--verde);
+  box-shadow: 0 0 0 4px rgba(142, 191, 69, 0.22);
+}
+
+@media (min-width: 560px) {
+  .registro__datos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .registro__datos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.registro__rotulo {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gris-500);
+}
+
+.registro__actividades .normas {
+  margin-top: 0.9rem;
+}
+
+.registro__actividades .normas li {
+  border-color: var(--borde);
+  color: var(--verde-prof);
+}
+
 /* ============================================================
    16. LIDERAZGO
    Jerarquía explícita: Gerencia General abre en una tarjeta ancha
@@ -4638,6 +4733,12 @@ body.menu-abierto .menu-movil__lista > li {
 .footer__lista a:hover {
   color: var(--verde-claro);
   transform: translateX(4px);
+}
+
+/* El área va destacada delante del teléfono. */
+.footer__lista b {
+  font-weight: 600;
+  color: var(--gris-200);
 }
 
 .footer__cert {

@@ -50,15 +50,13 @@ const JOBS = [
   { src: [PRO, 'PROCESO 8', f(1)], out: 'secciones/proceso', widths: [1280, 800], ar: 4 / 3 },
   { src: [PRO, 'PROCESO 9', f(1)], out: 'secciones/instalaciones', widths: [1280, 800], ar: 4 / 3 },
 
-  // ---------- SERVICIOS (11) ----------
+  // ---------- SERVICIOS (9) ----------
   { src: [PRO, 'PROCESO 4', f(1)], out: 'servicios/acondicionado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 4', f(3)], out: 'servicios/reacondicionado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 2', f(2)], out: 'servicios/rotulado-inkjet', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 9', f(3)], out: 'servicios/etiquetado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 8', f(3)], out: 'servicios/cambio-envase', widths: [900, 600], ar: 3 / 2 },
-  { src: [PRO, 'PROCESO 5', f(3)], out: 'servicios/actualizacion-informacion', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 8', f(1)], out: 'servicios/rotulado-exportacion', widths: [900, 600], ar: 3 / 2 },
-  { src: [PRO, 'PROCESO 7', f(4)], out: 'servicios/colocacion-etiquetas', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 6', f(4)], out: 'servicios/fraccionamiento', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 3', f(2)], out: 'servicios/termosellado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 7', f(2)], out: 'servicios/packs-kits', widths: [900, 600], ar: 3 / 2 },
