@@ -10,6 +10,8 @@ Thumbs.db
 # Fotografías originales (~148 MB). Se conservan fuera del repositorio;
 # lo versionado es public/img/ ya optimizado. Ver README.
 fotos/
+# Retoques del cliente (PNG sin comprimir); también se procesan a public/img/.
+PROCESOS/
 
 # Documentos de trabajo que envía el cliente (no forman parte del sitio).
 *.docx

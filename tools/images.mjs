@@ -16,11 +16,15 @@ const GER = 'SESION DE FOTOS GERENTES';
 const GRU = 'SESIÓN DE FOTOS GRUPALES';
 const PRO = 'SESIÓN DE FOTOS PROCESOS';
 const f = (n) => `FOTO_${n}_EDITADA_FINAL.jpg`;
+// Retoques entregados por el cliente (septiembre 2026): mismas tomas sin la
+// etiqueta verde de la máquina inkjet. Viven en PROCESOS/, junto a fotos/.
+const RET = path.join('..', 'PROCESOS');
+const vf = (n) => `FOTO_${n}_EDITADA_FINAL_VF.png`;
 
 const JOBS = [
   // ---------- HERO (16:9) ----------
   { src: [PRO, 'PROCESO 7', f(1)], out: 'hero/hero-1', widths: [1920, 1280, 800], ar: 16 / 9 },
-  { src: [PRO, 'PROCESO 2', f(1)], out: 'hero/hero-2', widths: [1920, 1280, 800], ar: 16 / 9 },
+  { src: [RET, 'PROCESO 2', vf(1)], out: 'hero/hero-2', widths: [1920, 1280, 800], ar: 16 / 9 },
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(1)], out: 'hero/hero-3', widths: [1920, 1280, 800], ar: 16 / 9 },
 
   // ---------- SECCIONES ----------
@@ -43,7 +47,7 @@ const JOBS = [
   { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/certificacion-hero-movil', widths: [760, 540], ar: 1 },
   { src: [GER, 'COMERCIAL', f(1)], out: 'secciones/contacto-hero-movil', widths: [760, 540], ar: 1 },
   { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/calidad', widths: [900, 600], ar: 3 / 2 },
-  { src: [PRO, 'PROCESO 2', f(2)], out: 'secciones/tecnologia', widths: [900, 600], ar: 3 / 2 },
+  { src: [RET, 'PROCESO 2', vf(2)], out: 'secciones/tecnologia', widths: [900, 600], ar: 3 / 2 },
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(4)], out: 'secciones/personal', widths: [900, 600], ar: 3 / 2 },
   // Banner apaisado para el tercer pilar de la portada.
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(3)], out: 'secciones/personal-ancho', widths: [1600, 1100, 760], ar: 21 / 9 },
@@ -51,15 +55,17 @@ const JOBS = [
   { src: [PRO, 'PROCESO 9', f(1)], out: 'secciones/instalaciones', widths: [1280, 800], ar: 4 / 3 },
 
   // ---------- SERVICIOS (9) ----------
-  { src: [PRO, 'PROCESO 4', f(1)], out: 'servicios/acondicionado', widths: [900, 600], ar: 3 / 2 },
+  // El cliente corrigió qué carpeta es cada proceso: Proceso 7 es
+  // acondicionado, Proceso 4 armado de kits y Proceso 5 etiquetado.
+  { src: [PRO, 'PROCESO 7', f(2)], out: 'servicios/acondicionado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 4', f(3)], out: 'servicios/reacondicionado', widths: [900, 600], ar: 3 / 2 },
-  { src: [PRO, 'PROCESO 2', f(2)], out: 'servicios/rotulado-inkjet', widths: [900, 600], ar: 3 / 2 },
-  { src: [PRO, 'PROCESO 9', f(3)], out: 'servicios/etiquetado', widths: [900, 600], ar: 3 / 2 },
+  { src: [RET, 'PROCESO 2', vf(2)], out: 'servicios/rotulado-inkjet', widths: [900, 600], ar: 3 / 2 },
+  { src: [PRO, 'PROCESO 5', f(2)], out: 'servicios/etiquetado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 8', f(3)], out: 'servicios/cambio-envase', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 8', f(1)], out: 'servicios/rotulado-exportacion', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 6', f(4)], out: 'servicios/fraccionamiento', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 3', f(2)], out: 'servicios/termosellado', widths: [900, 600], ar: 3 / 2 },
-  { src: [PRO, 'PROCESO 7', f(2)], out: 'servicios/packs-kits', widths: [900, 600], ar: 3 / 2 },
+  { src: [PRO, 'PROCESO 4', f(1)], out: 'servicios/packs-kits', widths: [900, 600], ar: 3 / 2 },
 
   // ---------- EQUIPO ----------
   // Cabecera apaisada: la anterior era 3:2 y se recortaba sobre la banda.
@@ -76,16 +82,16 @@ const JOBS = [
 // ---------- GALERIA ----------
 export const GALERIA = [
   [[PRO, 'PROCESO 7', f(1)], 'Acondicionado en línea de productos'],
-  [[PRO, 'PROCESO 2', f(2)], 'Rotulado inkjet sobre empaque secundario'],
+  [[RET, 'PROCESO 2', vf(2)], 'Rotulado inkjet sobre empaque secundario'],
   [[PRO, 'PROCESO 3', f(2)], 'Termosellado de estuches'],
   [[PRO, 'PROCESO 6', f(2)], 'Control de producto terminado'],
   [[PRO, 'PROCESO 5', f(4)], 'Etiquetado de viales y frascos'],
   [[PRO, 'PROCESO 1', f(1)], 'Faja transportadora de acondicionado'],
-  [[PRO, 'PROCESO 9', f(3)], 'Colocación de etiquetas'],
+  [[PRO, 'PROCESO 9', f(3)], 'Estuches en proceso'],
   [[PRO, 'PROCESO 8', f(4)], 'Embalaje para distribución'],
   [[PRO, 'PROCESO 7', f(3)], 'Equipo de acondicionado en sala'],
   [[PRO, 'PROCESO 6', f(5)], 'Aseguramiento de calidad'],
-  [[PRO, 'PROCESO 4', f(1)], 'Inclusión de insertos'],
+  [[PRO, 'PROCESO 4', f(1)], 'Armado de kits'],
   [[PRO, 'PROCESO 5', f(1)], 'Área de fraccionamiento'],
   [[GRU, 'GRUPAL PRODUCCIÓN', f(3)], 'Equipo de producción'],
   [[GRU, 'GRUPAL ADMINISTRATIVO', f(2)], 'Equipo administrativo'],
