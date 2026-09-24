@@ -4,7 +4,7 @@
  * responsive dentro de public/img/. Ejecutar con `npm run images`.
  */
 import sharp from 'sharp';
-import { mkdir, readdir, rm, stat } from 'node:fs/promises';
+import { access, mkdir, readdir, rm, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const ROOT = process.cwd();
@@ -16,15 +16,14 @@ const GER = 'SESION DE FOTOS GERENTES';
 const GRU = 'SESIÓN DE FOTOS GRUPALES';
 const PRO = 'SESIÓN DE FOTOS PROCESOS';
 const f = (n) => `FOTO_${n}_EDITADA_FINAL.jpg`;
-// Retoques entregados por el cliente (septiembre 2026): mismas tomas sin la
-// etiqueta verde de la máquina inkjet. Viven en PROCESOS/, junto a fotos/.
-const RET = path.join('..', 'PROCESOS');
-const vf = (n) => `FOTO_${n}_EDITADA_FINAL_VF.png`;
+// Las fotos corregidas por el cliente (septiembre 2026) sustituyeron a sus
+// originales dentro de fotos/ con el mismo nombre; las que llegaron en PNG
+// conservan esa extensión. `localizar` acepta cualquiera de las dos.
 
 const JOBS = [
   // ---------- HERO (16:9) ----------
   { src: [PRO, 'PROCESO 7', f(1)], out: 'hero/hero-1', widths: [1920, 1280, 800], ar: 16 / 9 },
-  { src: [RET, 'PROCESO 2', vf(1)], out: 'hero/hero-2', widths: [1920, 1280, 800], ar: 16 / 9 },
+  { src: [PRO, 'PROCESO 2', f(1)], out: 'hero/hero-2', widths: [1920, 1280, 800], ar: 16 / 9 },
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(1)], out: 'hero/hero-3', widths: [1920, 1280, 800], ar: 16 / 9 },
 
   // ---------- SECCIONES ----------
@@ -47,7 +46,7 @@ const JOBS = [
   { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/certificacion-hero-movil', widths: [760, 540], ar: 1 },
   { src: [GER, 'COMERCIAL', f(1)], out: 'secciones/contacto-hero-movil', widths: [760, 540], ar: 1 },
   { src: [PRO, 'PROCESO 1', f(2)], out: 'secciones/calidad', widths: [900, 600], ar: 3 / 2 },
-  { src: [RET, 'PROCESO 2', vf(2)], out: 'secciones/tecnologia', widths: [900, 600], ar: 3 / 2 },
+  { src: [PRO, 'PROCESO 2', f(2)], out: 'secciones/tecnologia', widths: [900, 600], ar: 3 / 2 },
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(4)], out: 'secciones/personal', widths: [900, 600], ar: 3 / 2 },
   // Banner apaisado para el tercer pilar de la portada.
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(3)], out: 'secciones/personal-ancho', widths: [1600, 1100, 760], ar: 21 / 9 },
@@ -59,7 +58,7 @@ const JOBS = [
   // acondicionado, Proceso 4 armado de kits y Proceso 5 etiquetado.
   { src: [PRO, 'PROCESO 7', f(2)], out: 'servicios/acondicionado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 4', f(3)], out: 'servicios/reacondicionado', widths: [900, 600], ar: 3 / 2 },
-  { src: [RET, 'PROCESO 2', vf(2)], out: 'servicios/rotulado-inkjet', widths: [900, 600], ar: 3 / 2 },
+  { src: [PRO, 'PROCESO 2', f(2)], out: 'servicios/rotulado-inkjet', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 5', f(2)], out: 'servicios/etiquetado', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 8', f(3)], out: 'servicios/cambio-envase', widths: [900, 600], ar: 3 / 2 },
   { src: [PRO, 'PROCESO 8', f(1)], out: 'servicios/rotulado-exportacion', widths: [900, 600], ar: 3 / 2 },
@@ -82,7 +81,7 @@ const JOBS = [
 // ---------- GALERIA ----------
 export const GALERIA = [
   [[PRO, 'PROCESO 7', f(1)], 'Acondicionado en línea de productos'],
-  [[RET, 'PROCESO 2', vf(2)], 'Rotulado inkjet sobre empaque secundario'],
+  [[PRO, 'PROCESO 2', f(2)], 'Rotulado inkjet sobre empaque secundario'],
   [[PRO, 'PROCESO 3', f(2)], 'Termosellado de estuches'],
   [[PRO, 'PROCESO 6', f(2)], 'Control de producto terminado'],
   [[PRO, 'PROCESO 5', f(4)], 'Etiquetado de viales y frascos'],
@@ -105,6 +104,19 @@ GALERIA.forEach(([src], i) => {
   JOBS.push({ src, out: `galeria/g${n}-full`, widths: [1500], ar: null });
 });
 
+/** Ruta real del original: .jpg o, si el cliente lo entregó así, .png. */
+async function localizar(ruta) {
+  for (const candidata of [ruta, ruta.replace(/\.jpg$/i, '.png')]) {
+    try {
+      await access(candidata);
+      return candidata;
+    } catch {
+      // se prueba la siguiente
+    }
+  }
+  throw new Error(`No existe el original: ${ruta} (ni en .png)`);
+}
+
 async function run() {
   await rm(OUT, { recursive: true, force: true });
   let totalIn = 0;
@@ -112,7 +124,7 @@ async function run() {
   let count = 0;
 
   for (const job of JOBS) {
-    const abs = path.join(SRC, ...job.src);
+    const abs = await localizar(path.join(SRC, ...job.src));
     const dest = path.join(OUT, job.out);
     await mkdir(path.dirname(dest), { recursive: true });
 

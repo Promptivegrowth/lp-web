@@ -49,7 +49,7 @@ npm run documentos # regenera public/documentos/ (PDF de respaldo); requiere Pyt
 │
 ├── fuentes/clientes/     Logotipos de clientes (fuente del pipeline)
 ├── fotos/                Fotografías originales — NO se versiona (ver abajo)
-├── PROCESOS/             Retoques del cliente (PNG) — NO se versiona
+├── fotos observadas/     Fotos corregidas que entregó el cliente — NO se versiona
 ├── documentos/           PDF originales del cliente — NO se versiona
 ├── tools/images.mjs      Pipeline de optimización de imágenes
 ├── tools/documentos.py   Preparación de los PDF de respaldo
@@ -216,7 +216,10 @@ conviene añadir archivos a mano dentro de esa carpeta: hay que declararlos en e
 pipeline.
 
 Para cambiar qué foto se usa en cada sección basta con editar la lista `JOBS` del
-mismo archivo. Los retratos del equipo se recortan a 4:5 usando la estrategia
+mismo archivo. Los originales se llaman `FOTO_n_EDITADA_FINAL` y pueden
+ser `.jpg` o `.png`: para sustituir una foto por una versión corregida basta con
+reemplazar el archivo en `fotos/` con ese mismo nombre y volver a ejecutar
+`npm run images`; las medidas y la compresión de salida no cambian. Los retratos del equipo se recortan a 4:5 usando la estrategia
 `attention` de sharp, que centra el encuadre en la zona de interés.
 
 En el HTML cada imagen se sirve con `<picture>`: WebP con `srcset` por ancho y un
