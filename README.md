@@ -242,10 +242,10 @@ npm run documentos
 ```
 
 `tools/documentos.py` baja los escaneos a 200 ppp, recomprime a JPEG, limpia los
-metadatos y guarda en `public/documentos/` el PDF ligero y una miniatura de la
-primera página (WebP + JPG). No altera el contenido de los documentos. Las
-miniaturas viven ahí y no en `public/img/` porque `npm run images` borra esa
-carpeta entera. Requiere Python con PyMuPDF y Pillow (`pip install pymupdf pillow`).
+metadatos y guarda el PDF ligero en `public/documentos/` (no en `public/img/`,
+porque `npm run images` borra esa carpeta entera). No altera el contenido de los
+documentos. La página solo ofrece la descarga, sin vista previa. Requiere Python
+con PyMuPDF y Pillow (`pip install pymupdf pillow`).
 
 Si se añade o renueva un documento, hay que declararlo en la lista `DOCUMENTOS`
 del script y actualizar su tarjeta en `certificacion.html` (título, fechas,

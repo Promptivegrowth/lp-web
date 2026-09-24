@@ -3,8 +3,7 @@
 Documentos de respaldo (certificado BPM, autorizaciones y licencia).
 
 Toma los PDF escaneados que entrega el cliente en documentos/ y deja en
-public/documentos/ una copia ligera para descargar, más una miniatura de la
-primera página para la vista previa. Todo queda en public/documentos/ y no en
+public/documentos/ una copia ligera para descargar. Queda ahí y no en
 public/img/, porque `npm run images` borra y regenera esa carpeta entera.
 
 Solo se recomprimen las imágenes escaneadas (se bajan a 200 ppp las que
@@ -35,10 +34,6 @@ DOCUMENTOS = [
      'Licencia municipal de funcionamiento N.º 0598-2016 — Laboratorios Pacheco S.A.C.'),
 ]
 
-MINIATURA_ANCHO = 600
-# La tarjeta solo enseña la mitad superior de la hoja (membrete y número),
-# en proporción 4:3,3; la miniatura se recorta a esa zona.
-MINIATURA_ALTO = round(MINIATURA_ANCHO * 3.3 / 4)
 
 
 PPP_OBJETIVO = 200
@@ -90,19 +85,9 @@ def preparar(origen, nombre, titulo):
     destino = os.path.join(SALIDA_PDF, f'{nombre}.pdf')
     doc.save(destino, garbage=4, deflate=True, clean=True)
 
-    # Miniatura de la primera página.
-    pix = doc[0].get_pixmap(dpi=110)
-    img = Image.open(io.BytesIO(pix.tobytes('png'))).convert('RGB')
-    alto = round(img.height * MINIATURA_ANCHO / img.width)
-    img = img.resize((MINIATURA_ANCHO, alto), Image.LANCZOS).crop((0, 0, MINIATURA_ANCHO, MINIATURA_ALTO))
-    base = os.path.join(SALIDA_PDF, nombre)
-    img.save(f'{base}.webp', 'WEBP', quality=68, method=6)
-    img.save(f'{base}.jpg', 'JPEG', quality=70, optimize=True, progressive=True)
-
     paginas = doc.page_count
     doc.close()
-    print(f'  {nombre}.pdf  {kb(origen):6.0f} KB -> {kb(destino):5.0f} KB  · {paginas} pág'
-          f'  · miniatura {MINIATURA_ANCHO}x{MINIATURA_ALTO}')
+    print(f'  {nombre}.pdf  {kb(origen):6.0f} KB -> {kb(destino):5.0f} KB  · {paginas} pág')
     return paginas
 
 

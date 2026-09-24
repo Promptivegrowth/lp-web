@@ -3375,69 +3375,56 @@ body.menu-abierto .menu-movil__lista > li {
   translate: 0 -4px;
 }
 
-/* La vista previa es la hoja real: se enseña la mitad superior, que es
-   donde están el membrete y el número del documento. */
-.documento__vista {
-  position: relative;
-  display: block;
-  padding: 1.5rem 1.5rem 0;
-  overflow: hidden;
-  background: linear-gradient(160deg, var(--gris-100), var(--gris-200));
-}
-
-.documento__vista img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3.3;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 4px 4px 0 0;
-  box-shadow: 0 -2px 18px rgba(10, 13, 8, 0.12);
-  transition: translate 0.5s var(--ease);
-}
-
-.documento:hover .documento__vista img {
-  translate: 0 -6px;
-}
-
-.documento__ver {
-  position: absolute;
-  right: 0.9rem;
-  bottom: 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.5rem 0.85rem;
-  border-radius: 100px;
-  background: var(--negro);
-  font-family: var(--f-display);
-  font-size: var(--t-xs);
-  font-weight: 600;
-  color: var(--blanco);
-  opacity: 0;
-  translate: 0 6px;
-  transition: opacity 0.3s ease, translate 0.3s var(--ease);
-}
-
-.documento__vista:hover .documento__ver,
-.documento__vista:focus-visible .documento__ver {
-  opacity: 1;
-  translate: 0 0;
-}
-
-@media (hover: none) {
-  .documento__ver {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
 .documento__cuerpo {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 1.35rem 1.5rem 1.5rem;
+  padding: 1.5rem;
+}
+
+.documento__cabeza {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.documento__ico {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: var(--r-md);
+  background: rgba(142, 191, 69, 0.12);
+  color: var(--verde-prof);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.documento__ico svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* Rótulo «PDF» cosido a la esquina del icono. */
+.documento__ico span {
+  position: absolute;
+  right: -0.35rem;
+  bottom: -0.3rem;
+  padding: 0.1rem 0.32rem;
+  border-radius: 4px;
+  background: var(--verde-prof);
+  font-family: var(--f-display);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--blanco);
+}
+
+.documento:hover .documento__ico {
+  background: var(--verde);
+  color: var(--negro);
 }
 
 .documento__tipo {
@@ -3451,7 +3438,7 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 .documento h3 {
-  margin: 0.45rem 0 0;
+  margin: 0.6rem 0 0;
   font-size: 1.1rem;
   line-height: 1.3;
 }
