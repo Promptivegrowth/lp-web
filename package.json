@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "images": "node tools/images.mjs"
+    "images": "node tools/images.mjs",
+    "documentos": "python tools/documentos.py"
   },
   "devDependencies": {
     "sharp": "^0.33.5",

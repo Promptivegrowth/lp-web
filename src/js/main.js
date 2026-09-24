@@ -676,6 +676,41 @@ function anio() {
 }
 
 /* ------------------------------------------------------------
+   13 bis. Copiar al portapapeles (N.º de registro DIGEMID)
+   ------------------------------------------------------------ */
+function copiar() {
+  $$('[data-copiar]').forEach((boton) => {
+    const estado = $('[data-copiar-estado]', boton);
+    const original = estado.innerHTML;
+    let reloj;
+
+    boton.addEventListener('click', async () => {
+      const texto = boton.dataset.copiar;
+      try {
+        await navigator.clipboard.writeText(texto);
+      } catch {
+        // Sin API de portapapeles (http o navegador antiguo): se recurre a
+        // una selección temporal.
+        const campo = Object.assign(document.createElement('textarea'), { value: texto });
+        campo.setAttribute('readonly', '');
+        campo.style.cssText = 'position:fixed;opacity:0';
+        document.body.append(campo);
+        campo.select();
+        document.execCommand('copy');
+        campo.remove();
+      }
+      boton.classList.add('esta-copiado');
+      estado.textContent = 'Copiado';
+      clearTimeout(reloj);
+      reloj = setTimeout(() => {
+        boton.classList.remove('esta-copiado');
+        estado.innerHTML = original;
+      }, 2200);
+    });
+  });
+}
+
+/* ------------------------------------------------------------
    14. Arranque
    ------------------------------------------------------------ */
 const iniciar = () => {
@@ -692,6 +727,7 @@ const iniciar = () => {
   video();
   anclaInicial();
   anio();
+  copiar();
 };
 
 if (document.readyState === 'loading') {

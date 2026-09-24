@@ -19,6 +19,7 @@ npm run dev        # servidor de desarrollo en http://localhost:5173
 npm run build      # genera dist/
 npm run preview    # sirve dist/ para revisarlo antes de publicar
 npm run images     # regenera public/img/ a partir de las fotos originales
+npm run documentos # regenera public/documentos/ (PDF de respaldo); requiere Python + PyMuPDF
 ```
 
 ---
@@ -48,7 +49,10 @@ npm run images     # regenera public/img/ a partir de las fotos originales
 │
 ├── fuentes/clientes/     Logotipos de clientes (fuente del pipeline)
 ├── fotos/                Fotografías originales — NO se versiona (ver abajo)
+├── PROCESOS/             Retoques del cliente (PNG) — NO se versiona
+├── documentos/           PDF originales del cliente — NO se versiona
 ├── tools/images.mjs      Pipeline de optimización de imágenes
+├── tools/documentos.py   Preparación de los PDF de respaldo
 ├── vite.config.js
 └── vercel.json
 ```
@@ -225,6 +229,27 @@ maquetación.
 > es `public/img/` ya optimizado, de modo que el sitio compila y despliega sin
 > necesidad de los originales. Para volver a ejecutar `npm run images` hay que
 > recuperar `fotos/` en la raíz del proyecto.
+
+## Documentos de respaldo
+
+La página Certificación ofrece para descarga el certificado BPM, las resoluciones
+directorales de DIGEMID y la licencia municipal. Los PDF originales del cliente
+(escaneos) van en `documentos/`, que no se versiona; la copia publicada se genera
+con:
+
+```bash
+npm run documentos
+```
+
+`tools/documentos.py` baja los escaneos a 200 ppp, recomprime a JPEG, limpia los
+metadatos y guarda en `public/documentos/` el PDF ligero y una miniatura de la
+primera página (WebP + JPG). No altera el contenido de los documentos. Las
+miniaturas viven ahí y no en `public/img/` porque `npm run images` borra esa
+carpeta entera. Requiere Python con PyMuPDF y Pillow (`pip install pymupdf pillow`).
+
+Si se añade o renueva un documento, hay que declararlo en la lista `DOCUMENTOS`
+del script y actualizar su tarjeta en `certificacion.html` (título, fechas,
+páginas y peso).
 
 ---
 
