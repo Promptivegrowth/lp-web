@@ -17,3 +17,6 @@ fotos/
 
 # Documentos de trabajo que envía el cliente (no forman parte del sitio).
 *.docx
+
+# Fotos que el cliente envía para revisar (originales pesados).
+/fotos observadas/
