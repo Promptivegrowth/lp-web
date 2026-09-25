@@ -5355,6 +5355,683 @@ body.menu-abierto .menu-movil__lista > li {
   color: var(--verde-claro);
 }
 
+/* `hidden` siempre oculta: sin esto, cualquier regla con `display` (grid,
+   flex…) lo anula y el elemento se ve aunque el HTML diga lo contrario. */
+[hidden] {
+  display: none !important;
+}
+
+/* ============================================================
+   20 bis. LIBRO DE RECLAMACIONES · TRABAJA CON NOSOTROS
+   Páginas conectadas al portal del Grupo Pacheco.
+   ============================================================ */
+
+/* Cabecera sin fotografía para páginas de trámite. */
+.cabecera-pagina--sobria {
+  padding-bottom: clamp(2.5rem, 6vw, 3.75rem);
+}
+
+/* ---------- Libro de Reclamaciones ---------- */
+.libro {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: start;
+}
+
+@media (min-width: 1020px) {
+  .libro {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+}
+
+.libro__hoja {
+  overflow: hidden;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--verde);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-2);
+}
+
+.libro__membrete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.25rem, 3.2vw, 2.25rem);
+  border-bottom: 1px solid var(--borde);
+  background: var(--gris-50);
+}
+
+.libro__rotulo {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--verde-prof);
+}
+
+.libro__proveedor {
+  margin: 0.35rem 0 0;
+  font-family: var(--f-display);
+  font-weight: 600;
+  color: var(--negro);
+}
+
+.libro__fecha {
+  margin: 0;
+  font-size: var(--t-sm);
+  color: var(--gris-700);
+}
+
+.libro__form {
+  padding: clamp(1.25rem, 3.2vw, 2.25rem);
+}
+
+.libro__bloque {
+  margin: 0 0 clamp(1.75rem, 3.5vw, 2.25rem);
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.libro__bloque legend {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--borde);
+  font-family: var(--f-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--negro);
+}
+
+.libro__bloque legend span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--negro);
+  font-size: 0.85rem;
+  color: var(--blanco);
+}
+
+/* Ubigeo: tres columnas en escritorio, una en móvil. */
+.libro__ubigeo {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 720px) {
+  .libro__ubigeo {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.libro__ubigeo select:disabled {
+  background: var(--gris-50);
+  color: var(--gris-500);
+  cursor: not-allowed;
+}
+
+.libro__pregunta {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gris-500);
+}
+
+/* Opciones tipo tarjeta (producto/servicio, reclamo/queja). */
+.libro__opciones {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.45rem;
+}
+
+@media (min-width: 560px) {
+  .libro__opciones {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Las opciones son <label> dentro de .campo: se anula el estilo de rótulo
+   (mayúsculas espaciadas) que .campo label da a las etiquetas de campo. */
+.campo label.libro__opcion {
+  font-family: inherit;
+  font-size: 0.97rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--negro);
+}
+
+.libro__opcion {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--borde);
+  border-radius: var(--r-sm);
+  background: var(--blanco);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.libro__opcion:hover {
+  border-color: var(--gris-300);
+}
+
+.libro__opcion:has(input:checked) {
+  border-color: var(--verde);
+  background: rgba(142, 191, 69, 0.08);
+  box-shadow: 0 0 0 3px rgba(142, 191, 69, 0.14);
+}
+
+.libro__opcion:has(input:focus-visible) {
+  outline: 2px solid var(--verde-prof);
+  outline-offset: 2px;
+}
+
+.libro__opcion input {
+  margin: 0.2rem 0 0;
+  accent-color: var(--verde-prof);
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: none;
+}
+
+.libro__opcion span {
+  display: grid;
+  gap: 0.2rem;
+  font-weight: 600;
+  color: var(--negro);
+}
+
+.libro__opcion small {
+  font-weight: 400;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--gris-700);
+}
+
+/* Casillas (menor de edad, declaración). Anula el estilo de etiqueta de .campo. */
+.campo label.libro__check,
+.libro__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--gris-900);
+  cursor: pointer;
+}
+
+.libro__check input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0.15rem 0 0;
+  flex: none;
+  accent-color: var(--verde-prof);
+}
+
+.libro__cierre {
+  display: grid;
+  gap: 1.1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--borde);
+}
+
+.libro__cierre .btn {
+  justify-self: start;
+}
+
+.libro__nota {
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--gris-500);
+}
+
+/* Avisos sobre fondo claro (la versión base está pensada para fondo oscuro). */
+.libro .form-aviso--error {
+  background: #fdecea;
+  border-color: #e7a19b;
+  color: #9b2a21;
+}
+
+/* Constancia tras registrar */
+.libro__constancia {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem);
+  text-align: center;
+}
+
+.libro__constancia:focus {
+  outline: none;
+}
+
+.libro__constancia-ico {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.6rem;
+  border-radius: 50%;
+  background: rgba(142, 191, 69, 0.16);
+  color: var(--verde-prof);
+}
+
+.libro__constancia-ico svg {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.libro__codigo {
+  margin: 0.2rem 0 0.4rem;
+  font-family: var(--f-display);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--negro);
+}
+
+.libro__constancia > p:not(.libro__rotulo):not(.libro__codigo) {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--gris-700);
+}
+
+.libro__plazo {
+  margin-top: 0.4rem !important;
+}
+
+.libro__constancia .btn {
+  margin-top: 1.1rem;
+}
+
+/* Columna informativa */
+.libro__info {
+  display: grid;
+  gap: 1.1rem;
+}
+
+@media (min-width: 1020px) {
+  .libro__info {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+}
+
+.libro__ficha {
+  padding: 1.35rem 1.4rem;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-md);
+}
+
+.libro__ficha h2 {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+}
+
+.libro__icono {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-bottom: 0.9rem;
+  border-radius: var(--r-sm);
+  background: var(--negro);
+  color: var(--verde-claro);
+}
+
+.libro__icono svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.libro__ficha dl {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.libro__ficha dt {
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gris-500);
+}
+
+.libro__ficha dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+  color: var(--gris-900);
+}
+
+.libro__pasos {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
+}
+
+.libro__pasos li {
+  position: relative;
+  padding-left: 2.2rem;
+  counter-increment: paso;
+  font-size: 0.95rem;
+  color: var(--gris-700);
+}
+
+.libro__pasos li::before {
+  content: counter(paso);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: rgba(142, 191, 69, 0.16);
+  font-family: var(--f-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--verde-prof);
+}
+
+.libro__legal {
+  margin: 0;
+  padding: 0 0.25rem;
+  font-size: var(--t-xs);
+  line-height: 1.55;
+  color: var(--gris-500);
+}
+
+/* Acceso al libro en el pie (aviso obligatorio) */
+.footer__libro {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+  padding: 0.8rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--r-md);
+  color: var(--blanco);
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.footer__libro:hover {
+  border-color: var(--verde-claro);
+  background: rgba(155, 191, 99, 0.08);
+}
+
+.footer__libro svg {
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  color: var(--verde-claro);
+}
+
+.footer__libro span {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.footer__libro strong {
+  font-family: var(--f-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.footer__libro small {
+  font-size: var(--t-xs);
+  color: var(--gris-300);
+}
+
+/* ---------- Trabaja con nosotros ---------- */
+.motivos {
+  display: grid;
+  gap: clamp(1rem, 2.4vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .motivos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.motivo {
+  padding: clamp(1.35rem, 3vw, 1.75rem);
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-lg);
+}
+
+.motivo__ico {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--r-md);
+  background: rgba(142, 191, 69, 0.14);
+  color: var(--verde-prof);
+}
+
+.motivo__ico svg {
+  width: 1.55rem;
+  height: 1.55rem;
+}
+
+.motivo h3 {
+  margin: 1.1rem 0 0.4rem;
+  font-size: 1.1rem;
+}
+
+.motivo p {
+  margin: 0;
+  color: var(--gris-700);
+}
+
+.vacantes {
+  display: grid;
+  gap: clamp(1rem, 2.4vw, 1.5rem);
+}
+
+@media (min-width: 900px) {
+  .vacantes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.vacante {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.35rem, 3vw, 1.85rem);
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.vacante:hover {
+  border-color: rgba(142, 191, 69, 0.55);
+  box-shadow: var(--sh-2);
+}
+
+.vacante__cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.vacante__area {
+  padding: 0.3rem 0.75rem;
+  border-radius: 100px;
+  background: rgba(142, 191, 69, 0.14);
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--verde-prof);
+}
+
+.vacante__fecha {
+  font-size: var(--t-xs);
+  color: var(--gris-500);
+}
+
+.vacante h3 {
+  margin: 0.9rem 0 0.45rem;
+  font-size: clamp(1.15rem, 2.2vw, 1.3rem);
+  line-height: 1.3;
+}
+
+.vacante__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-sm);
+  color: var(--gris-700);
+}
+
+.vacante__meta li + li::before {
+  content: '·';
+  margin-right: 0.9rem;
+  color: var(--gris-300);
+}
+
+.vacante__resumen {
+  margin: 1rem 0 0;
+  color: var(--gris-900);
+}
+
+.vacante__detalle {
+  margin-top: 1rem;
+  border-top: 1px solid var(--borde);
+}
+
+.vacante__detalle summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 0 0.2rem;
+  font-family: var(--f-display);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--verde-prof);
+  cursor: pointer;
+  list-style: none;
+}
+
+.vacante__detalle summary::-webkit-details-marker {
+  display: none;
+}
+
+.vacante__detalle summary::after {
+  content: '+';
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+
+.vacante__detalle[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.vacante__listas {
+  display: grid;
+  gap: 1rem;
+  padding-top: 0.75rem;
+}
+
+.vacante__listas h4 {
+  margin: 0 0 0.4rem;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gris-500);
+}
+
+.vacante__listas ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vacante__listas li {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+  color: var(--gris-700);
+}
+
+.vacante__listas li::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 0.2rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verde);
+}
+
+.vacante__postular {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* El botón queda al pie aunque las tarjetas tengan distinta altura. */
+.vacante > :nth-last-child(2) {
+  margin-bottom: 1.35rem;
+}
+
+.vacantes__vacio {
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  text-align: center;
+  background: var(--blanco);
+  border: 1px dashed var(--gris-300);
+  border-radius: var(--r-lg);
+  color: var(--gris-700);
+}
+
+.vacantes__vacio p {
+  margin: 0.25rem 0;
+}
+
 /* ============================================================
    21. Flotantes
    ============================================================ */

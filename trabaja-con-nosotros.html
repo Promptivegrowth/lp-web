@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trabaja con nosotros | Laboratorios Pacheco</title>
+    <meta
+      name="description"
+      content="Vacantes en Laboratorios Pacheco: acondicionado, aseguramiento de la calidad y almacén en nuestra planta certificada BPM en el Callao. Postule por correo."
+    />
+    <meta name="theme-color" content="#8ebf45" />
+    <link rel="canonical" href="https://laboratoriospacheco.com/trabaja-con-nosotros.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Trabaja con nosotros | Laboratorios Pacheco" />
+    <meta property="og:image" content="https://laboratoriospacheco.com/img/secciones/en-planta-1600.jpg" />
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/src/styles/main.css" />
+
+    <script type="module" src="/src/js/main.js"></script>
+  </head>
+
+  <body class="pagina-interna">
+    <!--@include partials/iconos.html-->
+    <a class="salto-contenido" href="#contenido">Saltar al contenido</a>
+    <!--@include partials/header.html-->
+
+    <main id="contenido">
+      <section class="cabecera-pagina cabecera-pagina--alta">
+        <div class="cabecera-pagina__fondo" aria-hidden="true">
+          <picture>
+            <source type="image/webp" srcset="/img/secciones/en-planta-1100.webp 1100w, /img/secciones/en-planta-1600.webp 1600w" sizes="100vw" />
+            <img src="/img/secciones/en-planta-1600.jpg" alt="" width="1600" height="900" fetchpriority="high" />
+          </picture>
+        </div>
+        <div class="contenedor">
+          <ol class="miga">
+            <li><a href="index.html">Inicio</a></li>
+            <li aria-current="page">Trabaja con nosotros</li>
+          </ol>
+          <h1>Trabaja con nosotros</h1>
+          <p>
+            Súmese a un equipo que acondiciona productos farmacéuticos bajo Buenas Prácticas de Manufactura, en una planta
+            certificada por DIGEMID.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== POR QUÉ ==================== -->
+      <section class="seccion">
+        <div class="contenedor">
+          <div class="sec-cabecera sec-cabecera--split">
+            <div>
+              <p class="etiqueta">Crecer con nosotros</p>
+              <h2 class="revelar">Un lugar donde el detalle importa</h2>
+            </div>
+            <p class="revelar" style="--d: 0.1s">
+              Cada lote que sale de nuestra planta pasa por manos capacitadas. Por eso invertimos en las personas que lo
+              hacen posible.
+            </p>
+          </div>
+
+          <ul class="motivos" data-escalonar="0.08">
+            <li class="motivo revelar">
+              <span class="motivo__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 5.8v5.4c0 4.2 2.9 7.9 7 9.3 4.1-1.4 7-5.1 7-9.3V5.8Z" /><path d="m9 12 2.2 2.2L15.5 10" /></svg>
+              </span>
+              <h3>Planta certificada BPM</h3>
+              <p>Trabajo ordenado, con procedimientos claros y condiciones supervisadas por DIGEMID.</p>
+            </li>
+            <li class="motivo revelar">
+              <span class="motivo__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 5l9 4.5-9 4.5Z" /><path d="M7 11.5v4c1.4 1.4 3 2 5 2s3.6-.6 5-2v-4" /><path d="M21 9.5v5" /></svg>
+              </span>
+              <h3>Capacitación continua</h3>
+              <p>Formación en Buenas Prácticas desde el primer día y actualización permanente.</p>
+            </li>
+            <li class="motivo revelar">
+              <span class="motivo__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3" /><path d="M3.5 19c.6-3 2.8-4.8 5.5-4.8s4.9 1.8 5.5 4.8" /><circle cx="17" cy="9" r="2.3" /><path d="M16 14.3c2.4.1 4 1.6 4.5 4.2" /></svg>
+              </span>
+              <h3>Equipo técnico</h3>
+              <p>Químicos farmacéuticos y operarios que trabajan codo a codo, con línea de carrera.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ==================== VACANTES ==================== -->
+      <section class="seccion seccion--gris" id="vacantes">
+        <div class="contenedor">
+          <div class="sec-cabecera">
+            <p class="etiqueta">Vacantes abiertas</p>
+            <h2 class="revelar">Puestos disponibles</h2>
+          </div>
+
+          <!-- Las vacantes se cargan del portal; estas son el respaldo si la consulta falla. -->
+          <div class="vacantes" data-empleos data-escalonar="0.08">
+            <article class="vacante revelar">
+              <div class="vacante__cabeza"><span class="vacante__area">Producción</span></div>
+              <h3>Operario(a) de acondicionado</h3>
+              <ul class="vacante__meta"><li>Callao</li><li>Presencial</li><li>Tiempo completo</li></ul>
+              <p class="vacante__resumen">Buscamos operarios para el acondicionado y reacondicionado de productos farmacéuticos en nuestra planta certificada BPM.</p>
+              <details class="vacante__detalle">
+                <summary>Ver requisitos y funciones</summary>
+                <div class="vacante__listas">
+                  <div><h4>Requisitos</h4><ul><li>Secundaria completa.</li><li>Experiencia mínima de 6 meses en acondicionado o producción farmacéutica (deseable).</li><li>Atención al detalle y disposición para el trabajo en equipo.</li><li>Disponibilidad para laborar en Callao.</li></ul></div>
+                  <div><h4>Funciones</h4><ul><li>Etiquetado, rotulado y armado de kits según la orden de producción.</li><li>Registro de actividades en los formatos de Buenas Prácticas de Manufactura.</li><li>Orden y limpieza del área de trabajo.</li></ul></div>
+                  <div><h4>Beneficios</h4><ul><li>Planilla con todos los beneficios de ley.</li><li>Capacitación continua en BPM.</li><li>Estabilidad laboral.</li></ul></div>
+                </div>
+              </details>
+              <a class="btn vacante__postular" href="mailto:administracion@laboratoriospacheco.com?subject=Postulaci%C3%B3n%3A%20Operario(a)%20de%20acondicionado">Postular</a>
+            </article>
+            <article class="vacante revelar">
+              <div class="vacante__cabeza"><span class="vacante__area">Aseguramiento de la Calidad</span></div>
+              <h3>Químico(a) farmacéutico(a) de Aseguramiento de la Calidad</h3>
+              <ul class="vacante__meta"><li>Callao</li><li>Presencial</li><li>Tiempo completo</li></ul>
+              <p class="vacante__resumen">Incorporamos un químico farmacéutico para reforzar el área de Aseguramiento de la Calidad y la liberación de lotes.</p>
+              <details class="vacante__detalle">
+                <summary>Ver requisitos y funciones</summary>
+                <div class="vacante__listas">
+                  <div><h4>Requisitos</h4><ul><li>Título de químico farmacéutico, colegiado y habilitado.</li><li>Experiencia mínima de 2 años en aseguramiento de la calidad en laboratorio o droguería.</li><li>Conocimiento de BPM, BPA y normativa de DIGEMID.</li><li>Manejo de Office a nivel intermedio.</li></ul></div>
+                  <div><h4>Funciones</h4><ul><li>Revisión de expedientes de lote y liberación de producto terminado.</li><li>Gestión de desviaciones, acciones correctivas y control de cambios.</li><li>Participación en inspecciones de DIGEMID y auditorías de clientes.</li></ul></div>
+                  <div><h4>Beneficios</h4><ul><li>Planilla con todos los beneficios de ley.</li><li>Línea de carrera dentro del área técnica.</li></ul></div>
+                </div>
+              </details>
+              <a class="btn vacante__postular" href="mailto:administracion@laboratoriospacheco.com?subject=Postulaci%C3%B3n%3A%20Qu%C3%ADmico(a)%20farmac%C3%A9utico(a)%20de%20Aseguramiento%20de%20la%20Calidad">Postular</a>
+            </article>
+            <article class="vacante revelar">
+              <div class="vacante__cabeza"><span class="vacante__area">Almacén</span></div>
+              <h3>Auxiliar de almacén</h3>
+              <ul class="vacante__meta"><li>Callao</li><li>Presencial</li><li>Tiempo completo</li></ul>
+              <p class="vacante__resumen">Buscamos un auxiliar de almacén para la recepción, control y despacho de productos farmacéuticos.</p>
+              <details class="vacante__detalle">
+                <summary>Ver requisitos y funciones</summary>
+                <div class="vacante__listas">
+                  <div><h4>Requisitos</h4><ul><li>Secundaria completa.</li><li>Experiencia mínima de 1 año en almacén, de preferencia con productos farmacéuticos.</li><li>Conocimiento de inventarios y kárdex.</li><li>Manejo básico de Excel.</li></ul></div>
+                  <div><h4>Funciones</h4><ul><li>Recepción, ubicación y despacho de mercadería.</li><li>Control de inventarios y registro de temperaturas.</li><li>Registro en sistema y en los formatos de Buenas Prácticas de Almacenamiento.</li></ul></div>
+                  <div><h4>Beneficios</h4><ul><li>Planilla con todos los beneficios de ley.</li><li>Capacitación en BPA.</li></ul></div>
+                </div>
+              </details>
+              <a class="btn vacante__postular" href="mailto:administracion@laboratoriospacheco.com?subject=Postulaci%C3%B3n%3A%20Auxiliar%20de%20almac%C3%A9n">Postular</a>
+            </article>
+          </div>
+
+          <div class="vacantes__vacio" data-empleos-vacio hidden>
+            <p><strong>Por ahora no tenemos vacantes abiertas.</strong></p>
+            <p>Puede enviarnos su CV y lo tendremos en cuenta para próximas convocatorias.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="seccion cta" style="padding-block: clamp(3.5rem, 7vw, 5.5rem)">
+        <div class="contenedor texto-centro">
+          <h2 class="revelar" style="margin-inline: auto">¿No encuentra un puesto para usted?</h2>
+          <p class="plomo revelar" style="max-width: 52ch; margin-inline: auto; --d: 0.08s">
+            Envíenos su CV indicando el área de su interés. Lo tendremos en cuenta en las próximas convocatorias.
+          </p>
+          <p style="margin-top: 2rem">
+            <a class="btn btn--grande" href="mailto:administracion@laboratoriospacheco.com?subject=CV%20%E2%80%94%20Trabaja%20con%20nosotros">
+              Enviar mi CV
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!--@include partials/footer.html-->
+  </body>
+</html>

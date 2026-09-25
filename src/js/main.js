@@ -4,6 +4,11 @@
    si su marcado no existe en la página, no hace nada.
    ============================================================ */
 
+import { endpoint } from './config.js';
+import { datosVivos } from './datos-vivos.js';
+import { libroReclamaciones } from './libro.js';
+import { empleos } from './empleos.js';
+
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -434,27 +439,45 @@ function formulario() {
     if ($('[name="empresa_web"]', form)?.value) return;
 
     const datos = Object.fromEntries(new FormData(form));
-    const endpoint = form.dataset.endpoint;
 
-    if (endpoint) {
-      boton.disabled = true;
-      boton.textContent = 'Enviando…';
-      try {
-        const r = await fetch(endpoint, {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify(datos),
-        });
-        if (!r.ok) throw new Error(r.statusText);
+    boton.disabled = true;
+    boton.textContent = 'Enviando…';
+    try {
+      // El portal guarda el mensaje y avisa al área comercial.
+      const r = await fetch(form.dataset.endpoint || endpoint('contacto'), {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tipo: 'contacto',
+          nombre: datos.nombre,
+          empresa: datos.empresa,
+          correo: datos.correo,
+          telefono: datos.telefono,
+          asunto: datos.servicio,
+          mensaje: datos.mensaje,
+          pagina: window.location.href,
+          empresa_web: datos.empresa_web,
+        }),
+      });
+      const respuesta = await r.json().catch(() => ({}));
+      if (r.ok) {
         form.reset();
         decir('Gracias, hemos recibido su mensaje. Nos pondremos en contacto a la brevedad.');
-      } catch (err) {
-        decir('No pudimos enviar el mensaje. Escríbanos a gestioncomercial@laboratoriospacheco.com o por WhatsApp.', false);
-      } finally {
-        boton.disabled = false;
-        boton.textContent = textoBoton;
+        return;
       }
-      return;
+      if (r.status === 422 || r.status === 429) {
+        // Error del visitante (dato no válido o demasiados envíos): se explica.
+        decir(respuesta.error || 'Revise los datos del formulario.', false);
+        const campo = respuesta.campo === 'asunto' ? 'servicio' : respuesta.campo;
+        if (campo) $(`[name="${campo}"]`, form)?.focus();
+        return;
+      }
+      throw new Error(`HTTP ${r.status}`);
+    } catch {
+      // Sin conexión con el portal: se ofrece el correo con todo redactado.
+    } finally {
+      boton.disabled = false;
+      boton.textContent = textoBoton;
     }
 
     // Sin backend: se prepara el correo con toda la información.
@@ -728,6 +751,15 @@ const iniciar = () => {
   anclaInicial();
   anio();
   copiar();
+  // Contenido que llega del portal: entra en el mismo sistema de revelado.
+  const revelarNuevos = (elementos) => {
+    if (menosMovimiento) return elementos.forEach((el) => el.classList.add('es-visible'));
+    elementos.forEach((el) => observarEntrada(el, (e) => e.classList.add('es-visible')));
+    pedirBarrido();
+  };
+  datosVivos({ revelar: revelarNuevos });
+  empleos({ revelar: revelarNuevos });
+  libroReclamaciones();
 };
 
 if (document.readyState === 'loading') {

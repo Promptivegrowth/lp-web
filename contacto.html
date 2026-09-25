@@ -106,9 +106,9 @@
                 </p>
               </div>
 
-              <!-- data-endpoint: al definirlo (Formspree, Web3Forms, una función
-                   serverless…) el envío va por fetch. Sin él, se abre el gestor
-                   de correo con la consulta ya redactada. -->
+              <!-- El envío va al portal del Grupo Pacheco (src/js/config.js), que
+                   guarda el mensaje y avisa al área comercial. Si el portal no
+                   responde, se abre el gestor de correo con la consulta redactada. -->
               <form class="formulario" id="form-contacto" novalidate>
                 <div class="campo">
                   <label for="nombre">Nombre y apellido</label>
@@ -166,7 +166,7 @@
             <aside class="contacto__panel revelar revelar--cortina" style="--d: 0.12s">
               <p class="contacto__panel-titulo">Contacto por área</p>
 
-              <ul class="contacto__lista" data-escalonar="0.07">
+              <ul class="contacto__lista" data-escalonar="0.07" data-vivo="areas">
                 <li class="revelar">
                   <span class="contacto__ico">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -176,13 +176,13 @@
                   </span>
                   <div>
                     <p class="contacto__rotulo">Planta y oficinas</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Calle+Gamma+274+Parque+Internacional+de+Industria+y+Comercio+Callao" target="_blank" rel="noopener">
+                    <a data-vivo="direccion" href="https://www.google.com/maps/search/?api=1&query=Calle+Gamma+274+Parque+Internacional+de+Industria+y+Comercio+Callao" target="_blank" rel="noopener">
                       Calle Gamma 274, Parque Internacional de Industria y Comercio, Callao
                     </a>
                   </div>
                 </li>
 
-                <li class="revelar">
+                <li class="revelar" data-vivo-item>
                   <span class="contacto__ico">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M3 8.5h18v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5Z" /><path d="M9 8.5V5.8A1.8 1.8 0 0 1 10.8 4h2.4A1.8 1.8 0 0 1 15 5.8v2.7" /><path d="M3 13h18" />
@@ -195,7 +195,7 @@
                   </div>
                 </li>
 
-                <li class="revelar">
+                <li class="revelar" data-vivo-item>
                   <span class="contacto__ico">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M4 9.5h3l7-4.5v14l-7-4.5H4a1.5 1.5 0 0 1-1.5-1.5v-2A1.5 1.5 0 0 1 4 9.5Z" /><path d="M18 9a4 4 0 0 1 0 6" /><path d="M7 15.5V19a1.5 1.5 0 0 0 3 0v-2" />
@@ -208,7 +208,7 @@
                   </div>
                 </li>
 
-                <li class="revelar">
+                <li class="revelar" data-vivo-item>
                   <span class="contacto__ico">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M12 3 5 5.8v5.4c0 4.2 2.9 7.9 7 9.3 4.1-1.4 7-5.1 7-9.3V5.8Z" /><path d="m9 12 2.2 2.2L15.5 10" />
@@ -221,7 +221,7 @@
                   </div>
                 </li>
 
-                <li class="revelar">
+                <li class="revelar" data-vivo-item>
                   <span class="contacto__ico">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M4 20.5V5.5A1.5 1.5 0 0 1 5.5 4h9A1.5 1.5 0 0 1 16 5.5v15" /><path d="M16 10h2.5A1.5 1.5 0 0 1 20 11.5v9" /><path d="M3 20.5h18M7.5 8h5M7.5 12h5M7.5 16h5" />
@@ -241,13 +241,13 @@
                 </svg>
                 <span>
                   <strong>Escríbanos por WhatsApp</strong>
-                  <small>Respuesta rápida al 942 319 378</small>
+                  <small>Respuesta rápida al <span data-vivo="whatsapp-numero">942 319 378</span></small>
                 </span>
               </a>
 
               <div class="contacto__redes revelar" style="--d: 0.38s">
                 <p class="contacto__panel-titulo">Síganos en redes</p>
-                <div class="redes redes--grandes">
+                <div class="redes redes--grandes" data-vivo="redes">
                   <a href="https://www.linkedin.com/company/laboratorios-pacheco-s-a-c/" target="_blank" rel="noopener" aria-label="LinkedIn">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.65h.05c.53-.95 1.83-1.95 3.77-1.95C20.6 8.7 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.3-2.05-3.3-2.05 0-2.37 1.57-2.37 3.2V21H9z"/></svg>
                   </a>
