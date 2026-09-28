@@ -531,6 +531,7 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__logo img {
 .header__logo {
   position: relative;
   display: block;
+  flex: none;
 }
 
 .header.esta-fija .header__logo img {
@@ -633,6 +634,40 @@ body.pagina-interna .header {
 }
 
 .header.esta-fija .nav__enlace,
+/* Con siete pestañas, en escritorios estrechos se compacta el menú para que
+   ninguna pase a dos líneas. */
+.nav__enlace {
+  white-space: nowrap;
+}
+
+@media (min-width: 1080px) and (max-width: 1365px) {
+  .nav {
+    gap: 0.1rem;
+  }
+
+  .nav__enlace {
+    padding-inline: 0.62rem;
+    font-size: 0.84rem;
+  }
+}
+
+/* Hasta 1280 px no caben logo, siete pestañas y el botón completo: el botón
+   queda en «Cotizar» y el logotipo un poco más bajo. */
+@media (min-width: 1080px) and (max-width: 1279px) {
+  .header__interior {
+    gap: 1rem;
+  }
+
+  .header__logo img {
+    height: 40px;
+  }
+
+  .header__cta-extra,
+  .header__cta svg {
+    display: none;
+  }
+}
+
 body.pagina-interna .nav__enlace {
   color: var(--gris-900);
 }
@@ -703,6 +738,7 @@ body:not(.pagina-interna) .header:not(.esta-fija) .header__cta.btn--fantasma {
 }
 
 .nav__chevron {
+  flex: none;
   transition: transform 0.4s var(--ease);
 }
 
@@ -4664,6 +4700,10 @@ body.menu-abierto .menu-movil__lista > li {
   z-index: -1;
   background: radial-gradient(ellipse 60% 90% at 82% 20%, rgba(142, 191, 69, 0.24), transparent 60%),
     repeating-linear-gradient(90deg, rgba(155, 191, 99, 0.08) 0 2px, transparent 2px 11px);
+}
+
+.cta .plomo {
+  color: var(--gris-300);
 }
 
 .cta h2 {
