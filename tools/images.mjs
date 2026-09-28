@@ -2,6 +2,9 @@
  * Pipeline de imagenes.
  * Redimensiona y comprime las fotos originales (~148 MB) a WebP + JPG
  * responsive dentro de public/img/. Ejecutar con `npm run images`.
+ *
+ * `npm run images -- equipo/` regenera solo los trabajos cuya salida empieza
+ * por ese prefijo, sin borrar el resto de public/img.
  */
 import sharp from 'sharp';
 import { access, mkdir, readdir, rm, stat } from 'node:fs/promises';
@@ -16,6 +19,7 @@ const GER = 'SESION DE FOTOS GERENTES';
 const GRU = 'SESIÓN DE FOTOS GRUPALES';
 const PRO = 'SESIÓN DE FOTOS PROCESOS';
 const f = (n) => `FOTO_${n}_EDITADA_FINAL.jpg`;
+const NUEVAS = 'nuevas fotos';
 // Las fotos corregidas por el cliente (septiembre 2026) sustituyeron a sus
 // originales dentro de fotos/ con el mismo nombre; las que llegaron en PNG
 // conservan esa extensión. `localizar` acepta cualquiera de las dos.
@@ -69,11 +73,19 @@ const JOBS = [
   // ---------- EQUIPO ----------
   // Cabecera apaisada: la anterior era 3:2 y se recortaba sobre la banda.
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(2)], out: 'secciones/equipo-hero', widths: [1920, 1280, 800], ar: 16 / 9 },
-  // Retratos a 3:4, el encuadre que menos recorta estos originales verticales.
-  { src: [CEO, f(4)], out: 'equipo/gerente-general', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
-  { src: [GER, 'DIRECTOR', f(3)], out: 'equipo/director-tecnico', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
-  { src: [GER, 'COMERCIAL', f(5)], out: 'equipo/comercial', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
-  { src: [GER, 'ALMACEN', f(5)], out: 'equipo/almacen', widths: [860, 560], ar: 3 / 4, pos: 'attention' },
+  // Líderes en horizontal (septiembre 2026): el cliente entregó nuevas fotos
+  // apaisadas de gerencia, dirección técnica y comercial. `foco` es el punto
+  // del original (fracción de ancho y alto) que queda al centro del recorte,
+  // elegido a mano sobre cada rostro; el recorte automático cortaba el logo
+  // de la pantalla del gerente o centraba escritorios en vez de personas.
+  // Gerencia General va en la tarjeta ancha a 3:2 (conserva el logo del fondo).
+  { src: [NUEVAS, 'CEO.jpg'], out: 'equipo/gerente-general-ancho', widths: [1320, 880, 560], ar: 3 / 2, foco: [0.515, 0.45] },
+  // Las tres jefaturas, en fila a 4:3.
+  { src: [NUEVAS, 'director.jpg'], out: 'equipo/director-tecnico-ancho', widths: [1000, 640], ar: 4 / 3, foco: [0.55, 0.5] },
+  { src: [NUEVAS, 'comercial.jpg'], out: 'equipo/comercial-ancho', widths: [1000, 640], ar: 4 / 3, foco: [0.58, 0.5] },
+  // Almacén sigue con su foto vertical de siempre; recortada a 4:3 del casco a
+  // las manos para que la fila tenga un solo formato.
+  { src: [GER, 'ALMACEN', f(5)], out: 'equipo/almacen-ancho', widths: [1000, 640], ar: 4 / 3, foco: [0.51, 0.4375] },
   // «En planta»: versión grande y apaisada para el marco destacado.
   { src: [GRU, 'GRUPAL PRODUCCIÓN', f(1)], out: 'secciones/en-planta', widths: [1600, 1100, 760], ar: 16 / 9 },
 ];
@@ -117,14 +129,37 @@ async function localizar(ruta) {
   throw new Error(`No existe el original: ${ruta} (ni en .png)`);
 }
 
+/**
+ * Recorte con el punto `foco` al centro (sin salirse de la imagen) y luego
+ * redimensión al ancho pedido.
+ */
+async function recorteConFoco(abs, ar, [fx, fy]) {
+  const { width, height } = await sharp(abs).rotate().metadata().then((m) =>
+    // Con orientación EXIF 5–8 el ancho y el alto vienen intercambiados.
+    m.orientation >= 5 ? { width: m.height, height: m.width } : m,
+  );
+  let w = width;
+  let h = Math.round(w / ar);
+  if (h > height) {
+    h = height;
+    w = Math.round(h * ar);
+  }
+  const left = Math.min(Math.max(Math.round(fx * width - w / 2), 0), width - w);
+  const top = Math.min(Math.max(Math.round(fy * height - h / 2), 0), height - h);
+  return { left, top, width: w, height: h };
+}
+
 async function run() {
-  await rm(OUT, { recursive: true, force: true });
+  const filtro = process.argv[2];
+  if (!filtro) await rm(OUT, { recursive: true, force: true });
   let totalIn = 0;
   let totalOut = 0;
   let count = 0;
 
   for (const job of JOBS) {
+    if (filtro && !job.out.startsWith(filtro)) continue;
     const abs = await localizar(path.join(SRC, ...job.src));
+    const caja = job.foco ? await recorteConFoco(abs, job.ar, job.foco) : null;
     const dest = path.join(OUT, job.out);
     await mkdir(path.dirname(dest), { recursive: true });
 
@@ -132,7 +167,9 @@ async function run() {
 
     for (const w of job.widths) {
       const base = sharp(abs).rotate();
-      const pipe = job.ar
+      const pipe = caja
+        ? base.extract(caja).resize({ width: w, height: Math.round(w / job.ar) })
+        : job.ar
         ? base.resize({
             width: w,
             height: Math.round(w / job.ar),
@@ -149,6 +186,13 @@ async function run() {
     }
 
     process.stdout.write('.');
+  }
+
+  // Con filtro solo se regeneran esas fotos: marca, clientes y favicons quedan igual.
+  if (filtro) {
+    console.log(`
+${count} archivos generados (${filtro}) -> ${(totalOut / 1024).toFixed(0)} KB`);
+    return;
   }
 
   // ---------- Marca ----------

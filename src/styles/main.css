@@ -3618,6 +3618,9 @@ body.menu-abierto .menu-movil__lista > li {
    Jerarquía explícita: Gerencia General abre en una tarjeta ancha
    y las tres jefaturas siguen en fila. El texto va debajo de la
    fotografía, nunca encima, para no velar los retratos.
+   Las fotografías son apaisadas (retratos en su puesto de trabajo):
+   4:3 en la fila y 3:2 en la tarjeta de Gerencia General, ya
+   recortadas sobre cada rostro en tools/images.mjs.
    ============================================================ */
 .lideres {
   display: grid;
@@ -3658,7 +3661,7 @@ body.menu-abierto .menu-movil__lista > li {
 /* ---------- Marco de la fotografía ---------- */
 .lider__marco {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--gris-100);
 }
@@ -3773,17 +3776,32 @@ body.menu-abierto .menu-movil__lista > li {
 }
 
 /* ---------- Tarjeta principal: Gerencia General ---------- */
+.lider--principal .lider__marco {
+  aspect-ratio: 3 / 2;
+}
+
+/* La tarjeta ocupa todo el ancho de la rejilla desde que hay dos columnas;
+   la foto pasa al lado del texto cuando hay sitio para ambos. */
 @media (min-width: 700px) {
   .lider--principal {
     grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .lider--principal {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     align-items: stretch;
   }
 
+  /* Si el texto es más alto que la foto, la foto se estira hasta él y
+     recorta por los lados (el logo de la pantalla queda centrado). */
   .lider--principal .lider__marco {
-    aspect-ratio: auto;
     height: 100%;
-    min-height: 300px;
+  }
+
+  .lider--principal .lider__marco img {
+    object-position: 50% 30%;
   }
 
   .lider--principal .lider__pie {
@@ -3804,7 +3822,17 @@ body.menu-abierto .menu-movil__lista > li {
 
 @media (min-width: 1080px) {
   .lider--principal {
-    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  }
+}
+
+/* En dos columnas, la jefatura que queda sola en la última fila ocupa todo
+   el ancho con la foto al lado del texto, en vez de dejar un hueco. */
+@media (min-width: 700px) and (max-width: 1079px) {
+  .lideres > .lider:last-child:nth-child(even) {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
   }
 }
 
