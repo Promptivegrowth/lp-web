@@ -119,7 +119,7 @@
                   <div><h4>Beneficios</h4><ul><li>Planilla con todos los beneficios de ley.</li><li>Capacitación continua en BPM.</li><li>Estabilidad laboral.</li></ul></div>
                 </div>
               </details>
-              <a class="btn vacante__postular" href="mailto:administracion@laboratoriospacheco.com?subject=Postulaci%C3%B3n%3A%20Operario(a)%20de%20acondicionado">Postular</a>
+              <button type="button" class="btn vacante__postular" data-postular data-empleo-id="1823d380-6711-48cb-9223-6c90fbb4d330" data-puesto="Operario(a) de acondicionado" data-meta="Callao · Presencial · Tiempo completo">Postular</button>
             </article>
             <article class="vacante revelar">
               <div class="vacante__cabeza"><span class="vacante__area">Aseguramiento de la Calidad</span></div>
@@ -134,7 +134,7 @@
                   <div><h4>Beneficios</h4><ul><li>Planilla con todos los beneficios de ley.</li><li>Línea de carrera dentro del área técnica.</li></ul></div>
                 </div>
               </details>
-              <a class="btn vacante__postular" href="mailto:administracion@laboratoriospacheco.com?subject=Postulaci%C3%B3n%3A%20Qu%C3%ADmico(a)%20farmac%C3%A9utico(a)%20de%20Aseguramiento%20de%20la%20Calidad">Postular</a>
+              <button type="button" class="btn vacante__postular" data-postular data-empleo-id="646b0da2-e64f-4b59-8c9d-6f96eac578f2" data-puesto="Químico(a) farmacéutico(a) de Aseguramiento de la Calidad" data-meta="Callao · Presencial · Tiempo completo">Postular</button>
             </article>
             <article class="vacante revelar">
               <div class="vacante__cabeza"><span class="vacante__area">Almacén</span></div>
@@ -149,7 +149,7 @@
                   <div><h4>Beneficios</h4><ul><li>Planilla con todos los beneficios de ley.</li><li>Capacitación en BPA.</li></ul></div>
                 </div>
               </details>
-              <a class="btn vacante__postular" href="mailto:administracion@laboratoriospacheco.com?subject=Postulaci%C3%B3n%3A%20Auxiliar%20de%20almac%C3%A9n">Postular</a>
+              <button type="button" class="btn vacante__postular" data-postular data-empleo-id="ac87c41b-d714-445f-889a-4f1161e383c3" data-puesto="Auxiliar de almacén" data-meta="Callao · Presencial · Tiempo completo">Postular</button>
             </article>
           </div>
 
@@ -167,15 +167,208 @@
             Envíenos su CV indicando el área de su interés. Lo tendremos en cuenta en las próximas convocatorias.
           </p>
           <p style="margin-top: 2rem">
-            <a class="btn btn--grande" href="mailto:administracion@laboratoriospacheco.com?subject=CV%20%E2%80%94%20Trabaja%20con%20nosotros">
+            <button type="button" class="btn btn--grande" data-postular>
               Enviar mi CV
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-            </a>
+            </button>
           </p>
         </div>
       </section>
+
+      <!-- Postulación: se abre desde «Postular» y «Enviar mi CV» (src/js/postular.js)
+           y se envía al portal del Grupo Pacheco con el CV adjunto. -->
+      <dialog class="postular" id="postular" aria-labelledby="postular-titulo">
+        <div class="postular__marco">
+          <header class="postular__cabeza">
+            <div>
+              <p class="postular__rotulo" data-postular-rotulo>Postulación</p>
+              <h2 id="postular-titulo" data-postular-puesto>Postulación espontánea</h2>
+              <p class="postular__meta" data-postular-meta hidden></p>
+            </div>
+            <button type="button" class="postular__cerrar" data-postular-cerrar aria-label="Cerrar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+            </button>
+          </header>
+
+          <form class="postular__form" novalidate>
+            <input type="hidden" name="empleo_id" />
+            <input type="hidden" name="puesto" />
+            <!-- Campo trampa para robots -->
+            <input type="text" name="sitio_web" tabindex="-1" autocomplete="off" class="solo-lectores" aria-hidden="true" />
+
+            <fieldset class="postular__bloque">
+              <legend>Datos personales</legend>
+              <div class="formulario">
+                <div class="campo campo--ancho">
+                  <label for="p-nombre">Nombres y apellidos *</label>
+                  <input id="p-nombre" name="nombre" type="text" required minlength="3" maxlength="150" autocomplete="name" />
+                </div>
+                <div class="campo">
+                  <label for="p-tipo-doc">Tipo de documento *</label>
+                  <select id="p-tipo-doc" name="tipo_documento" required>
+                    <option value="DNI">DNI</option>
+                    <option value="CE">Carné de extranjería</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="p-num-doc">Número de documento *</label>
+                  <input id="p-num-doc" name="numero_documento" type="text" required autocomplete="off" />
+                </div>
+                <div class="campo">
+                  <label for="p-correo">Correo electrónico *</label>
+                  <input id="p-correo" name="correo" type="email" required maxlength="150" autocomplete="email" />
+                </div>
+                <div class="campo">
+                  <label for="p-telefono">Celular *</label>
+                  <input id="p-telefono" name="telefono" type="tel" required pattern="[+0-9 \(\)\-]{6,20}" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="987 654 321" />
+                </div>
+                <div class="campo--ancho">
+                  <p class="postular__pregunta">Lugar de residencia *</p>
+                  <div class="libro__ubigeo" data-ubigeo>
+                    <div class="campo">
+                      <label for="p-departamento">Departamento</label>
+                      <select id="p-departamento" data-ubigeo-nivel="departamento" required><option value="">Cargando…</option></select>
+                    </div>
+                    <div class="campo">
+                      <label for="p-provincia">Provincia</label>
+                      <select id="p-provincia" data-ubigeo-nivel="provincia" required disabled><option value="">Elija el departamento</option></select>
+                    </div>
+                    <div class="campo">
+                      <label for="p-distrito">Distrito</label>
+                      <select id="p-distrito" name="ubigeo" data-ubigeo-nivel="distrito" required disabled><option value="">Elija la provincia</option></select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="postular__bloque">
+              <legend>Perfil profesional</legend>
+              <div class="formulario">
+                <div class="campo campo--ancho" data-postular-area hidden>
+                  <label for="p-area">Área de interés *</label>
+                  <select id="p-area" name="area_interes">
+                    <option value="">Seleccione</option>
+                    <option>Producción (acondicionado y reacondicionado)</option>
+                    <option>Aseguramiento y Control de la Calidad</option>
+                    <option>Dirección Técnica</option>
+                    <option>Almacén y logística</option>
+                    <option>Administración y finanzas</option>
+                    <option>Comercial y atención al cliente</option>
+                    <option>Mantenimiento</option>
+                    <option>Otra</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="p-estudios">Nivel de estudios *</label>
+                  <select id="p-estudios" name="estudios" required>
+                    <option value="">Seleccione</option>
+                    <option>Secundaria completa</option>
+                    <option>Técnico</option>
+                    <option>Universitario en curso</option>
+                    <option>Bachiller</option>
+                    <option>Titulado</option>
+                    <option>Titulado y colegiado</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="p-carrera">Carrera o especialidad</label>
+                  <input id="p-carrera" name="carrera" type="text" maxlength="150" placeholder="Ej.: Farmacia y Bioquímica" />
+                </div>
+                <div class="campo">
+                  <label for="p-experiencia">Experiencia en el rubro *</label>
+                  <select id="p-experiencia" name="experiencia" required>
+                    <option value="">Seleccione</option>
+                    <option>Sin experiencia</option>
+                    <option>Menos de 1 año</option>
+                    <option>De 1 a 2 años</option>
+                    <option>De 3 a 5 años</option>
+                    <option>Más de 5 años</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="p-bpm">¿Experiencia en BPM o BPA? *</label>
+                  <select id="p-bpm" name="experiencia_bpm" required>
+                    <option value="">Seleccione</option>
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="p-disponibilidad">Disponibilidad para empezar *</label>
+                  <select id="p-disponibilidad" name="disponibilidad" required>
+                    <option value="">Seleccione</option>
+                    <option>Inmediata</option>
+                    <option>En 15 días</option>
+                    <option>En 30 días</option>
+                    <option>Más de 30 días</option>
+                  </select>
+                </div>
+                <div class="campo">
+                  <label for="p-pretension">Pretensión salarial (S/)</label>
+                  <input id="p-pretension" name="pretension" type="number" min="0" step="1" inputmode="numeric" placeholder="Opcional" />
+                </div>
+                <div class="campo campo--ancho">
+                  <label for="p-linkedin">Perfil de LinkedIn</label>
+                  <input id="p-linkedin" name="linkedin" type="url" maxlength="300" placeholder="https://www.linkedin.com/in/… (opcional)" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="postular__bloque">
+              <legend>CV y presentación</legend>
+              <div class="formulario">
+                <div class="campo--ancho">
+                  <p class="postular__pregunta" id="p-cv-rotulo">CV *</p>
+                  <label class="postular__archivo" for="p-cv" data-postular-archivo>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M12 18v-6M9.5 14.5 12 12l2.5 2.5" /></svg>
+                    <span>
+                      <strong data-postular-archivo-nombre>Adjuntar CV</strong>
+                      <small data-postular-archivo-detalle>PDF o Word, hasta 4 MB</small>
+                    </span>
+                  </label>
+                  <input id="p-cv" class="postular__archivo-input" name="cv" type="file" required aria-labelledby="p-cv-rotulo" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                </div>
+                <div class="campo campo--ancho">
+                  <label for="p-presentacion">Presentación breve</label>
+                  <textarea id="p-presentacion" name="presentacion" maxlength="1500" placeholder="Opcional: su experiencia más relevante o por qué le interesa el puesto."></textarea>
+                </div>
+              </div>
+            </fieldset>
+
+            <label class="postular__acepta">
+              <input id="p-acepta" name="acepta" type="checkbox" required />
+              <span>
+                Autorizo a Laboratorios Pacheco S.A.C. a tratar mis datos personales para este y futuros procesos
+                de selección, conforme a la Ley N.º 29733, Ley de Protección de Datos Personales. *
+              </span>
+            </label>
+
+            <p class="form-aviso" role="alert"></p>
+
+            <div class="postular__pie">
+              <p>* Campos obligatorios.</p>
+              <button type="submit" class="btn">
+                Enviar postulación
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </button>
+            </div>
+          </form>
+
+          <div class="postular__gracias" data-postular-gracias tabindex="-1" hidden>
+            <span class="postular__check" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+            </span>
+            <h3>¡Gracias por postular!</h3>
+            <p>Nuestro equipo se pondrá en contacto contigo de ser necesario.</p>
+            <p class="postular__nota" data-postular-nota></p>
+            <button type="button" class="btn" data-postular-cerrar>Cerrar</button>
+          </div>
+        </div>
+      </dialog>
     </main>
 
     <!--@include partials/footer.html-->

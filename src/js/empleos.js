@@ -23,8 +23,6 @@ const fecha = (iso) =>
     new Date(`${iso}T00:00:00Z`),
   );
 
-const esCorreo = (c) => /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(c ?? '');
-
 function lista(titulo, elementos) {
   if (!elementos?.length) return null;
   return el('div', {}, [el('h4', { texto: titulo }), el('ul', {}, elementos.map((t) => el('li', { texto: t })))]);
@@ -32,8 +30,7 @@ function lista(titulo, elementos) {
 
 function tarjeta(v) {
   const listas = [lista('Requisitos', v.requisitos), lista('Funciones', v.funciones), lista('Beneficios', v.beneficios)].filter(Boolean);
-  const asunto = encodeURIComponent(`Postulación: ${v.titulo}`);
-  const correo = esCorreo(v.correo_postulacion) ? v.correo_postulacion : 'administracion@laboratoriospacheco.com';
+  const meta = [v.ubicacion, v.modalidad, v.jornada].filter(Boolean);
 
   return el('article', { class: 'vacante revelar' }, [
     el('div', { class: 'vacante__cabeza' }, [
@@ -47,7 +44,7 @@ function tarjeta(v) {
     el(
       'ul',
       { class: 'vacante__meta' },
-      [v.ubicacion, v.modalidad, v.jornada].filter(Boolean).map((t) => el('li', { texto: t })),
+      meta.map((t) => el('li', { texto: t })),
     ),
     el('p', { class: 'vacante__resumen', texto: v.resumen }),
     listas.length
@@ -56,7 +53,16 @@ function tarjeta(v) {
           el('div', { class: 'vacante__listas' }, listas),
         ])
       : null,
-    el('a', { class: 'btn vacante__postular', href: `mailto:${correo}?subject=${asunto}`, texto: 'Postular' }),
+    // Abre el formulario de postulación (postular.js).
+    el('button', {
+      type: 'button',
+      class: 'btn vacante__postular',
+      'data-postular': '',
+      'data-empleo-id': v.id,
+      'data-puesto': v.titulo,
+      'data-meta': meta.join(' · '),
+      texto: 'Postular',
+    }),
   ]);
 }
 
@@ -66,7 +72,7 @@ export async function empleos({ revelar } = {}) {
 
   const vacantes = await leer(
     'empleos',
-    `empresa_id=eq.${EMPRESA}&select=titulo,area,ubicacion,modalidad,jornada,resumen,requisitos,funciones,beneficios,correo_postulacion,fecha_publicacion,fecha_cierre&order=orden.asc,fecha_publicacion.desc`,
+    `empresa_id=eq.${EMPRESA}&select=id,titulo,area,ubicacion,modalidad,jornada,resumen,requisitos,funciones,beneficios,fecha_publicacion,fecha_cierre&order=orden.asc,fecha_publicacion.desc`,
   );
   if (!vacantes) return; // sin conexión: se quedan las del HTML
 

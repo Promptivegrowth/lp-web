@@ -8,6 +8,7 @@ import { endpoint } from './config.js';
 import { datosVivos } from './datos-vivos.js';
 import { libroReclamaciones } from './libro.js';
 import { empleos } from './empleos.js';
+import { postulaciones } from './postular.js';
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
@@ -759,6 +760,7 @@ const iniciar = () => {
   };
   datosVivos({ revelar: revelarNuevos });
   empleos({ revelar: revelarNuevos });
+  postulaciones();
   libroReclamaciones();
 };
 

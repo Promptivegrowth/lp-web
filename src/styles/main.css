@@ -6088,6 +6088,310 @@ body.menu-abierto .menu-movil__lista > li {
   margin-bottom: 1.35rem;
 }
 
+/* ---------- Postulación (modal) ----------
+   Hoja blanca sobre un velo oscuro; en celular ocupa la pantalla y el
+   contenido se desplaza dentro del propio diálogo. */
+html.modal-abierto {
+  overflow: hidden;
+}
+
+.postular {
+  width: min(760px, calc(100% - 2rem));
+  max-width: none;
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-lg);
+  background: var(--blanco);
+  color: var(--gris-900);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.postular::backdrop {
+  background: rgba(10, 12, 9, 0.72);
+  backdrop-filter: blur(3px);
+}
+
+.postular[open] {
+  animation: postularEntra 0.35s var(--ease);
+}
+
+@keyframes postularEntra {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .postular[open] {
+    animation: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .postular {
+    width: 100%;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+  }
+}
+
+.postular__cabeza {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.35rem clamp(1.15rem, 3.5vw, 2rem) 1.15rem;
+  background: var(--blanco);
+  border-bottom: 1px solid var(--borde);
+}
+
+.postular__rotulo {
+  margin: 0 0 0.3rem;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--verde-osc);
+}
+
+.postular__cabeza h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+  line-height: 1.2;
+}
+
+.postular__meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  color: var(--gris-500);
+}
+
+.postular__cerrar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: var(--blanco);
+  color: var(--gris-900);
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.postular__cerrar:hover {
+  background: var(--gris-50);
+  border-color: var(--gris-300);
+}
+
+.postular__form {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem clamp(1.15rem, 3.5vw, 2rem) 1.75rem;
+}
+
+.postular__bloque {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.postular__bloque legend {
+  margin-bottom: 1rem;
+  padding: 0;
+  font-family: var(--f-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.postular__pregunta {
+  margin: 0 0 0.6rem;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gris-500);
+}
+
+.postular .campo select:disabled {
+  background: var(--gris-50);
+  color: var(--gris-500);
+  cursor: not-allowed;
+}
+
+/* Selector de archivo: la caja entera es el botón. */
+.postular__archivo-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.postular__archivo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.15rem;
+  border: 1.5px dashed var(--gris-300);
+  border-radius: var(--r-sm);
+  background: var(--gris-50);
+  color: var(--gris-900);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.postular__archivo svg {
+  flex: none;
+  color: var(--verde-osc);
+}
+
+.postular__archivo span {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.postular__archivo strong {
+  overflow: hidden;
+  font-family: var(--f-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.postular__archivo small {
+  font-size: 0.82rem;
+  color: var(--gris-500);
+}
+
+.postular__archivo:hover,
+.postular__archivo:has(+ .postular__archivo-input:focus-visible) {
+  border-color: var(--verde);
+  background: rgba(142, 191, 69, 0.08);
+}
+
+.postular__archivo.tiene-archivo {
+  border-style: solid;
+  border-color: var(--verde);
+  background: rgba(142, 191, 69, 0.1);
+}
+
+.postular__archivo.con-error {
+  border-style: solid;
+  border-color: #d1453b;
+  background: #fdecea;
+}
+
+.postular__archivo.con-error small {
+  color: #9b2a21;
+}
+
+.postular__acepta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--gris-700);
+  cursor: pointer;
+}
+
+.postular__acepta input {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  accent-color: var(--verde-osc);
+}
+
+.postular .form-aviso--error {
+  background: #fdecea;
+  border-color: #e7a19b;
+  color: #9b2a21;
+}
+
+.postular__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--borde);
+}
+
+.postular__pie p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--gris-500);
+}
+
+@media (max-width: 560px) {
+  .postular__pie .btn {
+    width: 100%;
+  }
+}
+
+/* Mensaje final */
+.postular__gracias {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: clamp(2.5rem, 7vw, 4rem) clamp(1.25rem, 5vw, 3rem);
+  text-align: center;
+  outline: none;
+}
+
+.postular__gracias[hidden] {
+  display: none;
+}
+
+.postular__check {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+  background: rgba(142, 191, 69, 0.16);
+  color: var(--verde-osc);
+}
+
+.postular__gracias h3 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+}
+
+.postular__gracias p {
+  max-width: 42ch;
+  margin: 0;
+  color: var(--gris-700);
+}
+
+.postular__gracias .postular__nota {
+  font-size: 0.88rem;
+  color: var(--gris-500);
+}
+
+.postular__gracias .btn {
+  margin-top: 1.25rem;
+}
+
 .vacantes__vacio {
   padding: clamp(1.75rem, 4vw, 2.5rem);
   text-align: center;
