@@ -5775,6 +5775,7 @@ body.menu-abierto .menu-movil__lista > li {
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.85rem 1rem;
   padding: 0.95rem 1.25rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -5798,37 +5799,7 @@ body.menu-abierto .menu-movil__lista > li {
 .footer__libro span {
   display: grid;
   gap: 0.1rem;
-  flex: 1;
   min-width: 0;
-}
-
-.footer__libro-accion {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  flex: none;
-  font-style: normal;
-  font-size: var(--t-xs);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--verde-claro);
-}
-
-.footer__libro .footer__libro-accion svg {
-  width: 1rem;
-  height: 1rem;
-  transition: transform 0.28s var(--ease);
-}
-
-.footer__libro:hover .footer__libro-accion svg {
-  transform: translateX(4px);
-}
-
-@media (max-width: 520px) {
-  .footer__libro-accion {
-    display: none;
-  }
 }
 
 /* Cuatro columnas: marca y contacto ocupan dos filas y el libro llena la
