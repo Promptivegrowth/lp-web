@@ -4831,6 +4831,13 @@ body.menu-abierto .menu-movil__lista > li {
   color: var(--blanco);
 }
 
+/* La lista desplegable la dibuja el sistema con fondo claro: sus opciones
+   no pueden heredar el texto blanco del campo sobre fondo oscuro. */
+.cta .campo select option {
+  color: var(--gris-900);
+  background: var(--blanco);
+}
+
 .cta .campo input::placeholder,
 .cta .campo textarea::placeholder {
   color: rgba(255, 255, 255, 0.35);
