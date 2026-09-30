@@ -109,24 +109,28 @@
               <!-- El envío va al portal del Grupo Pacheco (src/js/config.js), que
                    guarda el mensaje y avisa al área comercial. Si el portal no
                    responde, se abre el gestor de correo con la consulta redactada. -->
-              <form class="formulario" id="form-contacto" novalidate>
+              <form class="formulario" id="form-contacto" data-tipo="cotizacion" novalidate>
                 <div class="campo">
-                  <label for="nombre">Nombre y apellido</label>
-                  <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Su nombre" />
+                  <label for="nombre">Nombre y apellido *</label>
+                  <input id="nombre" name="nombre" type="text" required minlength="2" maxlength="150" autocomplete="name" placeholder="Su nombre" />
                 </div>
                 <div class="campo">
-                  <label for="empresa">Empresa</label>
-                  <input id="empresa" name="empresa" type="text" autocomplete="organization" placeholder="Laboratorio o droguería" />
+                  <label for="correo">Correo electrónico *</label>
+                  <input id="correo" name="correo" type="email" required maxlength="150" autocomplete="email" placeholder="nombre@empresa.com" />
                 </div>
                 <div class="campo">
-                  <label for="correo">Correo electrónico</label>
-                  <input id="correo" name="correo" type="email" required autocomplete="email" placeholder="nombre@empresa.com" />
+                  <label for="empresa">Empresa *</label>
+                  <input id="empresa" name="empresa" type="text" required maxlength="150" autocomplete="organization" placeholder="Laboratorio o droguería" />
+                </div>
+                <div class="campo">
+                  <label for="ruc">RUC</label>
+                  <input id="ruc" name="ruc" type="text" inputmode="numeric" pattern="\d{11}" maxlength="11" title="El RUC tiene 11 dígitos" placeholder="11 dígitos" />
                 </div>
                 <div class="campo">
                   <label for="telefono">Teléfono</label>
-                  <input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="9XX XXX XXX" />
+                  <input id="telefono" name="telefono" type="tel" maxlength="30" autocomplete="tel" placeholder="9XX XXX XXX" />
                 </div>
-                <div class="campo campo--ancho">
+                <div class="campo">
                   <label for="servicio">Servicio de interés</label>
                   <select id="servicio" name="servicio">
                     <option value="">Seleccione un servicio</option>
@@ -141,10 +145,49 @@
                     <option>Fraccionamiento de productos terminados</option>
                   </select>
                 </div>
-                <div class="campo campo--ancho">
-                  <label for="mensaje">Mensaje</label>
-                  <textarea id="mensaje" name="mensaje" required placeholder="Descríbanos el producto, el volumen y la fecha estimada."></textarea>
+                <div class="campo">
+                  <label for="tipo_producto">Tipo de producto</label>
+                  <select id="tipo_producto" name="tipo_producto">
+                    <option value="">Seleccione</option>
+                    <option>Productos farmacéuticos</option>
+                    <option>Dispositivos médicos</option>
+                    <option>Productos sanitarios</option>
+                    <option>Productos cosméticos</option>
+                    <option>Otro</option>
+                  </select>
                 </div>
+                <div class="campo">
+                  <label for="cantidad">Cantidad aproximada</label>
+                  <input id="cantidad" name="cantidad" type="text" maxlength="80" placeholder="Ej.: 5 000 unidades" />
+                </div>
+                <div class="campo campo--ancho">
+                  <label for="fecha_requerida">Fecha requerida del servicio</label>
+                  <input id="fecha_requerida" name="fecha_requerida" type="date" />
+                </div>
+                <div class="campo campo--ancho">
+                  <label for="mensaje">Detalle de su requerimiento *</label>
+                  <textarea id="mensaje" name="mensaje" required maxlength="4000" placeholder="Cuéntenos sobre el producto, su presentación y lo que necesita."></textarea>
+                </div>
+                <div class="campo--ancho">
+                  <p class="adjuntar__rotulo" id="adjuntos-rotulo">Archivos de apoyo (opcional)</p>
+                  <label class="adjuntar" for="adjuntos" data-adjuntar>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20.5 11.5-8.2 8.2a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9" /></svg>
+                    <span>
+                      <strong data-adjuntar-titulo>Adjuntar archivos</strong>
+                      <small data-adjuntar-detalle>Fichas técnicas, artes o fotos · PDF, Word, Excel, JPG o PNG · hasta 3 archivos y 4 MB en total</small>
+                    </span>
+                  </label>
+                  <input id="adjuntos" class="adjuntar__input" name="adjuntos" type="file" multiple aria-labelledby="adjuntos-rotulo" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" />
+                  <ul class="adjuntar__lista" data-adjuntar-lista hidden></ul>
+                </div>
+
+                <label class="acepta campo--ancho">
+                  <input name="acepta" type="checkbox" required />
+                  <span>
+                    Autorizo a Laboratorios Pacheco S.A.C. a tratar mis datos para atender esta solicitud, conforme a su
+                    <a href="politica-de-privacidad.html" target="_blank" rel="noopener">Política de privacidad</a>. *
+                  </span>
+                </label>
 
                 <input type="text" name="empresa_web" tabindex="-1" autocomplete="off" class="solo-lectores" aria-hidden="true" />
 
@@ -152,12 +195,12 @@
 
                 <div class="campo--ancho contacto__envio">
                   <button class="btn btn--grande" type="submit">
-                    Enviar consulta
+                    Solicitar cotización
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                       <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                   </button>
-                  <p class="contacto__nota">Le respondemos en horario de oficina.</p>
+                  <p class="contacto__nota">* Campos obligatorios. Le respondemos en horario de oficina.</p>
                 </div>
               </form>
             </div>

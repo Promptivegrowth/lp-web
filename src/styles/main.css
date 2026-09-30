@@ -4859,6 +4859,173 @@ body.menu-abierto .menu-movil__lista > li {
   color: #ffb4ae;
 }
 
+/* Sobre fondo claro (página Contacto) los colores del aviso se oscurecen. */
+.contacto .form-aviso--ok {
+  background: rgba(142, 191, 69, 0.12);
+  color: var(--verde-osc);
+}
+
+.contacto .form-aviso--error {
+  background: #fdecea;
+  border-color: #e7a19b;
+  color: #9b2a21;
+}
+
+/* ---------- Autorización de datos (formularios) ---------- */
+.acepta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--gris-700);
+  cursor: pointer;
+}
+
+.acepta input {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.15rem;
+  accent-color: var(--verde-osc);
+}
+
+.acepta a,
+.form-enlace a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--verde-osc);
+}
+
+/* Área táctil cómoda en móvil sin alterar el renglón: relleno que se
+   compensa con margen negativo. */
+.acepta a,
+.postular__acepta a {
+  display: inline-block;
+  padding-block: 6px;
+  margin-block: -6px;
+}
+
+.cta .acepta {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.cta .acepta a,
+.cta .form-enlace a {
+  color: var(--verde-claro);
+}
+
+.form-enlace {
+  margin: 1rem 0 0;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- Archivos adjuntos (cotización) ---------- */
+.adjuntar__rotulo {
+  margin: 0 0 0.45rem;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gris-500);
+}
+
+.adjuntar__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.adjuntar {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.95rem 1.1rem;
+  border: 1.5px dashed var(--gris-300);
+  border-radius: var(--r-sm);
+  background: var(--gris-50);
+  color: var(--gris-900);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.adjuntar svg {
+  flex: none;
+  color: var(--verde-osc);
+}
+
+.adjuntar span {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.adjuntar strong {
+  font-family: var(--f-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.adjuntar small {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--gris-500);
+}
+
+.adjuntar:hover,
+.adjuntar:has(+ .adjuntar__input:focus-visible) {
+  border-color: var(--verde);
+  background: rgba(142, 191, 69, 0.08);
+}
+
+.adjuntar.tiene-archivo {
+  border-style: solid;
+  border-color: var(--verde);
+  background: rgba(142, 191, 69, 0.1);
+}
+
+.adjuntar.con-error {
+  border-style: solid;
+  border-color: #d1453b;
+  background: #fdecea;
+}
+
+.adjuntar.con-error small {
+  color: #9b2a21;
+}
+
+.adjuntar__lista {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--gris-700);
+}
+
+.adjuntar__lista li {
+  position: relative;
+  padding-left: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.adjuntar__lista li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verde);
+}
+
 /* ============================================================
    20. CONTACTO
    Formulario y datos como dos piezas enmarcadas, y el mapa
@@ -6247,6 +6414,25 @@ html.modal-abierto {
   padding: 1.5rem clamp(1.15rem, 3.5vw, 2rem) 1.75rem;
 }
 
+/* Puesto al que postula: destacado al inicio del formulario. */
+.postular__puesto {
+  padding: 1rem 1.1rem;
+  background: rgba(142, 191, 69, 0.08);
+  border: 1px solid rgba(142, 191, 69, 0.35);
+  border-radius: var(--r-sm);
+}
+
+.postular__puesto select {
+  font-weight: 600;
+}
+
+.postular__acepta a {
+  font-weight: 600;
+  color: var(--verde-osc);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .postular__bloque {
   margin: 0;
   padding: 0;
@@ -6631,6 +6817,99 @@ html.modal-abierto {
   width: 0;
   height: 0;
   overflow: hidden;
+}
+
+/* ---------- Texto legal (Política de privacidad) ----------
+   Columna de lectura cómoda; cada tratamiento en su propia ficha. */
+.legal {
+  max-width: 78ch;
+  margin-inline: auto;
+  color: var(--gris-700);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.legal__fecha {
+  margin: 0 0 1.5rem;
+  font-family: var(--f-display);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--verde-osc);
+}
+
+.legal h2 {
+  margin: 2.6rem 0 0.9rem;
+  font-size: var(--t-lg);
+  color: var(--gris-900);
+  scroll-margin-top: 110px;
+}
+
+.legal h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--gris-900);
+}
+
+.legal p,
+.legal ul {
+  margin: 0 0 1rem;
+}
+
+.legal ul {
+  padding-left: 1.2rem;
+}
+
+.legal li {
+  margin-bottom: 0.45rem;
+}
+
+.legal li::marker {
+  color: var(--verde);
+}
+
+.legal strong {
+  color: var(--gris-900);
+  font-weight: 600;
+}
+
+.legal a {
+  color: var(--verde-osc);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.legal__casos {
+  display: grid;
+  gap: 1rem;
+  margin: 1.2rem 0 1.4rem;
+}
+
+@media (min-width: 760px) {
+  .legal__casos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.legal__casos section {
+  padding: 1.15rem 1.25rem;
+  background: var(--gris-50);
+  border: 1px solid var(--borde);
+  border-left: 3px solid var(--verde);
+  border-radius: var(--r-md);
+}
+
+.legal__casos p {
+  margin: 0 0 0.6rem;
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.legal__casos p:last-child {
+  margin-bottom: 0;
 }
 
 .solo-lectores {

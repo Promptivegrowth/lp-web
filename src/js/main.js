@@ -410,18 +410,29 @@ function indiceServicios() {
 }
 
 /* ------------------------------------------------------------
-   10. Formulario de contacto
-   Hosting estático: si se define un endpoint en data-endpoint
-   (Formspree, Web3Forms, función de Vercel…) se envía por fetch.
-   Si no, se abre el cliente de correo con los datos completados.
+   10. Formulario de contacto y cotización
+   Se envía al portal del Grupo Pacheco, que lo guarda y avisa al
+   área comercial. El de Contacto es la solicitud de cotización
+   completa (data-tipo="cotizacion", con RUC, producto, cantidad,
+   fecha y archivos adjuntos); el de Inicio, una consulta rápida.
+   Si el portal no responde, se abre el correo con todo redactado.
    ------------------------------------------------------------ */
+const ADJUNTOS_MAX = 3;
+const ADJUNTOS_BYTES = 4 * 1024 * 1024;
+const ADJUNTOS_EXT = /\.(pdf|docx?|xlsx?|jpe?g|png)$/i;
+// Campos propios de la cotización: viajan en `datos` y el portal los muestra con su nombre.
+const CAMPOS_DATOS = ['ruc', 'tipo_producto', 'cantidad', 'fecha_requerida'];
+
+const pesoLegible = (b) => (b < 1024 * 1024 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1024 / 1024).toFixed(1)} MB`);
+
 function formulario() {
   const form = $('#form-contacto');
   if (!form) return;
 
+  const tipo = form.dataset.tipo || 'contacto';
   const aviso = $('.form-aviso', form);
   const boton = $('button[type="submit"]', form);
-  const textoBoton = boton?.textContent;
+  const textoBoton = boton?.innerHTML;
 
   const decir = (msg, ok = true) => {
     if (!aviso) return;
@@ -429,45 +440,111 @@ function formulario() {
     aviso.className = `form-aviso es-visible form-aviso--${ok ? 'ok' : 'error'}`;
   };
 
+  // La fecha requerida no puede ser anterior a hoy (hora de Lima).
+  const fecha = $('[name="fecha_requerida"]', form);
+  if (fecha) {
+    fecha.min = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(new Date());
+  }
+
+  // ---------- Archivos adjuntos ----------
+  const archivo = $('[name="adjuntos"]', form);
+  const lista = $('[data-adjuntar-lista]', form);
+  const caja = $('[data-adjuntar]', form);
+  const titulo = $('[data-adjuntar-titulo]', form);
+  const detalle = $('[data-adjuntar-detalle]', form);
+  const detalleBase = detalle?.textContent;
+
+  const validarAdjuntos = () => {
+    if (!archivo) return '';
+    const fs = [...archivo.files];
+    let error = '';
+    if (fs.length > ADJUNTOS_MAX) error = `Puede adjuntar hasta ${ADJUNTOS_MAX} archivos.`;
+    else if (fs.some((f) => !ADJUNTOS_EXT.test(f.name))) error = 'Solo se admiten archivos PDF, Word, Excel, JPG o PNG.';
+    else if (fs.reduce((t, f) => t + f.size, 0) > ADJUNTOS_BYTES) error = 'Los archivos no pueden superar 4 MB en total.';
+    archivo.setCustomValidity(error);
+
+    if (lista) {
+      lista.replaceChildren(
+        ...fs.map((f) => {
+          const li = document.createElement('li');
+          li.textContent = `${f.name} · ${pesoLegible(f.size)}`;
+          return li;
+        })
+      );
+      lista.hidden = fs.length === 0;
+    }
+    caja?.classList.toggle('tiene-archivo', fs.length > 0 && !error);
+    caja?.classList.toggle('con-error', Boolean(error));
+    if (titulo) titulo.textContent = fs.length ? `${fs.length} archivo${fs.length === 1 ? '' : 's'} · clic para cambiar` : 'Adjuntar archivos';
+    if (detalle) detalle.textContent = error || detalleBase;
+    return error;
+  };
+  archivo?.addEventListener('change', () => {
+    aviso.className = 'form-aviso';
+    validarAdjuntos();
+  });
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    aviso.className = 'form-aviso';
 
+    const errorAdjuntos = validarAdjuntos();
     if (!form.checkValidity()) {
+      if (errorAdjuntos) decir(errorAdjuntos, false);
       form.reportValidity();
       return;
     }
     // Campo trampa anti-spam.
     if ($('[name="empresa_web"]', form)?.value) return;
 
-    const datos = Object.fromEntries(new FormData(form));
+    const valor = (n) => ($(`[name="${n}"]`, form)?.value || '').trim();
+    const datos = Object.fromEntries(CAMPOS_DATOS.map((n) => [n, valor(n)]).filter(([, v]) => v));
+    const cuerpo = {
+      tipo,
+      nombre: valor('nombre'),
+      empresa: valor('empresa'),
+      correo: valor('correo'),
+      telefono: valor('telefono'),
+      asunto: valor('servicio'),
+      mensaje: valor('mensaje'),
+      pagina: window.location.href,
+      datos,
+    };
+    const archivos = archivo ? [...archivo.files] : [];
 
-    boton.disabled = true;
-    boton.textContent = 'Enviando…';
-    try {
-      // El portal guarda el mensaje y avisa al área comercial.
-      const r = await fetch(form.dataset.endpoint || endpoint('contacto'), {
+    // Con archivos va como formulario (multipart); sin ellos, como JSON.
+    let peticion;
+    if (archivos.length) {
+      const fd = new FormData();
+      for (const [k, v] of Object.entries(cuerpo)) if (k !== 'datos') fd.append(k, v);
+      fd.append('datos', JSON.stringify(datos));
+      archivos.forEach((f) => fd.append('adjuntos', f));
+      peticion = { method: 'POST', headers: { Accept: 'application/json' }, body: fd };
+    } else {
+      peticion = {
         method: 'POST',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tipo: 'contacto',
-          nombre: datos.nombre,
-          empresa: datos.empresa,
-          correo: datos.correo,
-          telefono: datos.telefono,
-          asunto: datos.servicio,
-          mensaje: datos.mensaje,
-          pagina: window.location.href,
-          empresa_web: datos.empresa_web,
-        }),
-      });
+        body: JSON.stringify(cuerpo),
+      };
+    }
+
+    boton.disabled = true;
+    boton.textContent = archivos.length ? 'Enviando archivos…' : 'Enviando…';
+    try {
+      const r = await fetch(form.dataset.endpoint || endpoint('contacto'), peticion);
       const respuesta = await r.json().catch(() => ({}));
       if (r.ok) {
         form.reset();
-        decir('Gracias, hemos recibido su mensaje. Nos pondremos en contacto a la brevedad.');
+        validarAdjuntos();
+        decir(
+          tipo === 'cotizacion'
+            ? 'Gracias, recibimos su solicitud de cotización. Nuestro equipo comercial se comunicará con usted a la brevedad.'
+            : 'Gracias, hemos recibido su mensaje. Nos pondremos en contacto a la brevedad.'
+        );
         return;
       }
-      if (r.status === 422 || r.status === 429) {
-        // Error del visitante (dato no válido o demasiados envíos): se explica.
+      if (r.status === 422 || r.status === 429 || r.status === 413) {
+        // Error del visitante (dato no válido, archivos o demasiados envíos): se explica.
         decir(respuesta.error || 'Revise los datos del formulario.', false);
         const campo = respuesta.campo === 'asunto' ? 'servicio' : respuesta.campo;
         if (campo) $(`[name="${campo}"]`, form)?.focus();
@@ -478,25 +555,32 @@ function formulario() {
       // Sin conexión con el portal: se ofrece el correo con todo redactado.
     } finally {
       boton.disabled = false;
-      boton.textContent = textoBoton;
+      boton.innerHTML = textoBoton;
     }
 
-    // Sin backend: se prepara el correo con toda la información.
-    const cuerpo = [
-      `Nombre: ${datos.nombre || ''}`,
-      `Empresa: ${datos.empresa || ''}`,
-      `Correo: ${datos.correo || ''}`,
-      `Teléfono: ${datos.telefono || ''}`,
-      `Servicio de interés: ${datos.servicio || 'No especificado'}`,
+    // Sin portal: se prepara el correo con toda la información.
+    const texto = [
+      `Nombre: ${cuerpo.nombre}`,
+      `Empresa: ${cuerpo.empresa}`,
+      datos.ruc && `RUC: ${datos.ruc}`,
+      `Correo: ${cuerpo.correo}`,
+      `Teléfono: ${cuerpo.telefono}`,
+      `Servicio de interés: ${cuerpo.asunto || 'No especificado'}`,
+      datos.tipo_producto && `Tipo de producto: ${datos.tipo_producto}`,
+      datos.cantidad && `Cantidad aproximada: ${datos.cantidad}`,
+      datos.fecha_requerida && `Fecha requerida: ${datos.fecha_requerida}`,
       '',
       'Mensaje:',
-      datos.mensaje || '',
-    ].join('\n');
+      cuerpo.mensaje,
+      archivos.length ? '\n(Adjunte a este correo los archivos que seleccionó en la web.)' : '',
+    ]
+      .filter((l) => l !== false && l !== undefined)
+      .join('\n');
 
-    const asunto = `Consulta web — ${datos.empresa || datos.nombre || 'Nuevo contacto'}`;
+    const asunto = `${tipo === 'cotizacion' ? 'Solicitud de cotización' : 'Consulta web'} — ${cuerpo.empresa || cuerpo.nombre || 'Nuevo contacto'}`;
     window.location.href = `mailto:gestioncomercial@laboratoriospacheco.com?subject=${encodeURIComponent(
       asunto
-    )}&body=${encodeURIComponent(cuerpo)}`;
+    )}&body=${encodeURIComponent(texto)}`;
 
     decir('Se abrirá su gestor de correo con la consulta lista para enviar. Si prefiere, escríbanos por WhatsApp.');
   });

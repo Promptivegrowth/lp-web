@@ -30,23 +30,48 @@ export function postulaciones() {
 
   // ---------------------------------------------------------------- abrir / cerrar
 
-  const abrir = async (disparador) => {
-    origen = disparador;
-    const { empleoId = '', puesto = '', meta = '' } = disparador.dataset;
-    const espontanea = !puesto;
+  // «Puesto al que postula»: las vacantes que muestra la página (ya con los
+  // datos del portal) más la postulación espontánea.
+  const selectPuesto = $('#p-puesto', form);
+  const ESPONTANEA = 'espontanea';
+  let vacantes = [];
 
+  const llenarPuestos = () => {
+    const vistos = new Map();
+    document.querySelectorAll('.vacante [data-postular][data-empleo-id]').forEach((b) => {
+      const { empleoId, puesto, meta = '' } = b.dataset;
+      if (empleoId && puesto && !vistos.has(empleoId)) vistos.set(empleoId, { id: empleoId, puesto, meta });
+    });
+    vacantes = [...vistos.values()];
+    selectPuesto.replaceChildren(
+      ...vacantes.map((v) => new Option(v.puesto, v.id)),
+      new Option('Postulación espontánea (otra área)', ESPONTANEA)
+    );
+  };
+
+  // Aplica el puesto elegido al título del modal y a los campos que se envían.
+  const aplicarPuesto = (id) => {
+    const v = vacantes.find((x) => x.id === id);
+    const espontanea = !v;
+    selectPuesto.value = v ? v.id : ESPONTANEA;
     $('[data-postular-rotulo]', modal).textContent = espontanea ? 'Envíenos su CV' : 'Postular al puesto';
-    $('[data-postular-puesto]', modal).textContent = espontanea ? 'Postulación espontánea' : puesto;
+    $('[data-postular-puesto]', modal).textContent = espontanea ? 'Postulación espontánea' : v.puesto;
     const lineaMeta = $('[data-postular-meta]', modal);
-    lineaMeta.textContent = meta;
-    lineaMeta.hidden = !meta;
+    lineaMeta.textContent = v?.meta ?? '';
+    lineaMeta.hidden = !v?.meta;
 
-    form.elements.empleo_id.value = empleoId;
-    form.elements.puesto.value = puesto;
+    form.elements.empleo_id.value = v?.id ?? '';
+    form.elements.puesto.value = v?.puesto ?? '';
     bloqueArea.hidden = !espontanea;
     area.required = espontanea;
+  };
+  selectPuesto.addEventListener('change', () => aplicarPuesto(selectPuesto.value));
 
+  const abrir = async (disparador) => {
+    origen = disparador;
     if (!gracias.hidden) reiniciar();
+    llenarPuestos();
+    aplicarPuesto(disparador.dataset.empleoId || '');
     document.documentElement.classList.add('modal-abierto');
     modal.showModal();
     modal.scrollTop = 0;

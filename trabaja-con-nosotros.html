@@ -198,6 +198,14 @@
             <!-- Campo trampa para robots -->
             <input type="text" name="sitio_web" tabindex="-1" autocomplete="off" class="solo-lectores" aria-hidden="true" />
 
+            <!-- Puesto al que postula: prellenado con la vacante elegida y editable. -->
+            <div class="campo postular__puesto">
+              <label for="p-puesto">Puesto al que postula *</label>
+              <select id="p-puesto" required>
+                <option value="espontanea">Postulación espontánea (otra área)</option>
+              </select>
+            </div>
+
             <fieldset class="postular__bloque">
               <legend>Datos personales</legend>
               <div class="formulario">
@@ -343,7 +351,8 @@
               <input id="p-acepta" name="acepta" type="checkbox" required />
               <span>
                 Autorizo a Laboratorios Pacheco S.A.C. a tratar mis datos personales para este y futuros procesos
-                de selección, conforme a la Ley N.º 29733, Ley de Protección de Datos Personales. *
+                de selección, conforme a la Ley N.º 29733, Ley de Protección de Datos Personales, y a su
+                <a href="politica-de-privacidad.html" target="_blank" rel="noopener">Política de privacidad</a>. *
               </span>
             </label>
 
