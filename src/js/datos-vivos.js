@@ -110,11 +110,14 @@ function reemplazarItems(contenedor, nuevos, revelar) {
 export async function datosVivos({ revelar } = {}) {
   const filas = await leer(
     'datos_contacto',
-    `empresa_id=eq.${EMPRESA}&visible=is.true&select=tipo,etiqueta,valor,detalle,red,orden&order=orden.asc`,
+    `empresa_id=eq.${EMPRESA}&visible=is.true&select=tipo,etiqueta,valor,detalle,red,orden,mostrar_en&order=orden.asc`,
   );
   if (!filas?.length) return;
 
   const de = (tipo) => filas.filter((f) => f.tipo === tipo);
+  // Dónde se muestra cada teléfono o correo (portal: «Mostrar en»). Sin el
+  // dato, en todas partes.
+  const en = (lugar) => (f) => !Array.isArray(f.mostrar_en) || f.mostrar_en.includes(lugar);
   const [wa] = de('whatsapp');
   const telefonos = de('telefono');
   const correos = de('correo');
@@ -139,12 +142,13 @@ export async function datosVivos({ revelar } = {}) {
     }
   }
 
-  // Pie: teléfonos con su área.
-  if (telefonos.length) {
+  // Pie (y menú móvil): los teléfonos marcados para el pie, con su área.
+  const telefonosPie = telefonos.filter(en('pie'));
+  if (telefonosPie.length) {
     for (const ul of $$('[data-vivo="telefonos-pie"]')) {
       reemplazarItems(
         ul,
-        telefonos.map((t) =>
+        telefonosPie.map((t) =>
           el('li', {}, el('a', { href: hrefTelefono(t.valor) }, [el('b', { texto: t.etiqueta }), ` · ${formatoTelefono(t.valor)}`])),
         ),
         revelar,
@@ -152,7 +156,7 @@ export async function datosVivos({ revelar } = {}) {
     }
     for (const p of $$('[data-vivo="telefonos-menu"]')) {
       p.replaceChildren(
-        ...telefonos.slice(0, 3).flatMap((t, i) => [
+        ...telefonosPie.slice(0, 3).flatMap((t, i) => [
           ...(i ? [' · '] : []),
           el('a', { href: hrefTelefono(t.valor), texto: formatoTelefono(t.valor) }),
         ]),
@@ -168,9 +172,10 @@ export async function datosVivos({ revelar } = {}) {
     }
   }
 
-  // Contacto por área: correo y teléfono emparejados por su etiqueta.
+  // Contacto por área: correo y teléfono emparejados por su etiqueta, solo
+  // los marcados para la página de contacto.
   const areas = [];
-  for (const f of [...correos, ...telefonos]) {
+  for (const f of [...correos, ...telefonos].filter(en('contacto'))) {
     let a = areas.find((x) => x.etiqueta.toLowerCase() === f.etiqueta.toLowerCase());
     if (!a) areas.push((a = { etiqueta: f.etiqueta, correos: [], telefonos: [] }));
     (f.tipo === 'correo' ? a.correos : a.telefonos).push(f.valor);
