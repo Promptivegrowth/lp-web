@@ -2568,7 +2568,7 @@ body.menu-abierto .menu-movil__lista > li {
 
 /* ============================================================
    13 bis. FLUJOGRAMA DEL PROCESO
-   Las cinco etapas se encadenan y se van encendiendo una tras
+   Las seis etapas se encadenan y se van encendiendo una tras
    otra: el conector se rellena, el nodo se activa, el icono se
    traza y el texto sube. Cada paso hereda su turno de --i.
    ============================================================ */
@@ -2809,12 +2809,15 @@ body.menu-abierto .menu-movil__lista > li {
   }
 }
 
-/* ---------- Horizontal en pantallas anchas ---------- */
+/* ---------- Horizontal en pantallas anchas ----------
+   Seis etapas: en dos filas de tres hasta 1239 px y en una sola fila
+   desde 1240 px, donde cada columna ya tiene ancho para el texto. */
 @media (min-width: 1040px) {
   .flujo {
     --nodo: 66px;
     --sep: 1.5rem;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 2.6rem;
     align-items: start;
   }
 
@@ -2867,6 +2870,20 @@ body.menu-abierto .menu-movil__lista > li {
       left: 100%;
       opacity: 0;
     }
+  }
+}
+
+@media (min-width: 1040px) and (max-width: 1239px) {
+  .flujo__paso:nth-child(3) .flujo__conector {
+    display: none;
+  }
+}
+
+@media (min-width: 1240px) {
+  .flujo {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: 1.25rem;
+    --sep: 1.25rem;
   }
 }
 
