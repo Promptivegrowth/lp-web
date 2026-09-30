@@ -2575,7 +2575,7 @@ body.menu-abierto .menu-movil__lista > li {
    ============================================================ */
 .flujo {
   --nodo: 60px;
-  --turno: 0.46s;
+  --turno: 0.3s;
   --sep: 1.6rem;
   display: grid;
   gap: var(--sep);
@@ -4551,7 +4551,7 @@ body.menu-abierto .menu-movil__lista > li {
   opacity: 1;
   transform: none;
   clip-path: inset(0 0 100% 0 round var(--r-lg));
-  transition: clip-path 1.05s var(--ease);
+  transition: clip-path 0.7s var(--ease);
 }
 
 .revelar--escaner.es-visible {
@@ -4622,6 +4622,11 @@ body.menu-abierto .menu-movil__lista > li {
 
 .clientes__cabecera .etiqueta::before {
   display: none;
+}
+
+.clientes__titulo {
+  margin: 0.2rem 0 0.4rem;
+  font-size: var(--t-2xl);
 }
 
 .clientes__nota {
@@ -6747,13 +6752,50 @@ html.modal-abierto {
   color: var(--negro);
 }
 
+/* ---------- Botones flotantes en el celular ----------
+   No deben tapar contenido: el botón «subir» no se muestra (la cabecera
+   reaparece al deslizar hacia arriba), el de WhatsApp es más compacto y se
+   aparta mientras hay un formulario en pantalla, y el final de la página
+   deja sitio para que el último texto no quede debajo. */
+.wsp {
+  transition: transform 0.35s var(--ease), opacity 0.3s ease, visibility 0.3s;
+}
+
+@media (max-width: 760px) {
+  .arriba {
+    display: none;
+  }
+
+  .wsp {
+    width: 50px;
+    height: 50px;
+  }
+
+  .wsp svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  body.formulario-a-la-vista .wsp {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px) scale(0.9);
+  }
+
+  .footer__base {
+    padding-bottom: 4.75rem;
+  }
+}
+
 /* ============================================================
    22. Animaciones de entrada
    ============================================================ */
 .revelar {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
+  transform: translateY(14px);
+  /* El fundido arranca rápido (ease-out): el texto se lee casi al instante,
+     aunque el desplazamiento termine un poco después. */
+  transition: opacity 0.4s ease-out, transform 0.55s var(--ease);
   transition-delay: var(--d, 0s);
   will-change: opacity, transform;
 }
@@ -6764,11 +6806,11 @@ html.modal-abierto {
 }
 
 .revelar--izq {
-  transform: translateX(-36px);
+  transform: translateX(-20px);
 }
 
 .revelar--der {
-  transform: translateX(36px);
+  transform: translateX(20px);
 }
 
 /* --- Aparición en cortina ---
@@ -6779,7 +6821,7 @@ html.modal-abierto {
   opacity: 1;
   transform: none;
   clip-path: inset(100% 0 0 0 round var(--radio-cortina, var(--r-lg)));
-  transition: clip-path 1.05s var(--ease);
+  transition: clip-path 0.65s var(--ease);
   transition-delay: var(--d, 0s);
 }
 
@@ -6788,8 +6830,8 @@ html.modal-abierto {
 }
 
 .revelar--cortina img {
-  scale: 1.3;
-  transition: scale 1.45s var(--ease), transform 0.9s var(--ease);
+  scale: 1.15;
+  transition: scale 0.9s var(--ease), transform 0.9s var(--ease);
   transition-delay: var(--d, 0s), 0s;
 }
 
@@ -6801,9 +6843,9 @@ html.modal-abierto {
 .revelar--cortina .pilar__contenido,
 .revelar--cortina .pilar__num {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.7s var(--ease), transform 0.8s var(--ease);
-  transition-delay: calc(var(--d, 0s) + 0.34s);
+  transform: translateY(12px);
+  transition: opacity 0.45s var(--ease), transform 0.5s var(--ease);
+  transition-delay: calc(var(--d, 0s) + 0.18s);
 }
 
 .revelar--cortina.es-visible .pilar__contenido,
@@ -6813,7 +6855,7 @@ html.modal-abierto {
 }
 
 .revelar--cortina .pilar__num {
-  transition-delay: calc(var(--d, 0s) + 0.22s);
+  transition-delay: calc(var(--d, 0s) + 0.12s);
 }
 
 /* Al apilarse las columnas, el desplazamiento lateral no aporta y además
@@ -6821,7 +6863,7 @@ html.modal-abierto {
 @media (max-width: 940px) {
   .revelar--izq,
   .revelar--der {
-    transform: translateY(30px);
+    transform: translateY(14px);
   }
 }
 
@@ -6835,7 +6877,7 @@ html.modal-abierto {
   display: block;
   font-style: inherit;
   transform: translateY(105%);
-  transition: transform 0.9s var(--ease);
+  transition: transform 0.55s var(--ease);
   transition-delay: var(--d, 0s);
 }
 
@@ -6928,7 +6970,7 @@ html.modal-abierto {
   }
 }
 
-.legal__casos section {
+.legal__caso {
   padding: 1.15rem 1.25rem;
   background: var(--gris-50);
   border: 1px solid var(--borde);

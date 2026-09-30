@@ -124,6 +124,21 @@ function header() {
 
   actualizar();
   window.addEventListener('scroll', actualizar, { passive: true });
+
+  // Con un formulario en pantalla, el WhatsApp flotante se aparta en el
+  // celular (CSS) para no tapar campos, la casilla de privacidad ni el envío.
+  const formularios = $$('form');
+  if (formularios.length && 'IntersectionObserver' in window) {
+    const visibles = new Set();
+    const vigia = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
+        document.body.classList.toggle('formulario-a-la-vista', visibles.size > 0);
+      },
+      { rootMargin: '0px 0px -10% 0px' }
+    );
+    formularios.forEach((f) => vigia.observe(f));
+  }
 }
 
 /* ------------------------------------------------------------
@@ -217,8 +232,9 @@ function barrer() {
   const alto = window.innerHeight;
   pendientes.forEach((accion, el) => {
     const r = el.getBoundingClientRect();
-    // Se activa cuando el elemento entra por abajo o ya quedó por encima.
-    if (r.top < alto * 0.92) {
+    // Se activa un poco antes de entrar por abajo (o si ya quedó por encima):
+    // al hacer scroll el contenido ya está apareciendo, sin zonas vacías.
+    if (r.top < alto * 1.08) {
       pendientes.delete(el);
       accion(el);
     }
@@ -246,10 +262,11 @@ function revelar() {
 
   // Escalonado automático dentro de los grupos marcados.
   $$('[data-escalonar]').forEach((grupo) => {
-    const paso = parseFloat(grupo.dataset.escalonar) || 0.08;
+    // Escalonado corto y con tope: el último de un grupo largo no espera.
+    const paso = Math.min(parseFloat(grupo.dataset.escalonar) || 0.06, 0.08);
     $$(':scope > *', grupo).forEach((hijo, i) => {
       const objetivo = hijo.matches('.revelar, .revelar-titulo') ? hijo : $('.revelar, .revelar-titulo', hijo);
-      objetivo?.style.setProperty('--d', `${i * paso}s`);
+      objetivo?.style.setProperty('--d', `${Math.min(i * paso, 0.3)}s`);
     });
   });
 

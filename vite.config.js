@@ -44,6 +44,57 @@ function includePartials() {
   };
 }
 
+/**
+ * Etiquetas para redes sociales (Open Graph y Twitter) a partir del mismo
+ * <title> y la misma meta description que lee Google: un solo mensaje en el
+ * buscador y al compartir el enlace. Se descartan las escritas a mano; la
+ * imagen de cada página se conserva de su og:image (o la del inicio).
+ */
+const IMAGEN_POR_DEFECTO = 'https://laboratoriospacheco.com/img/hero/hero-1-1280.jpg';
+
+function etiquetasSociales() {
+  const atributo = (v) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  const texto = (v) => v.replace(/\s+/g, ' ').trim();
+
+  return {
+    name: 'etiquetas-sociales',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html) {
+        const cabeza = html.slice(0, html.indexOf('</head>'));
+        // Páginas que no se indexan (404) no llevan etiquetas para compartir.
+        if (/<meta\s+name="robots"\s+content="noindex/.test(cabeza)) return html;
+
+        const titulo = texto(cabeza.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '');
+        const descripcion = texto(cabeza.match(/<meta\s+name="description"\s+content="([^"]*)"/)?.[1] ?? '');
+        const canonica = cabeza.match(/<link\s+rel="canonical"\s+href="([^"]*)"/)?.[1] ?? '';
+        const imagen = cabeza.match(/<meta\s+property="og:image"\s+content="([^"]*)"/)?.[1] ?? IMAGEN_POR_DEFECTO;
+        if (!titulo || !descripcion) return html;
+
+        const etiquetas = [
+          ['property', 'og:type', 'website'],
+          ['property', 'og:locale', 'es_PE'],
+          ['property', 'og:site_name', 'Laboratorios Pacheco'],
+          ['property', 'og:url', canonica],
+          ['property', 'og:title', titulo],
+          ['property', 'og:description', descripcion],
+          ['property', 'og:image', imagen],
+          ['name', 'twitter:card', 'summary_large_image'],
+          ['name', 'twitter:title', titulo],
+          ['name', 'twitter:description', descripcion],
+          ['name', 'twitter:image', imagen],
+        ]
+          .filter(([, , v]) => v)
+          .map(([a, n, v]) => `    <meta ${a}="${n}" content="${atributo(v)}" />`)
+          .join('\n');
+
+        const limpia = html.replace(/[ \t]*<meta\s+(?:property="og:[^"]*"|name="twitter:[^"]*")\s+content="[^"]*"\s*\/?>\s*\n?/g, '');
+        return limpia.replace('</head>', `${etiquetas}\n  </head>`);
+      },
+    },
+  };
+}
+
 /** Lista todos los .html de la raíz para el build multi-página. */
 function htmlInputs() {
   const entries = {};
@@ -57,7 +108,7 @@ export default defineConfig({
   // Rutas relativas: el build funciona igual en Vercel (raíz) que en un
   // subdirectorio de cPanel (public_html/ o public_html/web/).
   base: './',
-  plugins: [includePartials()],
+  plugins: [includePartials(), etiquetasSociales()],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
