@@ -6292,6 +6292,32 @@ body.menu-abierto .menu-movil__lista > li {
   background: var(--verde);
 }
 
+/* Reporta a / Lugar de trabajo: al pie del detalle, una sola vez. */
+.vacante__datos {
+  display: grid;
+  gap: 0.3rem;
+  margin: 1rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--borde);
+  font-size: 0.93rem;
+}
+
+.vacante__datos div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.4rem;
+}
+
+.vacante__datos dt {
+  font-weight: 600;
+  color: var(--gris-900);
+}
+
+.vacante__datos dd {
+  margin: 0;
+  color: var(--gris-700);
+}
+
 .vacante__postular {
   align-self: flex-start;
   margin-top: auto;

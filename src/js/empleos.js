@@ -28,9 +28,29 @@ function lista(titulo, elementos) {
   return el('div', {}, [el('h4', { texto: titulo }), el('ul', {}, elementos.map((t) => el('li', { texto: t })))]);
 }
 
+/** «Empleo presencial – Callao», como en el MOF. */
+const lugar = (v) =>
+  [v.modalidad ? `Empleo ${v.modalidad.toLowerCase()}` : null, v.ubicacion].filter(Boolean).join(' – ');
+
+/** Reporta a / Lugar de trabajo: una sola vez, al final del detalle. */
+function datosPuesto(v) {
+  const filas = [
+    ['Reporta a', v.reporta_a],
+    ['Lugar de trabajo', lugar(v)],
+  ].filter(([, valor]) => valor);
+  if (!filas.length) return null;
+  return el(
+    'dl',
+    { class: 'vacante__datos' },
+    filas.map(([k, valor]) => el('div', {}, [el('dt', { texto: `${k}:` }), el('dd', { texto: valor })])),
+  );
+}
+
 function tarjeta(v) {
-  const listas = [lista('Requisitos', v.requisitos), lista('Funciones', v.funciones), lista('Beneficios', v.beneficios)].filter(Boolean);
+  // Orden del MOF: primero lo que hará, luego lo que se pide.
+  const listas = [lista('Responsabilidades', v.funciones), lista('Requisitos', v.requisitos), lista('Beneficios', v.beneficios)].filter(Boolean);
   const meta = [v.ubicacion, v.modalidad, v.jornada].filter(Boolean);
+  const datos = datosPuesto(v);
 
   return el('article', { class: 'vacante revelar' }, [
     el('div', { class: 'vacante__cabeza' }, [
@@ -47,10 +67,11 @@ function tarjeta(v) {
       meta.map((t) => el('li', { texto: t })),
     ),
     el('p', { class: 'vacante__resumen', texto: v.resumen }),
-    listas.length
+    listas.length || datos
       ? el('details', { class: 'vacante__detalle' }, [
-          el('summary', { texto: v.funciones?.length ? 'Ver requisitos y funciones' : 'Ver requisitos' }),
+          el('summary', { texto: v.funciones?.length ? 'Ver responsabilidades y requisitos' : 'Ver requisitos' }),
           el('div', { class: 'vacante__listas' }, listas),
+          datos,
         ])
       : null,
     // Abre el formulario de postulación (postular.js).
@@ -72,7 +93,7 @@ export async function empleos({ revelar } = {}) {
 
   const vacantes = await leer(
     'empleos',
-    `empresa_id=eq.${EMPRESA}&select=id,titulo,area,ubicacion,modalidad,jornada,resumen,requisitos,funciones,beneficios,fecha_publicacion,fecha_cierre&order=orden.asc,fecha_publicacion.desc`,
+    `empresa_id=eq.${EMPRESA}&select=id,titulo,area,ubicacion,modalidad,jornada,resumen,reporta_a,requisitos,funciones,beneficios,fecha_publicacion,fecha_cierre&order=orden.asc,fecha_publicacion.desc`,
   );
   if (!vacantes) return; // sin conexión: se quedan las del HTML
 
