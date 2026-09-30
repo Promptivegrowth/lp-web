@@ -509,114 +509,93 @@ function formulario() {
    la reproducción automática sin sonido, así que se ofrece un botón
    para activarlo.
    ------------------------------------------------------------ */
-let apiYouTube;
-
-/** Carga el script de la API de YouTube una sola vez. */
-function cargarApiYouTube() {
-  if (apiYouTube) return apiYouTube;
-
-  apiYouTube = new Promise((resolver, rechazar) => {
-    if (window.YT && window.YT.Player) {
-      resolver(window.YT);
-      return;
-    }
-    const anterior = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      if (typeof anterior === 'function') anterior();
-      resolver(window.YT);
-    };
-    const etiqueta = document.createElement('script');
-    etiqueta.src = 'https://www.youtube.com/iframe_api';
-    etiqueta.async = true;
-    etiqueta.onerror = () => rechazar(new Error('No se pudo cargar la API de YouTube'));
-    document.head.appendChild(etiqueta);
-  });
-
-  return apiYouTube;
-}
-
 function video() {
   const caja = $('.video__caja');
   if (!caja) return;
 
-  const hueco = $('.video__marco > div[id]', caja);
-  const idVideo = caja.dataset.video;
-  if (!hueco || !idVideo) return;
+  const medio = $('video.video__medio', caja);
+  if (!medio) return;
 
   const boton = $('.video__sonido', caja);
   const estado = $('.video__estado', caja);
   const etiquetaBoton = boton ? $('span', boton) : null;
 
-  let reproductor = null;
   let listo = false;
   let enPantalla = false;
+  // Si el visitante pausa a mano, no se reanuda solo al volver a la sección.
+  let pausadoPorVisitante = false;
+  let pausaPropia = false;
 
   const decir = (texto) => {
     if (estado) estado.textContent = texto;
   };
 
   const sincronizar = () => {
-    if (!listo || !reproductor) return;
+    if (!listo) return;
     // Con «reducir movimiento» no se reproduce sola: el visitante decide.
-    if (enPantalla && !document.hidden && !menosMovimiento) reproductor.playVideo();
-    else reproductor.pauseVideo();
-  };
-
-  const crear = async () => {
-    let YT;
-    try {
-      YT = await cargarApiYouTube();
-    } catch {
-      decir('No se pudo cargar el vídeo. Compruebe su conexión.');
-      caja.classList.add('tiene-error');
-      return;
+    if (enPantalla && !document.hidden && !menosMovimiento && !pausadoPorVisitante) {
+      medio.play().catch(() => decir('Pulse para reproducir'));
+    } else if (!medio.paused) {
+      pausaPropia = true;
+      medio.pause();
     }
-
-    reproductor = new YT.Player(hueco, {
-      videoId: idVideo,
-      host: 'https://www.youtube-nocookie.com',
-      playerVars: {
-        autoplay: 0,
-        mute: 1,
-        controls: 1,
-        rel: 0,
-        modestbranding: 1,
-        playsinline: 1,
-        iv_load_policy: 3,
-      },
-      events: {
-        onReady: () => {
-          listo = true;
-          caja.classList.add('esta-listo');
-          decir(menosMovimiento ? 'Pulse para reproducir' : 'Listo');
-          sincronizar();
-        },
-        onStateChange: (e) => {
-          if (e.data === YT.PlayerState.PLAYING) decir('Reproduciendo');
-          else if (e.data === YT.PlayerState.PAUSED) decir('En pausa · continúa al volver');
-          else if (e.data === YT.PlayerState.ENDED) decir('Finalizado');
-          else if (e.data === YT.PlayerState.BUFFERING) decir('Cargando…');
-        },
-        onError: () => {
-          decir('El vídeo no está disponible.');
-          caja.classList.add('tiene-error');
-        },
-      },
-    });
   };
+
+  // Resolución según la pantalla: el de 720p pesa la mitad.
+  const cargar = () => {
+    if (medio.src) return;
+    const grande = window.matchMedia('(min-width: 900px)').matches;
+    medio.src = grande ? medio.dataset.srcGrande : medio.dataset.srcChico;
+    medio.preload = 'auto';
+    medio.load();
+  };
+
+  medio.addEventListener('loadedmetadata', () => {
+    listo = true;
+    caja.classList.add('esta-listo');
+    decir(menosMovimiento ? 'Pulse para reproducir' : 'Listo');
+    sincronizar();
+  });
+  medio.addEventListener('playing', () => decir('Reproduciendo'));
+  medio.addEventListener('waiting', () => decir('Cargando…'));
+  medio.addEventListener('ended', () => decir('Finalizado'));
+  medio.addEventListener('play', () => {
+    pausadoPorVisitante = false;
+  });
+  medio.addEventListener('pause', () => {
+    if (medio.ended) return;
+    if (pausaPropia) {
+      pausaPropia = false;
+      decir('En pausa · continúa al volver');
+    } else {
+      pausadoPorVisitante = true;
+      decir('En pausa');
+    }
+  });
+  medio.addEventListener('error', () => {
+    decir('No se pudo cargar el vídeo. Compruebe su conexión.');
+    caja.classList.add('tiene-error');
+  });
+  // El sonido también puede cambiarse desde los controles del propio vídeo.
+  medio.addEventListener('volumechange', () => {
+    const conSonido = !medio.muted && medio.volume > 0;
+    caja.classList.toggle('tiene-sonido', conSonido);
+    boton?.setAttribute('aria-pressed', String(conSonido));
+    if (etiquetaBoton) etiquetaBoton.textContent = conSonido ? 'Silenciar' : 'Activar sonido';
+  });
 
   if (!('IntersectionObserver' in window)) {
-    crear();
+    cargar();
     return;
   }
 
-  // El script de YouTube sólo se trae cuando la sección se acerca: así no
-  // lastra la carga inicial de quien nunca llega hasta aquí.
+  // El vídeo sólo se descarga cuando la sección se acerca: así no lastra la
+  // carga inicial de quien nunca llega hasta aquí.
   const precarga = new IntersectionObserver(
     (entradas, obs) => {
       if (!entradas.some((e) => e.isIntersecting)) return;
       obs.disconnect();
-      crear();
+      cargar();
     },
     { rootMargin: '500px 0px' }
   );
@@ -638,16 +617,16 @@ function video() {
 
   boton?.addEventListener('click', () => {
     if (!listo) return;
-    const silenciado = reproductor.isMuted();
-    if (silenciado) {
-      reproductor.unMute();
-      reproductor.setVolume(70);
+    if (medio.muted) {
+      medio.muted = false;
+      medio.volume = 0.7;
+      if (medio.paused) {
+        pausadoPorVisitante = false;
+        medio.play().catch(() => {});
+      }
     } else {
-      reproductor.mute();
+      medio.muted = true;
     }
-    caja.classList.toggle('tiene-sonido', silenciado);
-    boton.setAttribute('aria-pressed', String(silenciado));
-    if (etiquetaBoton) etiquetaBoton.textContent = silenciado ? 'Silenciar' : 'Activar sonido';
   });
 }
 

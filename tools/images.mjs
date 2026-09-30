@@ -20,6 +20,11 @@ const GRU = 'SESIÓN DE FOTOS GRUPALES';
 const PRO = 'SESIÓN DE FOTOS PROCESOS';
 const f = (n) => `FOTO_${n}_EDITADA_FINAL.jpg`;
 const NUEVAS = 'nuevas fotos';
+// Retoques propios sobre originales del cliente (el original no se toca).
+// grupal-produccion-1-sin-letrero: GRUPAL PRODUCCIÓN / FOTO_1 sin el letrero
+// azul «Cuarentena de P.T.» de la pared (septiembre 2026, a pedido del cliente).
+const RETOCADAS = 'retocadas';
+const PLANTA = [RETOCADAS, 'grupal-produccion-1-sin-letrero.jpg'];
 // Las fotos corregidas por el cliente (septiembre 2026) sustituyeron a sus
 // originales dentro de fotos/ con el mismo nombre; las que llegaron en PNG
 // conservan esa extensión. `localizar` acepta cualquiera de las dos.
@@ -28,7 +33,8 @@ const JOBS = [
   // ---------- HERO (16:9) ----------
   { src: [PRO, 'PROCESO 7', f(1)], out: 'hero/hero-1', widths: [1920, 1280, 800], ar: 16 / 9 },
   { src: [PRO, 'PROCESO 2', f(1)], out: 'hero/hero-2', widths: [1920, 1280, 800], ar: 16 / 9 },
-  { src: [GRU, 'GRUPAL PRODUCCIÓN', f(1)], out: 'hero/hero-3', widths: [1920, 1280, 800], ar: 16 / 9 },
+  // Nombre nuevo al cambiar la foto: /img/ se sirve con caché inmutable.
+  { src: PLANTA, out: 'hero/hero-3-limpia', widths: [1920, 1280, 800], ar: 16 / 9 },
 
   // ---------- SECCIONES ----------
   { src: [GRU, 'GRUPAL ADMINISTRATIVO', f(1)], out: 'secciones/nosotros', widths: [1280, 800], ar: 4 / 3 },
@@ -87,7 +93,7 @@ const JOBS = [
   // las manos para que la fila tenga un solo formato.
   { src: [GER, 'ALMACEN', f(5)], out: 'equipo/almacen-ancho', widths: [1000, 640], ar: 4 / 3, foco: [0.51, 0.4375] },
   // «En planta»: versión grande y apaisada para el marco destacado.
-  { src: [GRU, 'GRUPAL PRODUCCIÓN', f(1)], out: 'secciones/en-planta', widths: [1600, 1100, 760], ar: 16 / 9 },
+  { src: PLANTA, out: 'secciones/en-planta-limpia', widths: [1600, 1100, 760], ar: 16 / 9 },
 ];
 
 // ---------- GALERIA ----------

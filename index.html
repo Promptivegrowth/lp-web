@@ -128,11 +128,11 @@
             <picture>
               <source
                 type="image/webp"
-                srcset="/img/hero/hero-3-800.webp 800w, /img/hero/hero-3-1280.webp 1280w, /img/hero/hero-3-1920.webp 1920w"
+                srcset="/img/hero/hero-3-limpia-800.webp 800w, /img/hero/hero-3-limpia-1280.webp 1280w, /img/hero/hero-3-limpia-1920.webp 1920w"
                 sizes="100vw"
               />
               <img
-                src="/img/hero/hero-3-1920.jpg"
+                src="/img/hero/hero-3-limpia-1920.jpg"
                 alt="Equipo de producción de Laboratorios Pacheco"
                 width="1920"
                 height="1080"
@@ -609,26 +609,28 @@
             <h2 class="revelar">Conozca Laboratorios Pacheco</h2>
           </div>
 
-          <figure class="video__caja" data-video="Og1uE9fmL2s">
+          <figure class="video__caja">
             <div class="video__marco revelar revelar--escaner">
-              <!-- El reproductor de YouTube sustituye a este div. -->
-              <div id="reproductor-institucional"></div>
+              <!-- MP4 propio: 1080p en pantallas anchas y 720p en el resto (src/js/main.js).
+                   No se descarga nada hasta que la sección se acerca. -->
+              <video
+                class="video__medio"
+                controls
+                muted
+                playsinline
+                preload="none"
+                poster="/video/institucional-poster-1600.webp"
+                data-src-grande="/video/institucional-1080.mp4"
+                data-src-chico="/video/institucional-720.mp4"
+                aria-label="Vídeo institucional de Laboratorios Pacheco"
+              >
+                <a href="/video/institucional-720.mp4">Descargar el vídeo institucional</a>
+              </video>
 
               <span class="video__esquinas" aria-hidden="true">
                 <i></i><i></i><i></i><i></i>
               </span>
               <span class="video__haz" aria-hidden="true"></span>
-
-              <noscript>
-                <iframe
-                  src="https://www.youtube-nocookie.com/embed/Og1uE9fmL2s?rel=0"
-                  title="Vídeo institucional de Laboratorios Pacheco"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-              </noscript>
             </div>
 
             <figcaption class="video__barra revelar" style="--d: 0.35s">
