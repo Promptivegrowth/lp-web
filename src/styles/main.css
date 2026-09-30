@@ -633,7 +633,6 @@ body.pagina-interna .header {
   transition: color 0.3s var(--ease), background 0.3s var(--ease);
 }
 
-.header.esta-fija .nav__enlace,
 /* Con siete pestañas, en escritorios estrechos se compacta el menú para que
    ninguna pase a dos líneas. */
 .nav__enlace {
@@ -668,6 +667,8 @@ body.pagina-interna .header {
   }
 }
 
+/* Cabecera sólida (al bajar en Inicio, o siempre en las internas): texto oscuro. */
+.header.esta-fija .nav__enlace,
 body.pagina-interna .nav__enlace {
   color: var(--gris-900);
 }
