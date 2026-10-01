@@ -18,3 +18,7 @@ fotos/
 
 # Fotos que el cliente envía para revisar (originales pesados).
 /fotos observadas/
+
+# Entregables con credenciales: nunca al repositorio (es público)
+/Guia-de-uso-*.pdf
+/Credenciales-*.pdf
